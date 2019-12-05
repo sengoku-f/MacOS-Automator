@@ -59,24 +59,25 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>version="图片拼图 v1.2 by Sengoku"
+					<string>version="图片拼图 v1.3 by Sengoku"
+# 更新为ADJOIN拼接:http://www.fmwconcepts.com/imagemagick/adjoin/index.php
 # 更新版本变量
 # ——————————————
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:~/.imagemagick_scripts
 # 设置变量
 ARG="$1"
 # 获取日期
 ddate=`date +%Y-%m-%d-%H%M%S`
 # 设置输出路径
-ooutput="${ARG%/*}/concact-$ddate.png"
+ooutput="${ARG%/*}/concact-$ddate.jpg"
 # 用户选择
 CONFIG="$(osascript -e 'display dialog "选择拼图方向" buttons {"水平拼图", "垂直拼图"} default button "垂直拼图" with title "'"$version"'"')"
 # 条件判断
 	if [ "$CONFIG" = "button returned:垂直拼图" ]; then
-			magick "$@" -background none -append "$ooutput"
+			adjoin -m H -g center -b white "$@" "$ooutput"
 		elif [ "$CONFIG" = "button returned:水平拼图" ]; then
-			magick "$@" -background none +append "$ooutput"
+			adjoin -m V -g center -b white "$@" "$ooutput"
 		fi
 # 通知
 osascript -e 'display notification "Imagemagick converter" with title "拼接完成🎉" sound name "Glass"'</string>
@@ -192,7 +193,7 @@ osascript -e 'display notification "Imagemagick converter" with title "拼接完
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>348.500000:725.000000</string>
+				<string>374.500000:738.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
