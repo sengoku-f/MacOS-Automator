@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>444.42</string>
+	<key>AMApplicationVersion</key>
+	<string>2.9</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>2.0.3</string>
+				<key>AMApplication</key>
+				<array>
+					<string>自动操作</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<dict/>
+					<key>CheckedForUserDefaultShell</key>
+					<dict/>
+					<key>inputMethod</key>
+					<dict/>
+					<key>shell</key>
+					<dict/>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run Shell Script.action</string>
+				<key>ActionName</key>
+				<string>运行 Shell 脚本</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<string>version="裁剪图片(高级) v1.4 by Sengoku"
+# 更新为aspect脚本
+# 更新为 parallel 并行处理
+# 添加批量操作,添加修改图片尺寸
+#--------------------------------------------------------
+# 设置环境变量
+PATH=$PATH:/usr/local/bin/:~/.imagemagick_scripts
+# 设置路径变量
+var="$1"
+# 获取文件信息
+dir="$(dirname "$var")"
+name="$(basename "$var")"
+# 定位目录路径
+cd "$dir"
+# 询问操作
+CONFIG="$(osascript -e 'display dialog "将图像调整为特定大小,以允许裁剪或填充以应对宽高比变化" buttons {"裁剪", "填充","取消"} default button "填充" with title "'"$version"'"')"
+# 批量裁剪
+if [ "$CONFIG" = "button returned:裁剪" ]; then
+    # 获取原始图片尺寸
+		imageSIZE="$(magick identify -ping -format "%wx%h\n" "$1" | tail -1)"
+		# 输入修改尺寸
+		imageRESIZE="$(osascript -e 'display dialog "设置图片尺寸:\t\t模式:裁剪\n\nWidthxHeight\t\t宽度x高度,指定所需的输出大小" default answer "'$imageSIZE'" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
+		# 若取消则退出，若留空则使用默认值
+		if [ $? -ne 0 ]; then
+					osascript -e 'display notification "已取消输入，若想转换图片请重新运行。" with title "用户取消🙁" sound name "Basso"'
+						exit 0
+				elif [ -z "$imageRESIZE" ]; then
+			imageRESIZE="$imageSIZE"
+				fi
+		# 开始转换
+		find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus aspect "$imageRESIZE" -m crop {/} "{/.}_crop_$imageRESIZE.{+.}"
+fi
+# 批量填充
+if [ "$CONFIG" = "button returned:填充" ]; then
+    # 获取原始图片尺寸
+		imageSIZE="$(magick identify -ping -format "%wx%h\n" "$1" | tail -1)"
+		# 输入修改尺寸
+		imageRESIZE="$(osascript -e 'display dialog "设置图片尺寸:\t\t模式:填充\n\nWidthxHeight\t\t宽度x高度,指定所需的输出大小" default answer "'$imageSIZE'" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
+		# 若取消则退出，若留空则使用默认值
+		if [ $? -ne 0 ]; then
+					osascript -e 'display notification "已取消输入，若想转换图片请重新运行。" with title "用户取消🙁" sound name "Basso"'
+						exit 0
+				elif [ -z "$imageRESIZE" ]; then
+			imageRESIZE="$imageSIZE"
+				fi
+		# 开始转换
+		find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus aspect "$imageRESIZE" -m pad {/} "{/.}_pad_$imageRESIZE.{+.}"
+fi
+# 取消
+# if [ $? -ne 0 ]; then
+# 		osascript -e 'display notification "已取消输入，若想转换图片请重新运行。" with title "用户取消🙁" sound name "Basso"'
+# 		exit 0
+# fi
+# 通知
+osascript -e 'display notification "Imagemagick converter" with title "转换完成🎉" sound name "Glass"'
+</string>
+					<key>CheckedForUserDefaultShell</key>
+					<true/>
+					<key>inputMethod</key>
+					<integer>1</integer>
+					<key>shell</key>
+					<string>/bin/bash</string>
+					<key>source</key>
+					<string></string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.RunShellScript</string>
+				<key>CFBundleVersion</key>
+				<string>2.0.3</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunShellScriptAction</string>
+				<key>InputUUID</key>
+				<string>719E34DB-3360-4654-853E-4C46C37A6A33</string>
+				<key>Keywords</key>
+				<array>
+					<string>Shell</string>
+					<string>脚本</string>
+					<string>命令</string>
+					<string>运行</string>
+					<string>Unix</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>505417DD-5854-4BEF-BDF5-23BD2DB6FECB</string>
+				<key>UUID</key>
+				<string>E44E00BF-34ED-461E-9078-1E473BE0426A</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<integer>0</integer>
+						<key>name</key>
+						<string>inputMethod</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+					<key>1</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>1</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>default value</key>
+						<false/>
+						<key>name</key>
+						<string>CheckedForUserDefaultShell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>2</string>
+					</dict>
+					<key>3</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>COMMAND_STRING</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>3</string>
+					</dict>
+					<key>4</key>
+					<dict>
+						<key>default value</key>
+						<string>/bin/sh</string>
+						<key>name</key>
+						<string>shell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>4</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>374.500000:722.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict/>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>applicationBundleID</key>
+		<string>com.apple.finder</string>
+		<key>applicationBundleIDsByPath</key>
+		<dict>
+			<key>/System/Library/CoreServices/Finder.app</key>
+			<string>com.apple.finder</string>
+		</dict>
+		<key>applicationPath</key>
+		<string>/System/Library/CoreServices/Finder.app</string>
+		<key>applicationPaths</key>
+		<array>
+			<string>/System/Library/CoreServices/Finder.app</string>
+		</array>
+		<key>inputTypeIdentifier</key>
+		<string>com.apple.Automator.fileSystemObject.image</string>
+		<key>outputTypeIdentifier</key>
+		<string>com.apple.Automator.nothing</string>
+		<key>presentationMode</key>
+		<integer>15</integer>
+		<key>processesInput</key>
+		<integer>0</integer>
+		<key>serviceApplicationBundleID</key>
+		<string>com.apple.finder</string>
+		<key>serviceApplicationPath</key>
+		<string>/System/Library/CoreServices/Finder.app</string>
+		<key>serviceInputTypeIdentifier</key>
+		<string>com.apple.Automator.fileSystemObject.image</string>
+		<key>serviceOutputTypeIdentifier</key>
+		<string>com.apple.Automator.nothing</string>
+		<key>serviceProcessesInput</key>
+		<integer>0</integer>
+		<key>systemImageName</key>
+		<string>NSActionTemplate</string>
+		<key>useAutomaticInputType</key>
+		<integer>0</integer>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.servicesMenu</string>
+	</dict>
+</dict>
+</plist>
