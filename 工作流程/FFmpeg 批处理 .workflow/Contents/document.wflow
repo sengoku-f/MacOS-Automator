@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>419</string>
+	<key>AMApplicationVersion</key>
+	<string>2.6</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>*</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>v.1.0.2</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>variableUUID</key>
+					<dict>
+						<key>isPathPopUp</key>
+						<false/>
+						<key>selectedVariableUUID</key>
+						<string>344EBD59-899C-497E-A994-BD963CE58BF3</string>
+					</dict>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>*</string>
+					</array>
+				</dict>
+				<key>AMRequiredResources</key>
+				<array/>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Get Value of Variable.action</string>
+				<key>ActionName</key>
+				<string>获得变量的值</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>variableUUID</key>
+					<string>344EBD59-899C-497E-A994-BD963CE58BF3</string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.Get_Value_of_Variable</string>
+				<key>CFBundleVersion</key>
+				<string>1.0.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>Get_Value_of_Variable</string>
+				<key>InputUUID</key>
+				<string>B95D638D-2A86-4A9E-B217-55160BA4C754</string>
+				<key>Keywords</key>
+				<array>
+					<string>变量</string>
+					<string>绑定</string>
+					<string>输入</string>
+					<string>输出</string>
+					<string>存储</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>AC14F946-57DA-4356-A28A-2AA4ACDCD422</string>
+				<key>UUID</key>
+				<string>4BBEC973-5B7D-4D08-B222-F35548450E46</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>variableUUID</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>309.000000:105.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Get Value of Variable.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.path</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>v.1.2.1</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Finder</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>defaultLocation</key>
+					<dict>
+						<key>isPathPopUp</key>
+						<true/>
+						<key>selectedVariableUUID</key>
+						<string>344EBD59-899C-497E-A994-BD963CE58BF3</string>
+						<key>variableUUIDsInMenu</key>
+						<array>
+							<string>344EBD59-899C-497E-A994-BD963CE58BF3</string>
+						</array>
+					</dict>
+					<key>granularity</key>
+					<dict/>
+					<key>multipleSelection</key>
+					<dict/>
+					<key>promptMessage</key>
+					<dict>
+						<key>tokenizedValue</key>
+						<array>
+							<string>选择需要用于FFmpeg批处理编码的视频文件</string>
+						</array>
+					</dict>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.path</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Ask for Finder Items.action</string>
+				<key>ActionName</key>
+				<string>请求 Finder 项目</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>defaultLocation</key>
+					<string></string>
+					<key>granularity</key>
+					<integer>0</integer>
+					<key>multipleSelection</key>
+					<true/>
+					<key>promptMessage</key>
+					<string>选择需要用于FFmpeg批处理编码的视频文件</string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.AskForFinderItems</string>
+				<key>CFBundleVersion</key>
+				<string>1.2.1</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<true/>
+				<key>CanShowWhenRun</key>
+				<false/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryFilesAndFolders</string>
+				</array>
+				<key>Class Name</key>
+				<string>AMAskForFinderItemsAction</string>
+				<key>IgnoresInput</key>
+				<true/>
+				<key>InputUUID</key>
+				<string>16679060-CA01-496E-BD5A-238FFDE2F91C</string>
+				<key>Keywords</key>
+				<array>
+					<string>查找</string>
+					<string>项</string>
+					<string>文件</string>
+					<string>文件夹</string>
+					<string>请求</string>
+					<string>选取</string>
+					<string>提示</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>A432252E-4969-4A93-9332-8E7F63929282</string>
+				<key>UUID</key>
+				<string>E8B63990-1543-423C-AC5D-ACF13E2031FD</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Finder</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<false/>
+						<key>name</key>
+						<string>multipleSelection</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+					<key>1</key>
+					<dict>
+						<key>default value</key>
+						<integer>0</integer>
+						<key>name</key>
+						<string>granularity</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>1</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>default value</key>
+						<string>~/Desktop</string>
+						<key>name</key>
+						<string>defaultLocation</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>2</string>
+					</dict>
+					<key>3</key>
+					<dict>
+						<key>default value</key>
+						<string>选取 Finder 项目：</string>
+						<key>name</key>
+						<string>promptMessage</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>3</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>309.000000:261.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Ask for Finder Items.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>1.0.2</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run AppleScript.action</string>
+				<key>ActionName</key>
+				<string>运行 AppleScript</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>source</key>
+					<string>on run {input, parameters}		set ffmpegPath to quoted form of ((POSIX path of (path to me)) &amp; "contents/MacOS/ffmpeg")	set inputPath to input as list		set outputPath to POSIX path of (choose folder with prompt "选择视频输出文件夹")		repeat with i in inputPath				tell application "Finder"			set _extension to name extension of (contents of i)			set _filename to name of (contents of i)		end tell				set _name to {}		if _extension is not "" then			set _length to (count of _filename) - (count of _extension) - 1			set end of _name to text 1 thru _length of _filename		else			set end of _name to _filename		end if				set outputFile to (quoted form of (outputPath &amp; "FFmpeg-" &amp; _name &amp; ".mov")) as string		set thePath to (quoted form of (POSIX path of (contents of i))) as string				tell application "Terminal"			set windowA to do script ffmpegPath &amp; " -i " &amp; thePath &amp; " -c:v h264 -x264-params crf=16:level=5.0:ref=7:keyint=550:min-keyint=23:scenecut=40:bframes=8:b-pyramid=normal:direct=auto:b-adapt=2:cplxblur=20:qcomp=0.7:mbtree=1:rc-lookahead=40:qpmin=10:qpmax=24:partitions=all:8x8dct=1:no-fast-pskip=1:no-dct-decimate=1:me=umh:merange=32:subme=10:mvrange=-1:cabac=1:trellis=2:psy-rd=0.7,0:weightp=2:aq-mode=1:aq-strength=1:threads=auto:deblock=-2,-2 -c:a alac " &amp; outputFile &amp; "; exit"			repeat				delay 10				if not busy of windowA then exit repeat			end repeat		end tell	end repeat		display dialog "视频编码批处理任务已成功完成！" buttons {"关闭"} default button "关闭" with icon note		return inputend run</string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.RunScript</string>
+				<key>CFBundleVersion</key>
+				<string>1.0.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunScriptAction</string>
+				<key>InputUUID</key>
+				<string>854BEF39-398D-49E8-AF16-D5E10F5307EC</string>
+				<key>Keywords</key>
+				<array>
+					<string>运行</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>812F6D18-615F-42E4-80FB-BDE023BEFA93</string>
+				<key>UUID</key>
+				<string>03602C15-19E5-450E-81A1-C9F958F58A12</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string>on run {input, parameters}
+	
+	(* Your script goes here *)
+	
+	return input
+end run</string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>309.000000:507.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict>
+		<key>A1781B6E-F13C-45F7-A8D4-516034AE6E8A</key>
+		<dict>
+			<key>from</key>
+			<string>E8B63990-1543-423C-AC5D-ACF13E2031FD - E8B63990-1543-423C-AC5D-ACF13E2031FD</string>
+			<key>to</key>
+			<string>03602C15-19E5-450E-81A1-C9F958F58A12 - 03602C15-19E5-450E-81A1-C9F958F58A12</string>
+		</dict>
+		<key>DA6AF94A-0C84-440F-B73A-AF528A1B9BD4</key>
+		<dict>
+			<key>from</key>
+			<string>4BBEC973-5B7D-4D08-B222-F35548450E46 - 4BBEC973-5B7D-4D08-B222-F35548450E46</string>
+			<key>to</key>
+			<string>E8B63990-1543-423C-AC5D-ACF13E2031FD - E8B63990-1543-423C-AC5D-ACF13E2031FD</string>
+		</dict>
+	</dict>
+	<key>variables</key>
+	<array>
+		<dict>
+			<key>UUID</key>
+			<string>344EBD59-899C-497E-A994-BD963CE58BF3</string>
+			<key>identifier</key>
+			<string>com.apple.Automator.Variable.MoviesFolder</string>
+		</dict>
+	</array>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.workflow</string>
+	</dict>
+</dict>
+</plist>
