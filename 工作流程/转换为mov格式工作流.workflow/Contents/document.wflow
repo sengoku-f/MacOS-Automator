@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>419</string>
+	<key>AMApplicationVersion</key>
+	<string>2.6</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>1.0.2</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run AppleScript.action</string>
+				<key>ActionName</key>
+				<string>运行 AppleScript</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>source</key>
+					<string>--———————————————函数定义开始————————————————on checkList(STRING_TO_CHECK, LIST_TO_CHECK) --确定string是否在list里	set inList to false	repeat with _elem in LIST_TO_CHECK		if (STRING_TO_CHECK as string) is ((contents of _elem) as string) then			set inList to true			exit repeat		end if	end repeat	return inListend checkListon checkListForSubstring(STRING_TO_CHECK, LIST_TO_CHECK) --确定List中是否有string的子串	set inList to false	repeat with _elem in LIST_TO_CHECK		if (STRING_TO_CHECK as string) is in ((contents of _elem) as string) then			set inList to true			exit repeat		end if	end repeat	return inListend checkListForSubstringon checkExistence(POSIX_FILE_PATH) --验证文件存在性	set existence to false	tell application "Finder"		if exists POSIX_FILE_PATH as POSIX file then			set existence to true		end if	end tell	return existenceend checkExistence--———————————————函数定义结束————————————————on run {input, parameters}	set _choosefile to choose file with prompt "请选择需要转换格式到mov的视频" with multiple selections allowed	set _list to _choosefile as list	set _number to count of _list	set _quote to "\""	set _remuxNumber to 0	set _error to 0	set _inputList to {}	set _ffmpegremuxlist to {}	set _xmlTempPath to (path to temporary items from user domain)'s POSIX path &amp; "temp.xml"	set _supportedFormat to {"mkv", "mp4", "flv", "avi", "m4v", "rmvb", "mpg", "wmv", "f4v", "3gp", "m2ts", "ts", "m2ts", "rm", "mov", "vob"}	set _ALACList to {"FLAC", "PCM"}	set _copyList to {"ALAC", "AAC", "MPEG Audio", "AC-3"}	set _binPath to ((path to me)'s POSIX path &amp; "Contents/MacOS/")'s quoted form	set _shellScript to "export PATH=$PATH:" &amp; _binPath &amp; ";"	set _binaryCheck to ""		try		do shell script _shellScript &amp; "which FFmpeg"	on error		set _binaryCheck to "FFmpeg"	end try		try		do shell script _shellScript &amp; "which mediainfo"	on error		if _binaryCheck is not "" then			set _binaryCheck to "FFmpeg和MediaInfo"		else			set _binaryCheck to "MediaInfo"		end if	end try		if _binaryCheck is not "" then		display dialog "请将" &amp; _binaryCheck &amp; "放入指定位置: 右键[转换为mov格式.app]-显示包内容-Contents-MacOS" with title "缺失必要组件" buttons {"打开Safari下载", "了解并退出"} default button "打开Safari下载"		if button returned of result is "打开Safari下载" then			tell application "Safari"				activate				open location "http://pan.baidu.com/s/1dDjCIFB"			end tell		end if		error number -128	end if		repeat with i in _list --过滤文件夹，条件：POSIX路径以“/”结尾		if (POSIX path of contents of i) as string does not end with "/" then			set end of _inputList to contents of i		end if	end repeat		repeat with i in _inputList --对每个输入进行mov封装				tell application "Finder" --获取扩展名、文件名和父目录			set _extension to (name extension of (contents of i)) as string			set _filename to name of (contents of i)			set outputPath to (POSIX path of (container of (contents of i) as alias))		end tell				if checkList(_extension, _supportedFormat) then --判断文件类型是否被支持			set _remuxNumber to _remuxNumber + 1			set _name to {}			if _extension is not "" then --获得不含扩展名的文件名				set _length to (count of _filename) - (count of _extension) - 1				set end of _name to text 1 thru _length of _filename			else				set end of _name to _filename			end if			set outputFile to (outputPath &amp; _name &amp; ".mov") --输出文件名						if checkExistence(outputFile) or checkList(outputFile, _ffmpegremuxlist) then --防止文件重名，检查在同路径下和ffmpeg混流list				set _error to _error + 1				set j to 0				repeat					set j to j + 1					set _temppath to outputPath &amp; _name &amp; "-" &amp; (j as string) &amp; ".mov"					if not (checkExistence(_temppath) or checkList(_temppath, _ffmpegremuxlist)) then						set outputFile to _temppath						exit repeat					end if				end repeat			end if						set end of _ffmpegremuxlist to outputFile			set outputFile to quoted form of outputFile			set thePath to (quoted form of (POSIX path of (contents of i))) as string						--从mediainfo 获取XML文件，并从XML读取音频编码信息，不同编码对应不同的ffmpeg参数，统一先写在shell脚本里			do shell script "export PATH=$PATH:" &amp; _binPath &amp; ";" &amp; "mediainfo --Output=XML --logfile=" &amp; (quoted form of _xmlTempPath) &amp; " -i " &amp; thePath						try				tell application "System Events"					set theXMLFile to XML file _xmlTempPath					tell theXMLFile's XML element "Mediainfo"'s XML element "File"						set audioTrack to (first XML element whose XML attribute "type"'s value is "audio")						set audioFormat to audioTrack's XML element "Format"'s value					end tell				end tell			on error				set audioFormat to "an"			end try						if checkListForSubstring(audioFormat, _ALACList) then				set _audio to "-c:a alac "			else if checkListForSubstring(audioFormat, _copyList) then				set _audio to "-c:a copy "			else if audioFormat is "an" then				set _audio to "-an "			else				set _audio to "-c:a libfaac -ab 200k -profile:a aac_main "			end if						do shell script "rm " &amp; (quoted form of _xmlTempPath)			set _shellScript to _shellScript &amp; "ffmpeg -i " &amp; thePath &amp; " -y -ac 2 -c:v copy " &amp; _audio &amp; outputFile &amp; ";"		end if	end repeat		try		do shell script _shellScript --执行生成的shell脚本	on error		display notification "※ 自动跳过该文件，流程继续执行中…" with title "一键封装mov出现问题 [FFmpeg崩溃]"		set _remuxNumber to _remuxNumber - 1	end try		set _debug to "" --完成通知（通知中心） &amp; debug	if (_number - _remuxNumber) &gt; 0 then		set _debug to (_debug &amp; "※ 过滤" &amp; (_number - _remuxNumber) as string) &amp; "个无效输入"	end if	if _error &gt; 0 then		set _debug to _debug &amp; "※ 重命名" &amp; _error &amp; "个同名文件"	end if	display notification _debug with title (_remuxNumber as string) &amp; "个视频已转换为mov"	return inputend run</string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.RunScript</string>
+				<key>CFBundleVersion</key>
+				<string>1.0.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunScriptAction</string>
+				<key>InputUUID</key>
+				<string>E6248288-3ECD-4898-9755-BBA6E45AA7D3</string>
+				<key>Keywords</key>
+				<array>
+					<string>运行</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>48C31E02-6A4B-43A7-B869-672FE7E36581</string>
+				<key>UUID</key>
+				<string>B1277276-849F-4324-B234-F29DA3CE318B</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string>on run {input, parameters}
+	
+	(* Your script goes here *)
+	
+	return input
+end run</string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>309.000000:300.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict/>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.workflow</string>
+	</dict>
+</dict>
+</plist>

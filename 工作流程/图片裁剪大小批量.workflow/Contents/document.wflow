@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>444.42</string>
+	<key>AMApplicationVersion</key>
+	<string>2.9</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.path</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>1.1.2</string>
+				<key>AMApplication</key>
+				<array>
+					<string>访达</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>fileNames</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.path</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Get Specified Finder Items.action</string>
+				<key>ActionName</key>
+				<string>获得指定的访达项目</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>fileNames</key>
+					<array/>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.SpecifiedFiles</string>
+				<key>CFBundleVersion</key>
+				<string>1.1.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryFilesAndFolders</string>
+				</array>
+				<key>Class Name</key>
+				<string>SpecifiedFilesAction</string>
+				<key>InputUUID</key>
+				<string>45394639-6584-4B70-90F5-30CEDD257369</string>
+				<key>Keywords</key>
+				<array>
+					<string>文件</string>
+					<string>选取</string>
+					<string>查找</string>
+					<string>获得</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>E495B704-FC1A-4692-8B26-550346767736</string>
+				<key>UUID</key>
+				<string>AD299867-2ED4-4254-A23A-5375088F968A</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Finder</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<array/>
+						<key>name</key>
+						<string>fileNames</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>conversionLabel</key>
+				<integer>0</integer>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>312.500000:239.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Get Specified Finder Items.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>2.0.3</string>
+				<key>AMApplication</key>
+				<array>
+					<string>自动操作</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<dict/>
+					<key>CheckedForUserDefaultShell</key>
+					<dict/>
+					<key>inputMethod</key>
+					<dict/>
+					<key>shell</key>
+					<dict/>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run Shell Script.action</string>
+				<key>ActionName</key>
+				<string>运行 Shell 脚本</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<string># 裁剪图片 v1.2
+# 添加批量操作,添加修改图片尺寸
+#--------------------------------------------------------
+# 设置环境变量
+PATH=$PATH:/usr/local/bin/
+# 询问操作
+CONFIG="$(osascript -e 'display dialog "图片裁剪" buttons {"批量裁剪", "单独裁剪","批量调整大小"} default button "批量调整大小" with title "裁剪图片 by Sengoku v1.2"')"
+# 批量裁剪
+if [ "$CONFIG" = "button returned:批量裁剪" ]; then
+    # 获取原始图片尺寸
+		imageSIZE="$(magick identify -ping -format "%wx%h\n" "$1" | tail -1)"
+		# 输入修改尺寸
+		imageRESIZE="$(osascript -e 'Tell application "System Events" to display dialog "设置裁剪尺寸:\n 50％-----等比缩小50%\n 宽度-----给定宽度,高度自适应 \n x高度-----给定高度,宽度自适应" default answer "'$imageSIZE'" with title "裁剪图片 by Sengoku v1.0"' -e 'text returned of result' 2&gt;/dev/null)"
+		# 开始循环
+		for f
+		do
+			dir="$(dirname "$f")"
+			name="$(basename "$f")"
+			cd "$dir"
+			# 开始转换
+			magick "$f" -resize "$imageRESIZE"^ -gravity center -extent "$imageRESIZE" "${f%.*}_$imageRESIZE.${f##*.}"
+		done
+fi
+# 单独裁剪
+if [ "$CONFIG" = "button returned:单独裁剪" ]; then
+		# 开始循环
+		for f
+		do
+			dir="$(dirname "$f")"
+			name="$(basename "$f")"
+
+			cd "$dir"
+			# 获取原始图片尺寸
+			imageSIZE="$(magick identify -ping -format "%wx%h" "$f")"
+			# 输入修改尺寸
+			imageRESIZE="$(osascript -e 'Tell application "System Events" to display dialog "设置裁剪尺寸:\n 50％-----等比缩小50%\n 宽度-----给定宽度,高度自适应 \n x高度-----给定高度,宽度自适应" default answer "'$imageSIZE'" with title "裁剪图片 by Sengoku v1.0"' -e 'text returned of result' 2&gt;/dev/null)"
+			# 开始转换
+			magick "$f" -resize "$imageRESIZE"^ -gravity center -extent "$imageRESIZE" "${f%.*}_$imageRESIZE.${f##*.}"
+		done
+fi
+# 批量调整大小
+if [ "$CONFIG" = "button returned:批量调整大小" ]; then
+    # 获取原始图片尺寸
+		imageSIZE="$(magick identify -ping -format "%wx%h/n" "$f")"
+		# 输入修改尺寸
+		imageRESIZE="$(osascript -e 'Tell application "System Events" to display dialog "设置裁剪尺寸:\n 50％-----等比缩小50%\n 宽度-----给定宽度,高度自适应 \n x高度-----给定高度,宽度自适应" default answer "'$imageSIZE'" with title "裁剪图片 by Sengoku v1.0"' -e 'text returned of result' 2&gt;/dev/null)"
+		# 开始循环
+		for f
+		do
+			dir="$(dirname "$f")"
+			name="$(basename "$f")"
+			cd "$dir"
+			# 开始转换
+			magick "$f" -resize "$imageRESIZE" "${f%.*}_$imageRESIZE.${f##*.}"
+		done
+fi
+# 通知
+osascript -e 'display notification "转换完成👍🏻" with title "Imagemagick 转换器" sound name "Glass"'
+</string>
+					<key>CheckedForUserDefaultShell</key>
+					<true/>
+					<key>inputMethod</key>
+					<integer>1</integer>
+					<key>shell</key>
+					<string>/bin/bash</string>
+					<key>source</key>
+					<string></string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.RunShellScript</string>
+				<key>CFBundleVersion</key>
+				<string>2.0.3</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunShellScriptAction</string>
+				<key>InputUUID</key>
+				<string>719E34DB-3360-4654-853E-4C46C37A6A33</string>
+				<key>Keywords</key>
+				<array>
+					<string>Shell</string>
+					<string>脚本</string>
+					<string>命令</string>
+					<string>运行</string>
+					<string>Unix</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>505417DD-5854-4BEF-BDF5-23BD2DB6FECB</string>
+				<key>UUID</key>
+				<string>E44E00BF-34ED-461E-9078-1E473BE0426A</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<integer>0</integer>
+						<key>name</key>
+						<string>inputMethod</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+					<key>1</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>1</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>default value</key>
+						<false/>
+						<key>name</key>
+						<string>CheckedForUserDefaultShell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>2</string>
+					</dict>
+					<key>3</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>COMMAND_STRING</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>3</string>
+					</dict>
+					<key>4</key>
+					<dict>
+						<key>default value</key>
+						<string>/bin/sh</string>
+						<key>name</key>
+						<string>shell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>4</string>
+					</dict>
+				</dict>
+				<key>conversionLabel</key>
+				<integer>0</integer>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>312.500000:733.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict>
+		<key>7F662AD5-9F1E-4BDF-A08F-7C58EDD212E3</key>
+		<dict>
+			<key>from</key>
+			<string>AD299867-2ED4-4254-A23A-5375088F968A - AD299867-2ED4-4254-A23A-5375088F968A</string>
+			<key>to</key>
+			<string>E44E00BF-34ED-461E-9078-1E473BE0426A - E44E00BF-34ED-461E-9078-1E473BE0426A</string>
+		</dict>
+	</dict>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.workflow</string>
+	</dict>
+</dict>
+</plist>
