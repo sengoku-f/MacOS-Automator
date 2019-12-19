@@ -59,7 +59,8 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>versions="7z解压 v1.1 by Sengoku"
+					<string>versions="7z解压 v1.2 by Sengoku"
+# 修复密码含有空格无法读取导致退出
 # 更新保存上一次密码,版本号变量
 # -----------------------------
 # 设置环境变量
@@ -75,7 +76,7 @@ fi
 PASSWORD_SET=$(&lt;$configPassword)
 
 # 用户输入
-PASSWORD_SET="$(osascript -e 'display dialog "输入压缩包密码:" default answer "'$PASSWORD_SET'" with title "'"$versions"'"' -e 'text returned of result' 2&gt;/dev/null)"
+PASSWORD_SET="$(osascript -e 'display dialog "输入压缩包密码:" default answer "'"$PASSWORD_SET"'" with title "'"$versions"'"' -e 'text returned of result' 2&gt;/dev/null)"
 		# 若取消则退出，若留空则使用默认值        
 		if [ $? -ne 0 ]; then
 						osascript -e 'display notification "若想解压请重新运行。" with title "用户取消🙁" sound name "Basso"'
@@ -211,7 +212,7 @@ osascript -e 'display notification "7z converter" with title "解压完成🎉" 
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>348.500000:680.000000</string>
+				<string>374.500000:741.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
