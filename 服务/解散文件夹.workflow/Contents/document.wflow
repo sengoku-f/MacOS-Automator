@@ -59,7 +59,8 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>version="解散文件夹 v1.1 by Sengoku"
+					<string>version="解散文件夹 v1.2 by Sengoku"
+# 更新"递归删除空文件夹"在循环中
 # 更新同名文件夹模式
 # -------------------------------------------
 # 设置环境变量
@@ -99,11 +100,12 @@ do
 			# 移动所有文件到根目录
 			find "$f" -maxdepth 1 -mindepth 1 -not -path "*/\.*" -print0 | xargs -0 -P 8 -J {} mv -n {} "."
 	fi
-
+	# 递归删除空文件夹
+	find "$dir" -depth -type d -empty -exec rmdir {} \;
 done
 
 # 删除根目录下所有空文件夹
-find "$dir" -depth -maxdepth 1 -mindepth 1 -type d -empty -exec rmdir {} \;
+# find "$dir" -depth -maxdepth 1 -mindepth 1 -type d -empty -exec rmdir {} \;
 # 通知
 osascript -e 'display notification "'"$version"'" with title "所有文件已移动🎉" sound name "Glass"'</string>
 					<key>CheckedForUserDefaultShell</key>
@@ -218,7 +220,7 @@ osascript -e 'display notification "'"$version"'" with title "所有文件已移
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>348.500000:682.000000</string>
+				<string>374.500000:641.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
