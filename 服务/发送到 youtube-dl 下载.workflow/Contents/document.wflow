@@ -113,7 +113,7 @@
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>348.500000:228.000000</string>
+				<string>374.500000:228.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Set Value of Variable.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -181,7 +181,7 @@ url=$1
 	CONFIG="$(osascript -e 'display dialog "是否使用代理下载 \n\n - 回车选择代理 \n - 空格选择直连 \n" buttons {"直连", "代理"} default button "代理" with title "'"$versions"'"')"
 
 if [ "$CONFIG" = "button returned:代理" ]; then
-    timeout=`(time youtube-dl --proxy socks5://127.0.0.1:1086 "$url") 2&gt;&amp;1 | awk '/real/ { print $NF }'`
+    timeout=`(time youtube-dl --proxy socks5://127.0.0.1:1080 "$url") 2&gt;&amp;1 | awk '/real/ { print $NF }'`
     osascript -e 'display notification "YouTube-dl program" with title "下载完成🎉\t耗时'$timeout'" subtitle "" sound name "Glass"'
 else
     timeout=`(time youtube-dl "$url") 2&gt;&amp;1 | awk '/real/ { print $NF }'`
@@ -299,7 +299,7 @@ fi</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>348.500000:410.000000</string>
+				<string>374.500000:749.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -309,7 +309,7 @@ fi</string>
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>1328D636-9830-4D02-9B05-49A595EB2060</key>
+		<key>E1AED5B9-FDF9-4DF6-B702-C0C038752AC5</key>
 		<dict>
 			<key>from</key>
 			<string>61BAB5CA-0AD1-4CEB-9C99-07DC22C86B1D - 61BAB5CA-0AD1-4CEB-9C99-07DC22C86B1D</string>
