@@ -59,7 +59,8 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>version="转换图片格式 v1.3.1 by Sengoku"
+					<string>version="转换图片格式 v1.3.2 by Sengoku"
+# 更改为仅转换顶层,不导出图层
 # 更新取消操作,添加版本变量
 # 更新为 parallel 并行处理
 # -----------------------------
@@ -84,7 +85,7 @@ elif [ -z "$EXT_NAME" ]; then
 fi
 
 # 开始转换格式
-find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus magick {} "{.}.$EXT_NAME"
+find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus magick {}[0] "{.}.$EXT_NAME"
 
 
 # 显示通知
@@ -204,7 +205,7 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>348.500000:672.000000</string>
+				<string>374.500000:635.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
