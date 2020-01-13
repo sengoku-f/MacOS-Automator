@@ -1,0 +1,1031 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>444.42</string>
+	<key>AMApplicationVersion</key>
+	<string>2.9</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<false/>
+					<key>Types</key>
+					<array>
+						<string>*</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>v.1.0.2</string>
+				<key>AMApplication</key>
+				<array>
+					<string>自动操作</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>variableUUID</key>
+					<dict>
+						<key>isPathPopUp</key>
+						<false/>
+						<key>selectedVariableUUID</key>
+						<string>3829AC00-FCBA-4A4C-9207-F103344DE268</string>
+						<key>variableUUIDsInMenu</key>
+						<array/>
+					</dict>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>*</string>
+					</array>
+				</dict>
+				<key>AMRequiredResources</key>
+				<array/>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Set Value of Variable.action</string>
+				<key>ActionName</key>
+				<string>设定变量的值</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>variableUUID</key>
+					<string>3829AC00-FCBA-4A4C-9207-F103344DE268</string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.SetValueofVariable</string>
+				<key>CFBundleVersion</key>
+				<string>1.0.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<true/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>Set_Value_of_Variable</string>
+				<key>InputUUID</key>
+				<string>4C1C933B-18A5-459C-AF12-A8936DA149D9</string>
+				<key>Keywords</key>
+				<array>
+					<string>变量</string>
+					<string>绑定</string>
+					<string>输入</string>
+					<string>输出</string>
+					<string>储存</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>15BDD8F7-F9F7-4CBE-AA6D-80BE8350D24E</string>
+				<key>UUID</key>
+				<string>0C322224-079C-40B2-827A-697595EFD823</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>variableUUID</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>374.500000:228.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Set Value of Variable.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>1.0.2</string>
+				<key>AMApplication</key>
+				<array>
+					<string>自动操作</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run AppleScript.action</string>
+				<key>ActionName</key>
+				<string>运行 AppleScript</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>source</key>
+					<string>set theDeviceList to {"压制不改变分辨率", "压制720P", "PNG-MP4#上下通道", "PNG-MP4#左右通道", "视频去黑边", "修改分辨率", "裁剪分辨率", "修改尺寸并裁剪", "添加背景模糊", "提取音频", "音频响度均衡", "暂无", "暂无", "暂无", "暂无", "暂无", "暂无", "暂无", "暂无", "暂无"}set theDevice to (choose from list theDeviceList with prompt "选择操作:" default items {"压制不改变分辨率"} with title "视频处理 by Sengoku")if theDevice is false then	display notification "已取消，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"	error number -128else	item 1 of theDeviceend if</string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.RunScript</string>
+				<key>CFBundleVersion</key>
+				<string>1.0.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunScriptAction</string>
+				<key>IgnoresInput</key>
+				<true/>
+				<key>InputUUID</key>
+				<string>B95C9389-97DF-45B2-94EE-B16BD9C8A9AB</string>
+				<key>Keywords</key>
+				<array>
+					<string>运行</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>308B0939-6B99-4D2F-93ED-FFE5B710299D</string>
+				<key>UUID</key>
+				<string>FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string>on run {input, parameters}
+	
+	(* Your script goes here *)
+	
+	return input
+end run</string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>374.500000:473.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>2.0.3</string>
+				<key>AMApplication</key>
+				<array>
+					<string>自动操作</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<dict/>
+					<key>CheckedForUserDefaultShell</key>
+					<dict/>
+					<key>inputMethod</key>
+					<dict/>
+					<key>shell</key>
+					<dict/>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run Shell Script.action</string>
+				<key>ActionName</key>
+				<string>运行 Shell 脚本</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<string># 缓存地址
+config=~/Library/Caches/video_config
+
+echo "$1" &gt; $config
+</string>
+					<key>CheckedForUserDefaultShell</key>
+					<true/>
+					<key>inputMethod</key>
+					<integer>1</integer>
+					<key>shell</key>
+					<string>/bin/bash</string>
+					<key>source</key>
+					<string></string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.RunShellScript</string>
+				<key>CFBundleVersion</key>
+				<string>2.0.3</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunShellScriptAction</string>
+				<key>Disabled</key>
+				<false/>
+				<key>InputUUID</key>
+				<string>4D64E890-DE34-47ED-AD7D-8022BE2F9EF1</string>
+				<key>Keywords</key>
+				<array>
+					<string>Shell</string>
+					<string>脚本</string>
+					<string>命令</string>
+					<string>运行</string>
+					<string>Unix</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>CC78BB5B-16AD-4838-807F-1C58B740858B</string>
+				<key>UUID</key>
+				<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<integer>0</integer>
+						<key>name</key>
+						<string>inputMethod</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+					<key>1</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>1</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>default value</key>
+						<false/>
+						<key>name</key>
+						<string>CheckedForUserDefaultShell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>2</string>
+					</dict>
+					<key>3</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>COMMAND_STRING</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>3</string>
+					</dict>
+					<key>4</key>
+					<dict>
+						<key>default value</key>
+						<string>/bin/sh</string>
+						<key>name</key>
+						<string>shell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>4</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>374.500000:655.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>*</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>v.1.0.2</string>
+				<key>AMApplication</key>
+				<array>
+					<string>自动操作</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>variableUUID</key>
+					<dict>
+						<key>isPathPopUp</key>
+						<false/>
+						<key>selectedVariableUUID</key>
+						<string>3829AC00-FCBA-4A4C-9207-F103344DE268</string>
+						<key>variableUUIDsInMenu</key>
+						<array/>
+					</dict>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>*</string>
+					</array>
+				</dict>
+				<key>AMRequiredResources</key>
+				<array/>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Get Value of Variable.action</string>
+				<key>ActionName</key>
+				<string>获得变量的值</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>variableUUID</key>
+					<string>3829AC00-FCBA-4A4C-9207-F103344DE268</string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.GetValueofVariable</string>
+				<key>CFBundleVersion</key>
+				<string>1.0.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>Get_Value_of_Variable</string>
+				<key>Disabled</key>
+				<false/>
+				<key>IgnoresInput</key>
+				<true/>
+				<key>InputUUID</key>
+				<string>089335AB-77CC-44FD-BA95-6CE3003ECA21</string>
+				<key>Keywords</key>
+				<array>
+					<string>变量</string>
+					<string>绑定</string>
+					<string>输入</string>
+					<string>输出</string>
+					<string>储存</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>DF1F79AB-2F01-4A64-87EA-3F763D3419C3</string>
+				<key>UUID</key>
+				<string>1B28246C-46B3-4668-80AB-C709673915C7</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>variableUUID</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>374.500000:757.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Get Value of Variable.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>2.0.3</string>
+				<key>AMApplication</key>
+				<array>
+					<string>自动操作</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<dict/>
+					<key>CheckedForUserDefaultShell</key>
+					<dict/>
+					<key>inputMethod</key>
+					<dict/>
+					<key>shell</key>
+					<dict/>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run Shell Script.action</string>
+				<key>ActionName</key>
+				<string>运行 Shell 脚本</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<string>version="视频处理 v1.0 by Sengoku"
+# -----------------------------
+# 设置环境变量
+PATH=$PATH:/usr/local/bin/
+# 设置路径变量
+var="$1"
+# 缓存地址
+config=~/Library/Caches/video_config
+# 读取缓存设置
+VIDEO_SET=$(&lt;$config)
+
+# 获取文件信息
+dir="$(dirname "$var")"
+name="$(basename "$var")"
+# 定位目录路径
+cd "$dir"
+
+# 开始处理
+if [ "$VIDEO_SET" = "压制不改变分辨率" ]; then
+	# 开始转换格式
+	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -r 25 -pix_fmt yuv420p -c:a aac -b:a 128k -ar 44100 -y "{.}_x264.mp4"
+fi
+
+if [ "$VIDEO_SET" = "压制720P" ]; then
+	# 设置变量
+	videoCRF="28"
+	videoFPS="25"
+	videoSIZE="720"
+	# 开始转换格式
+	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -preset 8 -x264opts crf=$videoCRF:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -r $videoFPS -vf \"scale="'-2'":"'min($videoSIZE,ih)'":flags=lanczos\" -pix_fmt yuv420p -c:a aac -b:a 128k -ar 44100 -y "{.}_x264_CRF'$videoCRF'_'$videoSIZE'p.mp4"
+fi
+
+if [ "$VIDEO_SET" = "PNG-MP4#上下通道" ]; then
+			for f in "$@"
+			do
+				# 设置变量
+				dir="$(dirname "$f")"
+				name="$(basename "$f")"
+
+				cd "$f"
+				
+				# 查找 PNG 列出清单
+				#ls -d "$PWD"/*.png | perl -ne '$_ =~ s/\n$//; print "file '"'"'$_'"'"'\n"' &gt; images.txt
+
+				find "$PWD" -name "*.png" -maxdepth 1 -mindepth 1 | sort | sed "s/^/file '/;s/$/'/" &gt; images.txt
+			done
+			# 定位目录路径
+			cd "$dir"
+			# 设置帧速率
+			#FPS=25
+			# 开始转换
+			# 转换 MP4 RGB
+			find "$PWD" -type f -name "images.txt" | parallel --max-args 1 --load 90% ffmpeg -r 25 -f concat -safe 0 -i {} -c:v libx264 -vf "'scale=ceil(iw/2)*2:ceil(ih/2)*2'" -pix_fmt yuv420p -an -y "'{//}/output_rgb.mp4'"
+
+			# 转换 MP4 Alpha
+			find "$PWD" -type f -name "images.txt" | parallel --max-args 1 --load 90% ffmpeg -r 25 -f concat -safe 0 -i {} -vf "'[in] scale=ceil(iw/2)*2:ceil(ih/2)*2, format=rgba, split [T1], fifo, lutrgb=r=maxval:g=maxval:b=maxval,[T2] overlay [out]; [T1] fifo, lutrgb=r=minval:g=minval:b=minval [T2]'" -an -y "'{//}/output_alpha.mp4'"
+
+			# 合并 MP4
+			find "$PWD" -type f -name "*_rgb.mp4" | parallel --max-args 1 --load 90% ffmpeg -i "'{//}/output_rgb.mp4'" -i "'{//}/output_alpha.mp4'" -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -filter_complex vstack=inputs=2 -pix_fmt yuv420p -an -y "'{//}.mp4'"
+
+			# 清理
+			find "$PWD" -type f -name "images.txt" -print0 | xargs -0 rm -rf
+			find "$PWD" -type f -name "*_rgb.mp4" -print0 | xargs -0 rm -rf
+			find "$PWD" -type f -name "*_alpha.mp4" -print0 | xargs -0 rm -rf
+fi
+
+if [ "$VIDEO_SET" = "PNG-MP4#左右通道" ]; then
+			for f in "$@"
+			do
+				# 设置变量
+				dir="$(dirname "$f")"
+				name="$(basename "$f")"
+
+				cd "$f"
+				
+				# 查找 PNG 列出清单
+				#ls -d "$PWD"/*.png | perl -ne '$_ =~ s/\n$//; print "file '"'"'$_'"'"'\n"' &gt; images.txt
+
+				find "$PWD" -name "*.png" -maxdepth 1 -mindepth 1 | sort | sed "s/^/file '/;s/$/'/" &gt; images.txt
+
+			done
+			# 定位目录路径
+			cd "$dir"
+
+			# 设置帧速率
+			#FPS=25
+			# 开始转换
+			# 转换 MP4 RGB
+			find "$PWD" -type f -name "images.txt" | parallel --max-args 1 --load 90% ffmpeg -r 25 -f concat -safe 0 -i {} -c:v libx264 -vf "'scale=ceil(iw/2)*2:ceil(ih/2)*2'" -pix_fmt yuv420p -an -y "'{//}/output_rgb.mp4'"
+
+			# 转换 MP4 Alpha
+			find "$PWD" -type f -name "images.txt" | parallel --max-args 1 --load 90% ffmpeg -r 25 -f concat -safe 0 -i {} -vf "'[in] scale=ceil(iw/2)*2:ceil(ih/2)*2, format=rgba, split [T1], fifo, lutrgb=r=maxval:g=maxval:b=maxval,[T2] overlay [out]; [T1] fifo, lutrgb=r=minval:g=minval:b=minval [T2]'" -an -y "'{//}/output_alpha.mp4'"
+
+			# 合并 MP4
+			find "$PWD" -type f -name "*_rgb.mp4" | parallel --max-args 1 --load 90% ffmpeg -i "'{//}/output_rgb.mp4'" -i "'{//}/output_alpha.mp4'" -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -filter_complex hstack=inputs=2 -pix_fmt yuv420p -an -y "'{//}.mp4'"
+
+			# 清理
+			find "$PWD" -type f -name "images.txt" -print0 | xargs -0 rm -rf
+			find "$PWD" -type f -name "*_rgb.mp4" -print0 | xargs -0 rm -rf
+			find "$PWD" -type f -name "*_alpha.mp4" -print0 | xargs -0 rm -rf
+fi
+
+if [ "$VIDEO_SET" = "视频去黑边" ]; then
+	# 开始转换格式
+	for f in "$@"
+	do
+		dir="$(dirname "$f")"
+		name="$(basename "$f")"
+
+		cd "$dir"
+
+		ooutput=$(ffmpeg -i "$f" -t 1 -vf cropdetect -f null - 2&gt;&amp;1 | awk '/crop/ { print $NF }' | tail -1 | cut -b 6-)
+		echo "$ooutput"
+		ffmpeg -i "$f" -vf crop="$ooutput" -c:a copy -y "${name%.*}_crop.mp4"
+	done
+fi
+
+if [ "$VIDEO_SET" = "修改分辨率" ]; then
+	  # 获取原始图片尺寸
+		videoSIZE="$(mediainfo --Inform="Video;%Height%" "$1")"
+		# 输入修改尺寸
+		videoRESIZE="$(osascript -e 'display dialog "输入宽度数值:\n\n 🚩\t宽度\t\t\t\t\t给定宽度,高度自适应 \n" default answer "'$videoSIZE'" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
+		# 若取消则退出，若留空则使用默认值
+		if [ $? -ne 0 ]; then
+					osascript -e 'display notification "已取消输入，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"'
+						exit 0
+				elif [ -z "$videoRESIZE" ]; then
+			videoRESIZE="$videoSIZE"
+				fi
+			# 文件名
+			videoNameSIZE="$(echo $videoRESIZE | sed 's/:/x/g')"
+		# 开始转换格式
+		find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -crf 23 -vf scale=\"$videoRESIZE\":-2:flags=lanczos,setsar=1 -c:a copy -y "{.}_'$videoNameSIZE'p.mp4"
+fi
+
+if [ "$VIDEO_SET" = "裁剪分辨率" ]; then
+	  # 获取原始图片尺寸
+		videoSIZE="$(mediainfo --Inform="Video;%Width%:%Height%" "$1")"
+		# 输入画布尺寸
+		videoRESIZE="$(osascript -e 'display dialog "设置尺寸:\n\n ◎\t如果视频尺寸增加，将在视频的边缘添加空间\n ◎\t如果减小，则仅将视频进行裁切以适合新的图像大小\n\n 🚩\t'$videoSIZE':10:10\t\t设置水平垂直偏移量10 &lt;像素&gt;" default answer "'$videoSIZE'" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
+		# 若取消则退出，若留空则使用默认值
+		if [ $? -ne 0 ]; then
+					osascript -e 'display notification "已取消输入，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"'
+						exit 0
+				elif [ -z "$videoRESIZE" ]; then
+			videoRESIZE="$videoSIZE"
+				fi
+			# 文件名
+			videoNameSIZE="$(echo $videoRESIZE | sed 's/:/x/g')"
+		# 开始转换格式
+		find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -crf 23 -vf crop=\"$videoRESIZE\" -c:a copy -y "{.}_'$videoNameSIZE'.mp4"
+fi
+
+if [ "$VIDEO_SET" = "修改尺寸并裁剪" ]; then
+	  # 获取原始图片尺寸
+		videoSIZE="$(mediainfo --Inform="Video;%Width%:%Height%" "$1")"
+		# 输入画布尺寸
+		videoRESIZE="$(osascript -e 'display dialog "设置尺寸:\n\n ◎\t如果视频尺寸增加，将在视频的边缘添加空间\n ◎\t如果减小，则仅将视频进行裁切以适合新的图像大小\n\n 🚩\t'$videoSIZE':10:10\t\t设置水平垂直偏移量10 &lt;像素&gt;" default answer "'$videoSIZE'" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
+		# 若取消则退出，若留空则使用默认值
+		if [ $? -ne 0 ]; then
+					osascript -e 'display notification "已取消输入，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"'
+						exit 0
+				elif [ -z "$videoRESIZE" ]; then
+			videoRESIZE="$videoSIZE"
+				fi
+			# 文件名
+			videoNameSIZE="$(echo $videoRESIZE | sed 's/:/x/g')"
+		# 开始转换格式
+		find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -crf 23 -vf \"scale=$videoRESIZE:flags=lanczos:force_original_aspect_ratio=increase,setsar=1,crop=$videoRESIZE\" -c:a copy -y "{.}_$videoNameSIZE.mp4"
+fi
+
+if [ "$VIDEO_SET" = "添加背景模糊" ]; then
+			# 开始转换
+			for f in "$@"
+			do
+					dir="$(dirname "$f")"
+					name="$(basename "$f")"
+
+					cd "$dir"
+					ffmpeg -i "$f" -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -vf "split[a][b];[a]scale=iw*1.5:ih*1.5,boxblur=10:5[1];[b]scale=iw:ih[2];[1][2]overlay=x=(W-w)/2:y=(H-h)/2" -y "${f%.*}_blur.mp4"
+			done
+fi
+
+if [ "$VIDEO_SET" = "音频响度均衡" ]; then
+	# 开始转换格式
+	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v copy -filter:a \"loudnorm\" "{.}_loudnorm.{+.}"
+fi
+
+if [ "$VIDEO_SET" = "提取音频" ]; then
+	# 开始转换格式
+	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:a copy -y "{.}.aac"
+fi
+
+if [ "$VIDEO_SET" = "color2alpha去除黑色" ]; then
+	# 开始转换格式
+	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus color2alpha -ca black {} "{.}_unmult.png"
+fi
+
+if [ "$VIDEO_SET" = "color2alpha自定义" ]; then
+	# 开始转换格式
+	COLOR_SET="$(osascript -e 'display dialog "输入 RGB 颜色:" default answer "#ffffff" with title "color2alpha自定义"' -e 'text returned of result' 2&gt;/dev/null)"
+	# 若取消则退出，若留空则使用默认值        
+		if [ $? -ne 0 ]; then
+        	osascript -e 'display alert "已取消输入，若想转换请重新运行。" as warning'
+            exit 0
+        elif [ -z "$COLOR_SET" ]; then
+			COLOR_SET="#ffffff"
+        fi
+	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus color2alpha -ca '"$COLOR_SET"' {} "{.}_unmult.png"
+fi
+
+if [ "$VIDEO_SET" = "绿幕抠像" ]; then
+	# 开始转换格式
+	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus greenscreen -t 22 -a 2000 -s 0 -A 2 -b none {} "{.}_unmult.png"
+fi
+
+if [ "$VIDEO_SET" = "缩小文件大小" ]; then
+	# 开始转换格式
+	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus downsize -s 200 -t 1 -c yes {} "{.}_200k.{+.}"
+fi
+
+if [ "$VIDEO_SET" = "裁剪为矩形" ]; then
+	# 开始转换格式
+	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus innercrop -f 4 -m crop {} "{.}_innercrop.{+.}"
+fi
+
+if [ "$VIDEO_SET" = "裁剪并拉直" ]; then
+	# 开始转换格式
+	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus unrotate2 -f 15 -t inner -F 5 {} "{.}_unrotate2.{+.}"
+fi
+
+if [ "$VIDEO_SET" = "高斯模糊" ]; then
+	# 开始转换格式
+	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus magick {} -blur 0x8 "{.}_blur.{+.}"
+fi
+
+if [ "$VIDEO_SET" = "水彩效果" ]; then
+	# 开始转换格式
+	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus watercolor -s 0 -e 5 -m 33 -c 0 {} "{.}_watercolor.{+.}"
+fi
+
+if [ "$VIDEO_SET" = "刺绣效果" ]; then
+	# 开始转换格式
+	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus embroidery -n 8 -p crosshatch -t 2 {} "{.}_embroidery.{+.}"
+fi
+
+# 显示通知
+osascript -e 'display notification "FFmpeg converter" with title "转换完成🎉" subtitle "'"$version"'" sound name "Glass"'
+</string>
+					<key>CheckedForUserDefaultShell</key>
+					<true/>
+					<key>inputMethod</key>
+					<integer>1</integer>
+					<key>shell</key>
+					<string>/bin/bash</string>
+					<key>source</key>
+					<string></string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.RunShellScript</string>
+				<key>CFBundleVersion</key>
+				<string>2.0.3</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunShellScriptAction</string>
+				<key>Disabled</key>
+				<false/>
+				<key>IgnoresInput</key>
+				<false/>
+				<key>InputUUID</key>
+				<string>3B7EFA1C-3CD0-49BA-BD0E-0E1C3BE09D48</string>
+				<key>Keywords</key>
+				<array>
+					<string>Shell</string>
+					<string>脚本</string>
+					<string>命令</string>
+					<string>运行</string>
+					<string>Unix</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>2DEC895A-927C-4869-9740-493F9E6E4FB0</string>
+				<key>ShowWhenRun</key>
+				<false/>
+				<key>UUID</key>
+				<string>70AE5623-B12F-4B24-934F-4B2EEC99DA91</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<integer>0</integer>
+						<key>name</key>
+						<string>inputMethod</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+					<key>1</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>1</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>default value</key>
+						<false/>
+						<key>name</key>
+						<string>CheckedForUserDefaultShell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>2</string>
+					</dict>
+					<key>3</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>COMMAND_STRING</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>3</string>
+					</dict>
+					<key>4</key>
+					<dict>
+						<key>default value</key>
+						<string>/bin/sh</string>
+						<key>name</key>
+						<string>shell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>4</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<true/>
+				<key>location</key>
+				<string>374.500000:939.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<true/>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict>
+		<key>06C6D8BA-A165-42D3-9C93-8DCA7360A279</key>
+		<dict>
+			<key>from</key>
+			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
+			<key>to</key>
+			<string>70AE5623-B12F-4B24-934F-4B2EEC99DA91 - 70AE5623-B12F-4B24-934F-4B2EEC99DA91</string>
+		</dict>
+		<key>2C617596-D3DA-45C9-9B16-0519FD2B4B65</key>
+		<dict>
+			<key>from</key>
+			<string>FD4028FE-A123-4593-AA98-94F10EAE37A3 - FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
+			<key>to</key>
+			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
+		</dict>
+		<key>56E638D0-CE66-40E7-83D9-78483BA55890</key>
+		<dict>
+			<key>from</key>
+			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
+			<key>to</key>
+			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
+		</dict>
+		<key>C7E99186-7D10-4E89-B4B7-F05964F44D99</key>
+		<dict>
+			<key>from</key>
+			<string>0C322224-079C-40B2-827A-697595EFD823 - 0C322224-079C-40B2-827A-697595EFD823</string>
+			<key>to</key>
+			<string>FD4028FE-A123-4593-AA98-94F10EAE37A3 - FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
+		</dict>
+	</dict>
+	<key>variables</key>
+	<array>
+		<dict>
+			<key>UUID</key>
+			<string>3829AC00-FCBA-4A4C-9207-F103344DE268</string>
+			<key>identifier</key>
+			<string>com.apple.Automator.Variable.Storage</string>
+			<key>name</key>
+			<string>Var1</string>
+		</dict>
+		<dict>
+			<key>UUID</key>
+			<string>E8B3E716-21E5-4CE5-8B4D-F7C45DD6DD1B</string>
+			<key>identifier</key>
+			<string>com.apple.Automator.Variable.Storage</string>
+			<key>name</key>
+			<string>Var2</string>
+		</dict>
+	</array>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>applicationBundleID</key>
+		<string>com.apple.finder</string>
+		<key>applicationBundleIDsByPath</key>
+		<dict>
+			<key>/System/Library/CoreServices/Finder.app</key>
+			<string>com.apple.finder</string>
+		</dict>
+		<key>applicationPath</key>
+		<string>/System/Library/CoreServices/Finder.app</string>
+		<key>applicationPaths</key>
+		<array>
+			<string>/System/Library/CoreServices/Finder.app</string>
+		</array>
+		<key>inputTypeIdentifier</key>
+		<string>com.apple.Automator.fileSystemObject</string>
+		<key>outputTypeIdentifier</key>
+		<string>com.apple.Automator.nothing</string>
+		<key>presentationMode</key>
+		<integer>15</integer>
+		<key>processesInput</key>
+		<integer>0</integer>
+		<key>serviceApplicationBundleID</key>
+		<string>com.apple.finder</string>
+		<key>serviceApplicationPath</key>
+		<string>/System/Library/CoreServices/Finder.app</string>
+		<key>serviceInputTypeIdentifier</key>
+		<string>com.apple.Automator.fileSystemObject</string>
+		<key>serviceOutputTypeIdentifier</key>
+		<string>com.apple.Automator.nothing</string>
+		<key>serviceProcessesInput</key>
+		<integer>0</integer>
+		<key>systemImageName</key>
+		<string>NSTouchBarCommunicationVideo</string>
+		<key>useAutomaticInputType</key>
+		<integer>0</integer>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.servicesMenu</string>
+	</dict>
+</dict>
+</plist>
