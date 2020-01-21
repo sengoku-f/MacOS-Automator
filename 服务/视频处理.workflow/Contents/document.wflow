@@ -161,7 +161,15 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>set theDeviceList to {"压制不改变分辨率", "压制720P", "PNG-MP4#上下通道", "PNG-MP4#左右通道", "视频去黑边", "修改分辨率", "裁剪分辨率", "修改尺寸并裁剪", "添加背景模糊", "提取音频", "音频响度均衡", "暂无", "暂无", "暂无", "暂无", "暂无", "暂无", "暂无", "暂无", "暂无"}set theDevice to (choose from list theDeviceList with prompt "选择操作:" default items {"压制不改变分辨率"} with title "视频处理 by Sengoku")if theDevice is false then	display notification "已取消，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"	error number -128else	item 1 of theDeviceend if</string>
+					<string>set theDeviceList to {"压制不改变分辨率", "压制720P", "PNG-MP4#上下通道", "PNG-MP4#左右通道", "视频去黑边", "修改分辨率", "裁剪分辨率", "修改画布尺寸并裁剪", "修改画布尺寸并缩放自适应", "修改画布尺寸不扩大", "添加背景模糊", "提取音频", "音频响度均衡", "暂无", "暂无", "暂无", "暂无", "暂无", "暂无", "暂无"}
+set theDevice to (choose from list theDeviceList with prompt "选择操作:" default items {"压制不改变分辨率"} with title "视频处理 by Sengoku")
+
+if theDevice is false then
+	display notification "已取消，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"
+	error number -128
+else
+	item 1 of theDevice
+end if</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>
@@ -562,7 +570,10 @@ echo "$1" &gt; $config
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>version="视频处理 v1.1 by Sengoku"
+					<string>version="视频处理 v1.2 by Sengoku"
+# parallel 添加"-q"扩展引号问题
+# 添加""$(find -E "$@" -maxdepth 0 -type f -iregex '.*\.(mp4|mov|mkv|avi|wmv|flv|mpeg|mpg|vob|rm|rmvb|ts)')"",do 循环过滤
+# 添加"-iregex '.*\.(mp4|mov|mkv|avi|wmv|flv|mpeg|mpg|vob|rm|rmvb|ts)'"过滤视频文件
 # "PNG-MP4#??通道添加" for 循环过滤目录 "find "$@" -type d -maxdepth 0"
 # 添加文件种类过滤 "find -type f"
 # -----------------------------
@@ -583,231 +594,228 @@ cd "$dir"
 
 # 开始处理
 if [ "$VIDEO_SET" = "压制不改变分辨率" ]; then
-	# 开始转换格式
-	find "$@" -type f -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -r 25 -pix_fmt yuv420p -c:a aac -b:a 128k -ar 44100 -y "{.}_x264.mp4"
+  # 开始转换格式
+  find -E "$@" -maxdepth 0 \
+  -type f -iregex '.*\.(mp4|mov|mkv|avi|wmv|flv|mpeg|mpg|vob|rm|rmvb|ts)' | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -r 25 -pix_fmt yuv420p -c:a aac -b:a 128k -ar 44100 -y "{.}_x264.mp4"
 fi
 
 if [ "$VIDEO_SET" = "压制720P" ]; then
-	# 设置变量
-	videoCRF="28"
-	videoFPS="25"
-	videoSIZE="720"
-	# 开始转换格式
-	find "$@" -type f -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -preset 8 -x264opts crf=$videoCRF:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -r $videoFPS -vf \"scale="'-2'":"'min($videoSIZE,ih)'":flags=lanczos\" -pix_fmt yuv420p -c:a aac -b:a 128k -ar 44100 -y "{.}_x264_CRF'$videoCRF'_'$videoSIZE'p.mp4"
+  # 设置变量
+  videoCRF="28"
+  videoFPS="25"
+  videoSIZE="720"
+  # 开始转换格式
+  find -E "$@" -maxdepth 0 \
+  -type f -iregex '.*\.(mp4|mov|mkv|avi|wmv|flv|mpeg|mpg|vob|rm|rmvb|ts)' | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -preset 8 -x264opts crf=$videoCRF:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -r $videoFPS -vf \"scale="'-2'":"'min($videoSIZE,ih)'":flags=lanczos\" -pix_fmt yuv420p -c:a aac -b:a 128k -ar 44100 -y "{.}_x264_CRF'$videoCRF'_'$videoSIZE'p.mp4"
 fi
 
 if [ "$VIDEO_SET" = "PNG-MP4#上下通道" ]; then
-			for f in "$(find "$@" -type d -maxdepth 0)"
-			do
-				# 设置变量
-				dir="$(dirname "$f")"
-				name="$(basename "$f")"
+      for f in "$(find "$@" -type d -maxdepth 0)"
+      do
+        # 设置变量
+        dir="$(dirname "$f")"
+        name="$(basename "$f")"
 
-				cd "$f"
-				
-				# 查找 PNG 列出清单
-				#ls -d "$PWD"/*.png | perl -ne '$_ =~ s/\n$//; print "file '"'"'$_'"'"'\n"' &gt; images.txt
+        cd "$f"
+        
+        # 查找 PNG 列出清单
+        #ls -d "$PWD"/*.png | perl -ne '$_ =~ s/\n$//; print "file '"'"'$_'"'"'\n"' &gt; images.txt
 
-				find "$PWD" -name "*.png" -maxdepth 1 -mindepth 1 | sort | sed "s/^/file '/;s/$/'/" &gt; images.txt
-			done
-			# 定位目录路径
-			cd "$dir"
-			# 设置帧速率
-			#FPS=25
-			# 开始转换
-			# 转换 MP4 RGB
-			find "$PWD" -type f -name "images.txt" | parallel --max-args 1 --load 90% ffmpeg -r 25 -f concat -safe 0 -i {} -c:v libx264 -vf "'scale=ceil(iw/2)*2:ceil(ih/2)*2'" -pix_fmt yuv420p -an -y "'{//}/output_rgb.mp4'"
+        find "$PWD" -name "*.png" -maxdepth 1 -mindepth 1 | sort | sed "s/^/file '/;s/$/'/" &gt; images.txt
+      done
+      # 定位目录路径
+      cd "$dir"
+      # 设置帧速率
+      #FPS=25
+      # 开始转换
+      # 转换 MP4 RGB
+      find "$PWD" -type f -name "images.txt" | parallel --max-args 1 --load 90% ffmpeg -r 25 -f concat -safe 0 -i {} -c:v libx264 -vf "'scale=ceil(iw/2)*2:ceil(ih/2)*2'" -pix_fmt yuv420p -an -y "'{//}/output_rgb.mp4'"
 
-			# 转换 MP4 Alpha
-			find "$PWD" -type f -name "images.txt" | parallel --max-args 1 --load 90% ffmpeg -r 25 -f concat -safe 0 -i {} -vf "'[in] scale=ceil(iw/2)*2:ceil(ih/2)*2, format=rgba, split [T1], fifo, lutrgb=r=maxval:g=maxval:b=maxval,[T2] overlay [out]; [T1] fifo, lutrgb=r=minval:g=minval:b=minval [T2]'" -an -y "'{//}/output_alpha.mp4'"
+      # 转换 MP4 Alpha
+      find "$PWD" -type f -name "images.txt" | parallel --max-args 1 --load 90% ffmpeg -r 25 -f concat -safe 0 -i {} -vf "'[in] scale=ceil(iw/2)*2:ceil(ih/2)*2, format=rgba, split [T1], fifo, lutrgb=r=maxval:g=maxval:b=maxval,[T2] overlay [out]; [T1] fifo, lutrgb=r=minval:g=minval:b=minval [T2]'" -an -y "'{//}/output_alpha.mp4'"
 
-			# 合并 MP4
-			find "$PWD" -type f -name "*_rgb.mp4" | parallel --max-args 1 --load 90% ffmpeg -i "'{//}/output_rgb.mp4'" -i "'{//}/output_alpha.mp4'" -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -filter_complex vstack=inputs=2 -pix_fmt yuv420p -an -y "'{//}.mp4'"
+      # 合并 MP4
+      find "$PWD" -type f -name "*_rgb.mp4" | parallel --max-args 1 --load 90% ffmpeg -i "'{//}/output_rgb.mp4'" -i "'{//}/output_alpha.mp4'" -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -filter_complex vstack=inputs=2 -pix_fmt yuv420p -an -y "'{//}.mp4'"
 
-			# 清理
-			find "$PWD" -type f -name "images.txt" -print0 | xargs -0 rm -rf
-			find "$PWD" -type f -name "*_rgb.mp4" -print0 | xargs -0 rm -rf
-			find "$PWD" -type f -name "*_alpha.mp4" -print0 | xargs -0 rm -rf
+      # 清理
+      find "$PWD" -type f -name "images.txt" -print0 | xargs -0 rm -rf
+      find "$PWD" -type f -name "*_rgb.mp4" -print0 | xargs -0 rm -rf
+      find "$PWD" -type f -name "*_alpha.mp4" -print0 | xargs -0 rm -rf
 fi
 
 if [ "$VIDEO_SET" = "PNG-MP4#左右通道" ]; then
-			for f in "$(find "$@" -type d -maxdepth 0)"
-			do
-				# 设置变量
-				dir="$(dirname "$f")"
-				name="$(basename "$f")"
+      for f in "$(find "$@" -type d -maxdepth 0)"
+      do
+        # 设置变量
+        dir="$(dirname "$f")"
+        name="$(basename "$f")"
 
-				cd "$f"
-				
-				# 查找 PNG 列出清单
-				#ls -d "$PWD"/*.png | perl -ne '$_ =~ s/\n$//; print "file '"'"'$_'"'"'\n"' &gt; images.txt
+        cd "$f"
+        
+        # 查找 PNG 列出清单
+        #ls -d "$PWD"/*.png | perl -ne '$_ =~ s/\n$//; print "file '"'"'$_'"'"'\n"' &gt; images.txt
 
-				find "$PWD" -name "*.png" -maxdepth 1 -mindepth 1 | sort | sed "s/^/file '/;s/$/'/" &gt; images.txt
+        find "$PWD" -name "*.png" -maxdepth 1 -mindepth 1 | sort | sed "s/^/file '/;s/$/'/" &gt; images.txt
 
-			done
-			# 定位目录路径
-			cd "$dir"
+      done
+      # 定位目录路径
+      cd "$dir"
 
-			# 设置帧速率
-			#FPS=25
-			# 开始转换
-			# 转换 MP4 RGB
-			find "$PWD" -type f -name "images.txt" | parallel --max-args 1 --load 90% ffmpeg -r 25 -f concat -safe 0 -i {} -c:v libx264 -vf "'scale=ceil(iw/2)*2:ceil(ih/2)*2'" -pix_fmt yuv420p -an -y "'{//}/output_rgb.mp4'"
+      # 设置帧速率
+      #FPS=25
+      # 开始转换
+      # 转换 MP4 RGB
+      find "$PWD" -type f -name "images.txt" | parallel --max-args 1 --load 90% ffmpeg -r 25 -f concat -safe 0 -i {} -c:v libx264 -vf "'scale=ceil(iw/2)*2:ceil(ih/2)*2'" -pix_fmt yuv420p -an -y "'{//}/output_rgb.mp4'"
 
-			# 转换 MP4 Alpha
-			find "$PWD" -type f -name "images.txt" | parallel --max-args 1 --load 90% ffmpeg -r 25 -f concat -safe 0 -i {} -vf "'[in] scale=ceil(iw/2)*2:ceil(ih/2)*2, format=rgba, split [T1], fifo, lutrgb=r=maxval:g=maxval:b=maxval,[T2] overlay [out]; [T1] fifo, lutrgb=r=minval:g=minval:b=minval [T2]'" -an -y "'{//}/output_alpha.mp4'"
+      # 转换 MP4 Alpha
+      find "$PWD" -type f -name "images.txt" | parallel --max-args 1 --load 90% ffmpeg -r 25 -f concat -safe 0 -i {} -vf "'[in] scale=ceil(iw/2)*2:ceil(ih/2)*2, format=rgba, split [T1], fifo, lutrgb=r=maxval:g=maxval:b=maxval,[T2] overlay [out]; [T1] fifo, lutrgb=r=minval:g=minval:b=minval [T2]'" -an -y "'{//}/output_alpha.mp4'"
 
-			# 合并 MP4
-			find "$PWD" -type f -name "*_rgb.mp4" | parallel --max-args 1 --load 90% ffmpeg -i "'{//}/output_rgb.mp4'" -i "'{//}/output_alpha.mp4'" -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -filter_complex hstack=inputs=2 -pix_fmt yuv420p -an -y "'{//}.mp4'"
+      # 合并 MP4
+      find "$PWD" -type f -name "*_rgb.mp4" | parallel --max-args 1 --load 90% ffmpeg -i "'{//}/output_rgb.mp4'" -i "'{//}/output_alpha.mp4'" -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -filter_complex hstack=inputs=2 -pix_fmt yuv420p -an -y "'{//}.mp4'"
 
-			# 清理
-			find "$PWD" -type f -name "images.txt" -print0 | xargs -0 rm -rf
-			find "$PWD" -type f -name "*_rgb.mp4" -print0 | xargs -0 rm -rf
-			find "$PWD" -type f -name "*_alpha.mp4" -print0 | xargs -0 rm -rf
+      # 清理
+      find "$PWD" -type f -name "images.txt" -print0 | xargs -0 rm -rf
+      find "$PWD" -type f -name "*_rgb.mp4" -print0 | xargs -0 rm -rf
+      find "$PWD" -type f -name "*_alpha.mp4" -print0 | xargs -0 rm -rf
 fi
 
 if [ "$VIDEO_SET" = "视频去黑边" ]; then
-	# 开始转换格式
-	for f in "$@"
-	do
-		dir="$(dirname "$f")"
-		name="$(basename "$f")"
+  # 开始转换格式
+  for f in "$(find -E "$@" -maxdepth 0 \
+  -type f -iregex '.*\.(mp4|mov|mkv|avi|wmv|flv|mpeg|mpg|vob|rm|rmvb|ts)')"
+  do
+    dir="$(dirname "$f")"
+    name="$(basename "$f")"
 
-		cd "$dir"
+    cd "$dir"
 
-		ooutput=$(ffmpeg -i "$f" -t 1 -vf cropdetect -f null - 2&gt;&amp;1 | awk '/crop/ { print $NF }' | tail -1 | cut -b 6-)
-		echo "$ooutput"
-		ffmpeg -i "$f" -vf crop="$ooutput" -c:a copy -y "${name%.*}_crop.mp4"
-	done
+    ooutput=$(ffmpeg -i "$f" -t 1 -vf cropdetect -f null - 2&gt;&amp;1 | awk '/crop/ { print $NF }' | tail -1 | cut -b 6-)
+    echo "$ooutput"
+    ffmpeg -i "$f" -vf crop="$ooutput" -c:a copy -y "${name%.*}_crop.mp4"
+  done
 fi
 
 if [ "$VIDEO_SET" = "修改分辨率" ]; then
-	  # 获取原始图片尺寸
-		videoSIZE="$(mediainfo --Inform="Video;%Height%" "$1")"
-		# 输入修改尺寸
-		videoRESIZE="$(osascript -e 'display dialog "输入宽度数值:\n\n 🚩\t宽度\t\t\t\t\t给定宽度,高度自适应 \n" default answer "'$videoSIZE'" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
-		# 若取消则退出，若留空则使用默认值
-		if [ $? -ne 0 ]; then
-					osascript -e 'display notification "已取消输入，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"'
-						exit 0
-				elif [ -z "$videoRESIZE" ]; then
-			videoRESIZE="$videoSIZE"
-				fi
-			# 文件名
-			videoNameSIZE="$(echo $videoRESIZE | sed 's/:/x/g')"
-		# 开始转换格式
-		find "$@" -type f -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -crf 23 -vf scale=\"$videoRESIZE\":-2:flags=lanczos,setsar=1 -c:a copy -y "{.}_'$videoNameSIZE'p.mp4"
+    # 获取原始图片尺寸
+    videoSIZE="$(mediainfo --Inform="Video;%Height%" "$1")"
+    # 输入修改尺寸
+    videoRESIZE="$(osascript -e 'display dialog "输入宽度数值:\n\n 🚩\t宽度\t\t\t\t\t给定宽度,高度自适应 \n" default answer "'$videoSIZE'" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
+    # 若取消则退出，若留空则使用默认值
+    if [ $? -ne 0 ]; then
+          osascript -e 'display notification "已取消输入，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"'
+            exit 0
+        elif [ -z "$videoRESIZE" ]; then
+      videoRESIZE="$videoSIZE"
+        fi
+      # 文件名
+      videoNameSIZE="$(echo $videoRESIZE | sed 's/:/x/g')"
+    # 开始转换格式
+    find -E "$@" -maxdepth 0 \
+     -type f -iregex '.*\.(mp4|mov|mkv|avi|wmv|flv|mpeg|mpg|vob|rm|rmvb|ts)' | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -crf 23 -vf scale=\"$videoRESIZE\":-2:flags=lanczos,setsar=1 -c:a copy -y "{.}_'$videoNameSIZE'p.mp4"
 fi
 
 if [ "$VIDEO_SET" = "裁剪分辨率" ]; then
-	  # 获取原始图片尺寸
-		videoSIZE="$(mediainfo --Inform="Video;%Width%:%Height%" "$1")"
-		# 输入画布尺寸
-		videoRESIZE="$(osascript -e 'display dialog "设置尺寸:\n\n ◎\t如果视频尺寸增加，将在视频的边缘添加空间\n ◎\t如果减小，则仅将视频进行裁切以适合新的图像大小\n\n 🚩\t'$videoSIZE':10:10\t\t设置水平垂直偏移量10 &lt;像素&gt;" default answer "'$videoSIZE'" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
-		# 若取消则退出，若留空则使用默认值
-		if [ $? -ne 0 ]; then
-					osascript -e 'display notification "已取消输入，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"'
-						exit 0
-				elif [ -z "$videoRESIZE" ]; then
-			videoRESIZE="$videoSIZE"
-				fi
-			# 文件名
-			videoNameSIZE="$(echo $videoRESIZE | sed 's/:/x/g')"
-		# 开始转换格式
-		find "$@" -type f -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -crf 23 -vf crop=\"$videoRESIZE\" -c:a copy -y "{.}_'$videoNameSIZE'.mp4"
+    # 获取原始图片尺寸
+    videoSIZE="$(mediainfo --Inform="Video;%Width%:%Height%" "$1")"
+    # 输入画布尺寸
+    videoRESIZE="$(osascript -e 'display dialog "设置尺寸:\n\n ◎\t如果视频尺寸增加，将在视频的边缘添加空间\n ◎\t如果减小，则仅将视频进行裁切以适合新的图像大小\n\n 🚩\t'$videoSIZE':10:10\t\t设置水平垂直偏移量10 &lt;像素&gt;" default answer "'$videoSIZE'" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
+    # 若取消则退出，若留空则使用默认值
+    if [ $? -ne 0 ]; then
+          osascript -e 'display notification "已取消输入，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"'
+            exit 0
+        elif [ -z "$videoRESIZE" ]; then
+      videoRESIZE="$videoSIZE"
+        fi
+      # 文件名
+      videoNameSIZE="$(echo $videoRESIZE | sed 's/:/x/g')"
+    # 开始转换格式
+    find -E "$@" -maxdepth 0 \
+  -type f -iregex '.*\.(mp4|mov|mkv|avi|wmv|flv|mpeg|mpg|vob|rm|rmvb|ts)' | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -crf 23 -vf crop=\"$videoRESIZE\" -c:a copy -y "{.}_'$videoNameSIZE'.mp4"
 fi
 
-if [ "$VIDEO_SET" = "修改尺寸并裁剪" ]; then
-	  # 获取原始图片尺寸
-		videoSIZE="$(mediainfo --Inform="Video;%Width%:%Height%" "$1")"
-		# 输入画布尺寸
-		videoRESIZE="$(osascript -e 'display dialog "设置尺寸:\n\n ◎\t如果视频尺寸增加，将在视频的边缘添加空间\n ◎\t如果减小，则仅将视频进行裁切以适合新的图像大小\n\n 🚩\t'$videoSIZE':10:10\t\t设置水平垂直偏移量10 &lt;像素&gt;" default answer "'$videoSIZE'" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
-		# 若取消则退出，若留空则使用默认值
-		if [ $? -ne 0 ]; then
-					osascript -e 'display notification "已取消输入，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"'
-						exit 0
-				elif [ -z "$videoRESIZE" ]; then
-			videoRESIZE="$videoSIZE"
-				fi
-			# 文件名
-			videoNameSIZE="$(echo $videoRESIZE | sed 's/:/x/g')"
-		# 开始转换格式
-		find "$@" -type f -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -crf 23 -vf \"scale=$videoRESIZE:flags=lanczos:force_original_aspect_ratio=increase,setsar=1,crop=$videoRESIZE\" -c:a copy -y "{.}_$videoNameSIZE.mp4"
+if [ "$VIDEO_SET" = "修改画布尺寸并裁剪" ]; then
+    # 获取原始图片尺寸
+    videoSIZE="$(mediainfo --Inform="Video;%Width%:%Height%" "$1")"
+    # 输入画布尺寸
+    videoRESIZE="$(osascript -e 'display dialog "设置尺寸:\n\n ◎\t如果视频尺寸增加，将在视频的边缘添加空间\n ◎\t如果减小，则仅将视频进行裁切以适合新的图像大小" default answer "'$videoSIZE'" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
+    # 若取消则退出，若留空则使用默认值
+    if [ $? -ne 0 ]; then
+          osascript -e 'display notification "已取消输入，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"'
+            exit 0
+        elif [ -z "$videoRESIZE" ]; then
+      videoRESIZE="$videoSIZE"
+        fi
+      # 文件名
+      videoNameSIZE="$(echo $videoRESIZE | sed 's/:/x/g')"
+    # 开始转换格式
+    find -E "$@" -maxdepth 0 \
+    -type f -iregex '.*\.(mp4|mov|mkv|avi|wmv|flv|mpeg|mpg|vob|rm|rmvb|ts)' | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -crf 23 -vf \"scale=$videoRESIZE:flags=lanczos:force_original_aspect_ratio=increase,setsar=1,crop=$videoRESIZE\" -c:a copy -y "{.}_$videoNameSIZE.mp4"
 fi
 
 if [ "$VIDEO_SET" = "添加背景模糊" ]; then
-			# 开始转换
-			for f in "$@"
-			do
-					dir="$(dirname "$f")"
-					name="$(basename "$f")"
+      # 开始转换
+      for f in "$(find -E "$@" -maxdepth 0 \
+      -type f -iregex '.*\.(mp4|mov|mkv|avi|wmv|flv|mpeg|mpg|vob|rm|rmvb|ts)')"
+      do
+          dir="$(dirname "$f")"
+          name="$(basename "$f")"
 
-					cd "$dir"
-					ffmpeg -i "$f" -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -vf "split[a][b];[a]scale=iw*1.5:ih*1.5,boxblur=10:5[1];[b]scale=iw:ih[2];[1][2]overlay=x=(W-w)/2:y=(H-h)/2" -y "${f%.*}_blur.mp4"
-			done
+          cd "$dir"
+          ffmpeg -i "$f" -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -vf "split[a][b];[a]scale=iw*1.5:ih*1.5,boxblur=10:5[1];[b]scale=iw:ih[2];[1][2]overlay=x=(W-w)/2:y=(H-h)/2" -y "${f%.*}_blur.mp4"
+      done
 fi
 
 if [ "$VIDEO_SET" = "音频响度均衡" ]; then
-	# 开始转换格式
-	find "$@" -type f -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v copy -filter:a \"loudnorm\" "{.}_loudnorm.{+.}"
+  # 开始转换格式
+  find -E "$@" -maxdepth 0 \
+  -type f -iregex '.*\.(mp4|mov|mkv|avi|wmv|flv|mpeg|mpg|vob|rm|rmvb|ts|mp3|acc|wav|flac|ape|ogg)' | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v copy -filter:a \"loudnorm\" "{.}_loudnorm.{+.}"
 fi
 
 if [ "$VIDEO_SET" = "提取音频" ]; then
-	# 开始转换格式
-	find "$@" -type f -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:a copy -y "{.}.aac"
+  # 开始转换格式
+  find -E "$@" -maxdepth 0 \
+  -type f -iregex '.*\.(mp4|mov|mkv|avi|wmv|flv|mpeg|mpg|vob|rm|rmvb|ts)' | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:a copy -y "{.}.aac"
 fi
 
-if [ "$VIDEO_SET" = "color2alpha去除黑色" ]; then
-	# 开始转换格式
-	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus color2alpha -ca black {} "{.}_unmult.png"
-fi
-
-if [ "$VIDEO_SET" = "color2alpha自定义" ]; then
-	# 开始转换格式
-	COLOR_SET="$(osascript -e 'display dialog "输入 RGB 颜色:" default answer "#ffffff" with title "color2alpha自定义"' -e 'text returned of result' 2&gt;/dev/null)"
-	# 若取消则退出，若留空则使用默认值        
-		if [ $? -ne 0 ]; then
-        	osascript -e 'display alert "已取消输入，若想转换请重新运行。" as warning'
+if [ "$VIDEO_SET" = "修改画布尺寸并缩放自适应" ]; then
+    # 获取原始图片尺寸
+    videoSIZE="$(mediainfo --Inform="Video;%Width%:%Height%" "$1")"
+    # 输入画布尺寸
+    videoRESIZE="$(osascript -e 'display dialog "设置尺寸:\n\n ◎\t如果视频尺寸增加，将在缩放视频以适合空间\n ◎\t如果减小，则仅将视频进行缩放以适合新的图像大小" default answer "'$videoSIZE'" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
+    # 若取消则退出，若留空则使用默认值
+    if [ $? -ne 0 ]; then
+          osascript -e 'display notification "已取消输入，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"'
             exit 0
-        elif [ -z "$COLOR_SET" ]; then
-			COLOR_SET="#ffffff"
+        elif [ -z "$videoRESIZE" ]; then
+      videoRESIZE="$videoSIZE"
         fi
-	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus color2alpha -ca '"$COLOR_SET"' {} "{.}_unmult.png"
+      # 文件名
+      videoNameSIZE="$(echo $videoRESIZE | sed 's/:/x/g')"
+    # 开始转换格式
+    find -E "$@" -maxdepth 0 \
+    -type f -iregex '.*\.(mp4|mov|mkv|avi|wmv|flv|mpeg|mpg|vob|rm|rmvb|ts)' | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -crf 23 -vf "'scale=$videoRESIZE:flags=lanczos:force_original_aspect_ratio=decrease,pad=$videoRESIZE:(ow-iw)/2:(oh-ih)/2'" -c:a copy -y "{.}_$videoNameSIZE.mp4"
 fi
 
-if [ "$VIDEO_SET" = "绿幕抠像" ]; then
-	# 开始转换格式
-	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus greenscreen -t 22 -a 2000 -s 0 -A 2 -b none {} "{.}_unmult.png"
-fi
-
-if [ "$VIDEO_SET" = "缩小文件大小" ]; then
-	# 开始转换格式
-	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus downsize -s 200 -t 1 -c yes {} "{.}_200k.{+.}"
-fi
-
-if [ "$VIDEO_SET" = "裁剪为矩形" ]; then
-	# 开始转换格式
-	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus innercrop -f 4 -m crop {} "{.}_innercrop.{+.}"
-fi
-
-if [ "$VIDEO_SET" = "裁剪并拉直" ]; then
-	# 开始转换格式
-	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus unrotate2 -f 15 -t inner -F 5 {} "{.}_unrotate2.{+.}"
-fi
-
-if [ "$VIDEO_SET" = "高斯模糊" ]; then
-	# 开始转换格式
-	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus magick {} -blur 0x8 "{.}_blur.{+.}"
-fi
-
-if [ "$VIDEO_SET" = "水彩效果" ]; then
-	# 开始转换格式
-	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus watercolor -s 0 -e 5 -m 33 -c 0 {} "{.}_watercolor.{+.}"
-fi
-
-if [ "$VIDEO_SET" = "刺绣效果" ]; then
-	# 开始转换格式
-	find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus embroidery -n 8 -p crosshatch -t 2 {} "{.}_embroidery.{+.}"
+if [ "$VIDEO_SET" = "修改画布尺寸不扩大" ]; then
+    # 获取原始图片尺寸
+    videoSIZE="$(mediainfo --Inform="Video;%Width%:%Height%" "$1")"
+    # 输入画布尺寸
+    videoRESIZE="$(osascript -e 'display dialog "设置尺寸:\n\n ◎\t如果视频尺寸增加，将在视频的边缘添加空间\n ◎\t如果减小，则仅将视频进行裁剪以适合新的图像大小" default answer "'$videoSIZE'" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
+    # 若取消则退出，若留空则使用默认值
+    if [ $? -ne 0 ]; then
+          osascript -e 'display notification "已取消输入，若想转换视频请重新运行。" with title "用户取消🙁" sound name "Basso"'
+            exit 0
+        elif [ -z "$videoRESIZE" ]; then
+      videoRESIZE="$videoSIZE"
+        fi
+      # 文件名
+      videoNameSIZE="$(echo $videoRESIZE | sed 's/:/x/g')"
+      # 分割尺寸
+      videoWSIZE="$(echo $videoRESIZE | cut -f 1 -d :)"
+      videoHSIZE="$(echo $videoRESIZE | cut -f 2 -d :)"
+    # 开始转换格式
+    find -E "$@" -maxdepth 0 \
+    -type f -iregex '.*\.(mp4|mov|mkv|avi|wmv|flv|mpeg|mpg|vob|rm|rmvb|ts)' | parallel --max-args 1 --load 90% --plus -q ffmpeg -i {} -c:v libx264 -crf 23 -vf "scale='min($videoWSIZE,iw)':min'($videoHSIZE,ih)':force_original_aspect_ratio=decrease,pad=$videoRESIZE:(ow-iw)/2:(oh-ih)/2" -c:a copy -y "{.}_$videoNameSIZE.mp4"
 fi
 
 # 显示通知
@@ -941,28 +949,28 @@ osascript -e 'display notification "FFmpeg converter" with title "转换完成�
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>06C6D8BA-A165-42D3-9C93-8DCA7360A279</key>
+		<key>004A9E4E-293E-4C9E-958A-ED851FC9E404</key>
 		<dict>
 			<key>from</key>
 			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
 			<key>to</key>
 			<string>70AE5623-B12F-4B24-934F-4B2EEC99DA91 - 70AE5623-B12F-4B24-934F-4B2EEC99DA91</string>
 		</dict>
-		<key>2C617596-D3DA-45C9-9B16-0519FD2B4B65</key>
+		<key>2E010610-146C-42B7-B67A-E7AC95D66F86</key>
 		<dict>
 			<key>from</key>
 			<string>FD4028FE-A123-4593-AA98-94F10EAE37A3 - FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
 			<key>to</key>
 			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
 		</dict>
-		<key>56E638D0-CE66-40E7-83D9-78483BA55890</key>
+		<key>A0A1F25B-0DE4-43CE-BF94-68B9222D1EC3</key>
 		<dict>
 			<key>from</key>
 			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
 			<key>to</key>
 			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
 		</dict>
-		<key>C7E99186-7D10-4E89-B4B7-F05964F44D99</key>
+		<key>B9EA0F13-FFCD-4BF7-935A-FA4E34A0BCA1</key>
 		<dict>
 			<key>from</key>
 			<string>0C322224-079C-40B2-827A-697595EFD823 - 0C322224-079C-40B2-827A-697595EFD823</string>
