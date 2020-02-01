@@ -1,0 +1,334 @@
+#!/bin/bash
+#
+# Developed by Fred Weinhaus 4/30/2019 .......... revised 5/3/2019
+#
+# ------------------------------------------------------------------------------
+# 
+# Licensing:
+# 
+# Copyright © Fred Weinhaus
+# 
+# My scripts are available free of charge for non-commercial use, ONLY.
+# 
+# For use of my scripts in commercial (for-profit) environments or 
+# non-free applications, please contact me (Fred Weinhaus) for 
+# licensing arrangements. My email address is fmw at alink dot net.
+# 
+# If you: 1) redistribute, 2) incorporate any of these scripts into other 
+# free applications or 3) reprogram them in another scripting language, 
+# then you must contact me for permission, especially if the result might 
+# be used in a commercial or for-profit environment.
+# 
+# My scripts are also subject, in a subordinate manner, to the ImageMagick 
+# license, which can be found at: http://www.imagemagick.org/script/license.php
+# 
+# ------------------------------------------------------------------------------
+# 
+####
+#
+# USAGE: greenscreen [-t thresh] [-a area] [-s sat] [-b bgcolor] [-A antialias] 
+# infile [bgfile] outfile
+# USAGE: greenscreen [-h or -help]
+#
+# OPTIONS:
+#
+# -t     thresh         threshold of mask image used to remove green; 0<=integer<=100; 
+#                       default=0
+# -a     area           area threshold for removal of remnant areas in mask image; 
+#                       integer>=0; default=2000
+# -s     sat            saturation of remnant green color; 0<=integer<=100; default=0
+# -b     bgcolor        background color; any opaque Imagemagick color may be specified
+#                       the default=none
+# -A     antialias      antialias amount; integer>=0; default=2
+# 
+###
+#
+# NAME: GREENSCREEN
+# 
+# PURPOSE: Removes background green color in a green screen image.
+# 
+# DESCRIPTION: GREENSCREEN removes background green color in a green screen image. 
+# The background may be replace with transparency, another color or an optional 
+# second image.
+# 
+# OPTIONS: 
+# 
+# -t thresh ... THRESH is the threshold of mask image used to remove green. Values 
+# are 0<=integer<=100. The default=0.
+# 
+# -a area ... AREA threshold for removal of remnant areas in the mask image. Values 
+# are integer>=0. The default=2000.
+# 
+# -s sat ... SAT is the desired saturation of remnant green color. Value are 
+# 0<=integer<=100. The default=0.
+# 
+# -b bgcolor ... BGCOLOR is the desired background color. Any opaque Imagemagick 
+# color may be specified. The default=none (transparent).
+# 
+# -A antialias ... ANTIALIAS amount. Values are integer>=0. The default=2.
+# 
+# CAVEAT: No guarantee that this script will work on all platforms, 
+# nor that trapping of inconsistent parameters is complete and 
+# foolproof. Use At Your Own Risk. 
+# 
+######
+#
+
+# set default values
+thresh=22
+area=2000
+sat="0"
+bgcolor="none"
+antialias=2
+
+# set directory for temporary files
+# tmpdir="/tmp"
+tmpdir="."
+
+dir="$tmpdir/GREENSCREEN.$$"
+
+mkdir "$dir" || errMsg "--- FAILED TO CREATE TEMPORARY FILE DIRECTORY ---"
+trap "rm -rf $dir; exit 0" 0
+trap "rm -rf $dir; exit 1" 1 2 3 15
+
+
+# set up functions to report Usage and Usage with Description
+PROGNAME=`type $0 | awk '{print $3}'`  # search for executable on path
+PROGDIR=`dirname $PROGNAME`            # extract directory of program
+PROGNAME=`basename $PROGNAME`          # base name of program
+usage1() 
+	{
+	echo >&2 ""
+	echo >&2 "$PROGNAME:" "$@"
+	sed >&2 -e '1,/^####/d;  /^###/g;  /^#/!q;  s/^#//;  s/^ //;  4,$p' "$PROGDIR/$PROGNAME"
+	}
+usage2() 
+	{
+	echo >&2 ""
+	echo >&2 "$PROGNAME:" "$@"
+	sed >&2 -e '1,/^####/d;  /^######/g;  /^#/!q;  s/^#*//;  s/^ //;  4,$p' "$PROGDIR/$PROGNAME"
+	}
+
+
+# function to report error messages
+errMsg()
+	{
+	echo ""
+	echo $1
+	echo ""
+	usage1
+	exit 1
+	}
+
+
+# function to test for minus at start of value of second part of option 1 or 2
+checkMinus()
+	{
+	test=`echo "$1" | grep -c '^-.*$'`   # returns 1 if match; 0 otherwise
+    [ $test -eq 1 ] && errMsg "$errorMsg"
+	}
+
+# test for correct number of arguments and get values
+if [ $# -eq 0 ]
+	then
+	# help information
+   echo ""
+   usage2
+   exit 0
+elif [ $# -gt 13 ]
+	then
+	errMsg "--- TOO MANY ARGUMENTS WERE PROVIDED ---"
+else
+	while [ $# -gt 0 ]
+		do
+			# get parameter values
+			case "$1" in
+		   -h|help)    # help information
+					   echo ""
+					   usage2
+					   exit 0
+					   ;;
+				-t)    # thresh
+					   shift  # to get the next parameter
+					   # test if parameter starts with minus sign 
+					   errorMsg="--- INVALID THRESH SPECIFICATION ---"
+					   checkMinus "$1"
+					   thresh=`expr "$1" : '\([0-9]*\)'`
+					   [ "$thresh" = "" ] && errMsg "--- THRESH=$thresh MUST BE A NON-NEGATIVE INTEGER (with no sign) ---"
+					   ;;
+				-a)    # area
+					   shift  # to get the next parameter
+					   # test if parameter starts with minus sign 
+					   errorMsg="--- INVALID AREA SPECIFICATION ---"
+					   checkMinus "$1"
+					   area=`expr "$1" : '\([0-9]*\)'`
+					   [ "$area" = "" ] && errMsg "--- AREA=$area MUST BE A NON-NEGATIVE INTEGER (with no sign) ---"
+					   ;;
+				-s)    # get sat
+					   shift  # to get the next parameter
+					   # test if parameter starts with minus sign 
+					   errorMsg="--- INVALID SAT SPECIFICATION ---"
+					   checkMinus "$1"
+					   sat=`expr "$1" : '\([0-9]*\)'`
+					   [ "$sat" = "" ] && errMsg "--- SAT=$sat MUST BE AN INTEGER ---"
+					   testA=`echo "$sat < 0" | bc`
+					   testB=`echo "$sat > 100" | bc`
+					   [ $testA -eq 1 -o $testB -eq 1 ] && errMsg "--- SAT=$sat MUST BE AN INTEGER BETWEEN 0 AND 100 ---"
+					   ;;
+				-b)    # bgcolor
+					   shift  # to get the next parameter
+					   # test if parameter starts with minus sign 
+					   errorMsg="--- INVALID BGCOLOR SPECIFICATION ---"
+					   checkMinus "$1"
+					   bgcolor="$1"
+					   ;;
+				-t)    # thickness
+					   shift  # to get the next parameter
+					   # test if parameter starts with minus sign 
+					   errorMsg="--- INVALID THICKNESS SPECIFICATION ---"
+					   checkMinus "$1"
+					   thickness=`expr "$1" : '\([0-9]*\)'`
+					   [ "$thickness" = "" ] && errMsg "--- THICKNESS=$thickness MUST BE A NON-NEGATIVE INTEGER (with no sign) ---"
+					   ;;
+				-A)    # antialias
+					   shift  # to get the next parameter
+					   # test if parameter starts with minus sign 
+					   errorMsg="--- INVALID ANTIALIAS SPECIFICATION ---"
+					   checkMinus "$1"
+					   antialias=`expr "$1" : '\([0-9]*\)'`
+					   [ "$antialias" = "" ] && errMsg "--- ANTIALIAS=$antialias MUST BE A NON-NEGATIVE INTEGER (with no sign) ---"
+					   ;;
+				 -)    # STDIN and end of arguments
+					   break
+					   ;;
+				-*)    # any other - argument
+					   errMsg "--- UNKNOWN OPTION ---"
+					   ;;
+		     	 *)    # end of arguments
+					   break
+					   ;;
+			esac
+			shift   # next option
+	done
+	#
+	# get infile and outfile
+	if [ $# -eq 3 ]; then
+		infile="$1"
+		bgfile="$2"
+		outfile="$3"
+	elif [ $# -eq 2 ]; then
+		infile="$1"
+		outfile="$2"
+	else
+	errMsg "--- NO OUTPUT FILE SPECIFIED ---"
+	fi
+fi
+
+# test that infile provided
+[ "$infile" = "" ] && errMsg "--- NO INPUT FILE SPECIFIED ---"
+
+# test that outfile provided
+[ "$outfile" = "" ] && errMsg "--- NO OUTPUT FILE SPECIFIED ---"
+
+# read the input image into the temporary cached image and test if valid
+convert -quiet "$infile" +repage -alpha off $dir/I1.mpc ||
+	errMsg "--- FILE $infile DOES NOT EXIST OR IS NOT AN ORDINARY FILE, NOT READABLE OR HAS ZERO size  ---"
+
+if [ "$bgfile" != "" ]; then
+inname2=`convert "$bgfile" -format "%t" info:`
+convert -quiet "$bgfile" +repage -alpha off $dir/I2.mpc ||
+	errMsg "--- FILE $bgfile DOES NOT EXIST OR IS NOT AN ORDINARY FILE, NOT READABLE OR HAS ZERO size  ---"
+fi
+
+# get im version
+im_version=`convert -list configure | \
+	sed '/^LIB_VERSION_NUMBER */!d; s//,/;  s/,/,0/g;  s/,0*\([0-9][0-9]\)/\1/g' | head -n 1`
+
+if [ "$area" = "0" ]; then
+	convert $dir/I1.mpc \
+		\( -clone 0 -colorspace LAB \
+		-channel b -negate +channel \
+		-channel gb -separate +channel \
+		-evaluate-sequence multiply -auto-level \
+		-threshold $thresh% \) \
+		-alpha off -compose copy_opacity -composite \
+		$dir/I1.mpc
+else
+	convert $dir/I1.mpc \
+		\( -clone 0 -colorspace LAB \
+		-channel b -negate +channel \
+		-channel gb -separate +channel \
+		-evaluate-sequence multiply -auto-level \
+		-threshold $thresh% \
+		-define connected-components:area-threshold=$area \
+		-define connected-components:mean-color=true \
+		-connected-components 4 \) \
+		-alpha off -compose copy_opacity -composite \
+		$dir/I1.mpc
+fi
+
+# set up for anti-aliasing
+if [ "$antialias" != "0" ]; then
+	antialiasing="-blur 0x$antialias -level 50x100%"
+else
+	antialiasing=""
+fi
+
+# do modulatecolor2 processing to desaturate green
+if [ "$sat" != "100" ]; then
+	hue=120
+	tolerance=60
+	ramping=10
+	colorspace="HSL"
+	hue=`convert xc: -format "%[fx:100+(200*($hue-120)/360)]" info:`
+	full_range=`convert xc: -format "%[fx:2*round($tolerance*100)-1]" info:`
+	sigma=`convert xc: -format "%[fx:$ramping*100]" info:`
+	rollval=`convert xc: -format "%[fx:round(120*100)]" info:`
+	if [ "$ramping" != "0" -a "$im_version" -lt "06060200" ]; then
+		blurring="-blur 0x$sigma"
+	elif [ "$ramping" != "0" -a "$im_version" -ge "06060200" ]; then
+		blurring="-morphology convolve blur:0x$sigma"
+	else
+		blurring=""
+	fi
+	#echo "hue=$hue; saturation=$saturation; brightness=$brightness; colorspace=$colorspace"
+	#echo "hue=$hue; full_range=$full_range; rollval=$rollval; blurring=$blurring"
+
+	# process lut
+	# roll midvalue to 0 and then roll for color
+	convert -size 35999x1 xc:black \
+		\( -size ${full_range}x1 xc:white \) \
+		-gravity center -compose over -composite \
+		-roll -17998+0 -roll +${rollval}+0 \
+		$blurring \
+		$dir/lut.png
+
+	# do processing
+	convert $dir/I1.mpc \
+		\( -clone 0 -alpha extract -write mpr:alpha +delete \) \
+		\( -clone 0 -alpha off -define modulate:colorspace=$colorspace \
+			-modulate 100,$sat,$hue \) \
+		\( -clone 0 -alpha off -colorspace $colorspace -channel r -separate +channel \
+			$dir/lut.png -interpolate nearest-neighbor -clut \) \
+		-compose over -composite \
+		\( mpr:alpha $antialiasing \) \
+		-alpha off -compose copy_opacity -composite \
+		$dir/I1.mpc
+else
+	convert $dir/I1.mpc \
+		\( -clone 0 -alpha extract $antialiasing \) \
+		-alpha off -compose copy_opacity -composite \
+		$dir/I1.mpc
+fi
+
+if [ "$bgfile" != "" ]; then
+	convert $dir/I2.mpc $dir/I1.mpc \
+		-compose over -composite "$outfile"
+elif [ "$bgcolor" != "none" ]; then
+	convert $dir/I1.mpc -background "$bgcolor" -flatten "$outfile"
+else
+	convert $dir/I1.mpc "$outfile"
+fi
+
+
+exit 0

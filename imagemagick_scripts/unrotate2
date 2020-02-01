@@ -1,0 +1,736 @@
+#!/bin/bash
+#
+# Developed by Fred Weinhaus 10/3/2019 .......... revised 10/3/2019
+#
+# ------------------------------------------------------------------------------
+# 
+# Licensing:
+# 
+# Copyright © Fred Weinhaus
+# 
+# My scripts are available free of charge for non-commercial use, ONLY.
+# 
+# For use of my scripts in commercial (for-profit) environments or 
+# non-free applications, please contact me (Fred Weinhaus) for 
+# licensing arrangements. My email address is fmw at alink dot net.
+# 
+# If you: 1) redistribute, 2) incorporate any of these scripts into other 
+# free applications or 3) reprogram them in another scripting language, 
+# then you must contact me for permission, especially if the result might 
+# be used in a commercial or for-profit environment.
+# 
+# My scripts are also subject, in a subordinate manner, to the ImageMagick 
+# license, which can be found at: http://www.imagemagick.org/script/license.php
+# 
+# ------------------------------------------------------------------------------
+# 
+####
+#
+# USAGE: unrotate2 [-m mode] [-f fuzzval] [-c coords] [-b bcolor] [-d discard] 
+# [-k kernel] [-l lthresh] [-a athresh] [-t trim] [-F fuzztrim] [-g graphics]
+# [-r rot180] [-R refine] infile outfile
+# USAGE: unrotate2 [-h or -help]
+# 
+# OPTIONS:
+# 
+# -m     mode          mode of orientation of image; landscape or portrait; 
+#                      default will be determined from the dimensions of the 
+#                      input; if width>=height, then landscape; 
+#                      if width<height, then portrait
+# -f     fuzzval       fuzz value for floodfilling the background to separate 
+#                      image from background; 0<=integer<=100; default=15
+# -c     coords        pixel coordinate to extract background color and seed 
+#                      location for flood fill; may be expressed as gravity 
+#                      value (NorthWest, etc)or as "x,y" value; default is 
+#                      NorthWest=(0,0)
+# -b     bcolor        background color to use instead of option -c;
+#                      any valid IM color; default is to use option -c
+# -d     discard       discard any region that has an area smaller than
+#                      this size; integer>0; default=1000
+# -k     kernel        morphology close kernel dimension; integer>0; default=5
+# -l     lthresh       hough line length threshold as a percent of the minimum 
+#                      trimmed dimension of the mask created from the flood 
+#                      fill; 0<integer<=100; default=35
+# -a     athresh       angle threshold (tolerance) when matching the hough line 
+#                      angles with the angles from the canny edges; integer>0; 
+#                      default=1
+# -t     trimtype      type of trimming to apply to the output; choices are 
+#                      outer, inner or none; default=outer
+# -F     fuzztrim      fuzz value for trimming the output image; 
+#                      0<=integer<=100; default=0
+# -r     rot180        rotate the input image by 180 (after flood filling); 
+#                      choices are yes or no; default=no
+# -R     refine        refine least squares fitting of lines to get angles  
+#                      after discarding outliers; choices are yes or no; 
+#                      default=yes
+# -g     graphics      mode for graphic image presentation of extracted mask 
+#                      image; choices are view or save; default is no graphic
+# 
+###
+# 
+# NAME: UNROTATE2 
+#  
+# PURPOSE: To unrotate a rotated image and trim the surrounding border.
+# 
+# DESCRIPTION: UNROTATE2 computes the amount an image has been rotated and
+# attempts to automatically unrotate the image. It assumes that the image 
+# contains a relatively constant color background area around the rotated data 
+# that is not too similar in color to the color near the boundary of the image 
+# data. The user is expected to identify the background color or a coordinate 
+# within the background region for the algorithm to extract the background 
+# color. A fuzz value should be specified when the background color is not 
+# uniform. A mask image is then created by a fuzzy flood fill. Then Canny 
+# edges are extracted and straight lines fit to each of the edges to compute 
+# their orientation angles. Hough lines are detected and used to check and 
+# filter the Canny fit lines. The angles are then averaged and the negative 
+# result is used to unrotate the image. The unrotation is indeterminant to 
+# 90, 180 and 270 degrees unless the landscape or portrait mode is identified.  
+# However, the result may still be off by 180 degrees. The script works best 
+# the more rectangular the image.  Since a square image is neither landscape 
+# nor portrait, after unrotation it may still be off by 90, 180 or 270 degrees.
+# The default mode will be determined from the largest dimension of the 
+# trimmed mask. Rectangular images should unrotate correctly with the default,   
+# whether landscape or portrait, if the orientation is less than 45 degrees.
+# Otherwise, one needs to specify the proper mode of orientation of the image. 
+# Trimming can be applied to the unrotated result as an outer trim,
+# which stops at the first image pixel on each side, but which may leave a 
+# bit of background around. Or trimming may be an inner trim, which will  
+# remove all background on each side, but may trim some of the image data 
+# as well.
+# 
+# 
+# Arguments: 
+# 
+# -m mode ... MODE of orientation of the image. Choices are landscape (l) 
+# or portrait (p). The default will be determined from the dimensions of the 
+# input. If width>=height, then landscape. If width<height, then portrait.
+# 
+# -f fuzzflood ... FUZZFLOOD is the fuzz value for flood filling the 
+# background in order to separate the image from the background. Values are 
+# 0<=integer<=100. The default=15.
+# 
+# -c coords ... COORDS are the pixel coordinates to identify the background 
+# color and to seed the location for the flood fill. It may be expressed as 
+# a gravity value (NorthWest, etc) or as an "x,y" value. The default is 
+# NorthWest, i.e., 0,0.
+# 
+# -b bcolor ... BCOLOR is the background color to use instead of option -c.
+# Any valid IM color is allowed. The default is to use option -c.
+# 
+# -d discard ... DISCARD any region that has an area smaller than this size 
+# when identifying the largest white area in the mask representing the image 
+# region. That is merge small regions into its surrounding color. Values are 
+# integer>0. The default=1000.
+# 
+# -k kernel ... KERNEL size for the morphology close processing to remove 
+# holes and gaps in the white part of the mask before extracting edges. 
+# Values are integer>0. The default=5.
+# 
+# -l lthresh ... LTHRESH is the Hough line length threshold as a percent of 
+# the minimum dimension of the (trimmed) mask created from the flood fill.  
+# Values are 0<integer<=100. The default=35.
+#
+# -a athresh ... ATHRESH is the angle threshold (tolerance) when matching 
+# the Hough line angles with the angles from the canny edges. Values are 
+# integer>0. The default=1.
+# 
+# -t trimtype ... TRIMTYPE is the type of trimming to apply to the output. 
+# The choices are outer (0), inner (i) or none (n). The default=outer.
+# 
+# -F fuzztrim ... FUZZTRIM is the fuzz value for trimming the output image. 
+# Values are 0<=integer<=100. The default=0.
+# 
+# -r rot180 ... RO180 specifies to rotate the image by 180 degrees. The 
+# choices are yes (y) or no (n). The default=no.
+# 
+# -R refine ... REFINE the least squares fitting of the straight edges to get 
+# the orientation angles after discarding outliers. The choices are yes (y) 
+# or no (n). The default=yes.
+# 
+# -g graphics ... GRAPHICS is the mode for graphic image presentation of the 
+# extracted mask image. The choices are view (v) or save (s). The default 
+# is no graphic. The graphic is available to check to be sure the straight 
+# sides of white region in the mask are not too broken up, thereby producing  
+# erroneous angles for the edges and thus a bad rotation. 
+# 
+# LIMITATIONS: This script does not perform well on nearly square images and 
+# may be off by increments of 90 degrees even for rectangular images. Note 
+# that trimtype of inner is only available for IM 7.0.8-31 and 6.9.10-31 
+# or higher.
+# 
+# ADVICE: If the unrotation is not good, check the graphic image to see that 
+# the sides of the white region are straight and not broken up. If the sides 
+# have gaps, then increase the kernel value. If extraneous white regions  
+# appear in the mask, then increase the discard value.
+# 
+# CAVEAT: No guarantee that this script will work on all platforms, 
+# nor that trapping of inconsistent parameters is complete and 
+# foolproof. Use At Your Own Risk. 
+# 
+######
+#
+
+# set default values 
+mode=""						# landscape, portrait
+fuzzflood=15				# fuzz value for floodfill
+coords="0,0"				# coords to get background color
+bcolor=""					# background color
+discard=1000				# maximum area to discard
+kernel=5					# morphology close kernel size
+lthresh=35					# hough line length threshold as percent of min trimmed dimension of mask
+athresh=1					# angle threshold to match hough angle with angles of edges
+trimtype="outer"			# none, inner or outer trim
+fuzztrim=0					# fuzz value for trimming
+graphics=""			 		# view or save mask.gif 
+rot180="no"					# rotate image by 180; yes or no
+refine="yes"				# refine linear regression
+
+# internal arguments
+filtfact=2
+
+
+# set directory for temporary files
+dir="."    # suggestions are dir="." or dir="/tmp"
+
+# set up functions to report Usage and Usage with Description
+PROGNAME=`type $0 | awk '{print $3}'`  # search for executable on path
+PROGDIR=`dirname $PROGNAME`            # extract directory of program
+PROGNAME=`basename $PROGNAME`          # base name of program
+usage1() 
+	{
+	echo >&2 ""
+	echo >&2 "$PROGNAME:" "$@"
+	sed >&2 -e '1,/^####/d;  /^###/g;  /^#/!q;  s/^#//;  s/^ //;  4,$p' "$PROGDIR/$PROGNAME"
+	}
+usage2() 
+	{
+	echo >&2 ""
+	echo >&2 "$PROGNAME:" "$@"
+	sed >&2 -e '1,/^####/d;  /^######/g;  /^#/!q;  s/^#*//;  s/^ //;  4,$p' "$PROGDIR/$PROGNAME"
+	}
+
+# function to report error messages
+errMsg()
+	{
+	echo ""
+	echo $1
+	echo ""
+	usage1
+	exit 1
+	}
+
+# function to test for minus at start of value of second part of option 1 or 2
+checkMinus()
+	{
+	test=`echo "$1" | grep -c '^-.*$'`   # returns 1 if match; 0 otherwise
+    [ $test -eq 1 ] && errMsg "$errorMsg"
+	}
+
+# test for correct number of arguments and get values
+if [ $# -eq 0 ]
+	then
+	# help information
+	echo ""
+	usage2
+	exit 0
+elif [ $# -gt 28 ]
+	then
+	errMsg "--- TOO MANY ARGUMENTS WERE PROVIDED ---"
+else
+	while [ $# -gt 0 ]
+		do
+		# get parameters
+		case "$1" in
+	  -h|-help)    # help information
+				   echo ""
+				   usage2
+				   ;;
+			-m)    # mode
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID MODE SPECIFICATION ---"
+				   checkMinus "$1"
+				   mode="$1"
+				   mode=`echo "$mode" | tr "[:upper:]" "[:lower:]"`
+				   case "$mode" in 
+						landscape|l) mode="landscape" ;;
+						portrait|p) mode="portrait" ;;
+						*) errMsg "--- MODE=$mode IS AN INVALID VALUE ---" 
+					esac
+				   ;;
+			-f)    # fuzzflood
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID FUZZFLOOD SPECIFICATION ---"
+				   checkMinus "$1"
+				   fuzzflood=`expr "$1" : '\([0-9]*\)'`
+				   [ "$fuzzflood" = "" ] && errMsg "--- FUZZFLOOD=$fuzzflood MUST BE A NON-NEGATIVE INTEGER VALUE (with no sign) ---"
+				   testA=`echo "$fuzzflood < 0" | bc`
+				   testB=`echo "$fuzzflood > 100" | bc`
+				   [ $testA -eq 1 -a $testB -eq 1 ] && errMsg "--- FUZZFLOOD=$fuzzflood MUST BE A NON-NEGATIVE INTEGER VALUE BETWEEN 0 AND 100 ---"
+				   ;;
+			-c)    # coords
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID COORDS SPECIFICATION ---"
+				   checkMinus "$1"
+				   coords=$1
+				   # further testing done later
+				   ;;
+			-b)    # bcolor
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign
+				   errorMsg="--- INVALID BCOLOR SPECIFICATION ---"
+				   checkMinus "$1"
+				   bcolor=$1
+				   ;;
+			-d)    # discard
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID DISCARD SPECIFICATION ---"
+				   checkMinus "$1"
+				   discard=`expr "$1" : '\([0-9]*\)'`
+				   [ "$discard" = "" ] && errMsg "--- DISCARD=$discard MUST BE A NON-NEGATIVE INTEGER VALUE (with no sign) ---"
+				   testA=`echo "$discard < 1" | bc`
+				   [ $testA -eq 1 ] && errMsg "--- DISCARD=$discard MUST BE A POSITIVE INTEGER ---"
+				   ;;
+			-k)    # kernel
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID KERNEL SPECIFICATION ---"
+				   checkMinus "$1"
+				   kernel=`expr "$1" : '\([0-9]*\)'`
+				   [ "$kernel" = "" ] && errMsg "--- KERNEL=$kernel MUST BE A NON-NEGATIVE INTEGER VALUE (with no sign) ---"
+				   testA=`echo "$kernel < 1" | bc`
+				   [ $testA -eq 1 ] && errMsg "--- KERNEL=$kernel MUST BE A POSITIVE INTEGER ---"
+				   ;;
+			-l)    # lthresh
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID LTHRESH SPECIFICATION ---"
+				   checkMinus "$1"
+				   lthresh=`expr "$1" : '\([0-9]*\)'`
+				   [ "$lthresh" = "" ] && errMsg "--- LTHRESH=$lthresh MUST BE A NON-NEGATIVE INTEGER VALUE (with no sign) ---"
+				   testA=`echo "$lthresh < 1" | bc`
+				   testB=`echo "$lthresh > 100" | bc`
+				   [ $testA -eq 1 -a $testB -eq 1 ] && errMsg "--- LTHRESH=$lthresh MUST BE A NON-NEGATIVE INTEGER VALUE BETWEEN 1 AND 100 ---"
+				   ;;
+			-a)    # athresh
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID ATHRESH SPECIFICATION ---"
+				   checkMinus "$1"
+				   athresh=`expr "$1" : '\([0-9]*\)'`
+				   [ "$athresh" = "" ] && errMsg "--- ATHRESH=$athresh MUST BE A NON-NEGATIVE INTEGER VALUE (with no sign) ---"
+				   testA=`echo "$athresh < 1" | bc`
+				   [ $testA -eq 1 ] && errMsg "--- ATHRESH=$athresh MUST BE A POSITIVE INTEGER ---"
+				   ;;
+			-t)    # trimtype
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID TRIMTYPE SPECIFICATION ---"
+				   checkMinus "$1"
+				   trimtype="$1"
+				   trimtype=`echo "$trimtype" | tr "[:upper:]" "[:lower:]"`
+				   case "$trimtype" in 
+						outer|o) trimtype="outer" ;;
+						inner|i) trimtype="inner" ;;
+						none|n) trimtype="none" ;;
+						*) errMsg "--- TRIMTYPE=$trimtype IS AN INVALID VALUE ---" 
+					esac
+				   ;;
+			-F)    # fuzztrim
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID FUZZTRIM SPECIFICATION ---"
+				   checkMinus "$1"
+				   fuzztrim=`expr "$1" : '\([0-9]*\)'`
+				   [ "$fuzztrim" = "" ] && errMsg "--- FUZZTRIM=$fuzztrim MUST BE A NON-NEGATIVE INTEGER VALUE (with no sign) ---"
+				   testA=`echo "$fuzztrim < 0" | bc`
+				   testB=`echo "$fuzztrim > 100" | bc`
+				   [ $testA -eq 1 -a $testB -eq 1 ] && errMsg "--- FUZZTRIM=$fuzztrim MUST BE A NON-NEGATIVE INTEGER VALUE BETWEEN 0 AND 100 ---"
+				   ;;
+			-g)    # graphic
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID GRAPHIC SPECIFICATION ---"
+				   checkMinus "$1"
+				   graphic="$1"
+				   graphic=`echo "$graphic" | tr "[:upper:]" "[:lower:]"`
+				   case "$graphic" in 
+						view|v) graphic="view" ;;
+						save|s) graphic="save" ;;
+						*) errMsg "--- GRAPHIC=$graphic IS AN INVALID VALUE ---" 
+					esac
+				   ;;
+			-r)    # rot180
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID ROT180 SPECIFICATION ---"
+				   checkMinus "$1"
+				   rot180="$1"
+				   rot180=`echo "$rot180" | tr "[:upper:]" "[:lower:]"`
+				   case "$rot180" in 
+						yes|y) rot180="yes" ;;
+						no|n) rot180="no" ;;
+						*) errMsg "--- ROT180=$rot180 IS AN INVALID VALUE ---" 
+					esac
+				   ;;
+			-R)    # refine
+				   shift  # to get the next parameter
+				   # test if parameter starts with minus sign 
+				   errorMsg="--- INVALID REFINE SPECIFICATION ---"
+				   checkMinus "$1"
+				   refine="$1"
+				   refine=`echo "$refine" | tr "[:upper:]" "[:lower:]"`
+				   case "$refine" in 
+						yes|y) refine="yes" ;;
+						no|n) refine="no" ;;
+						*) errMsg "--- REFINE=$refine IS AN INVALID VALUE ---" 
+					esac
+				   ;;
+			 -)    # STDIN and end of arguments
+				   break
+				   ;;
+			-*)    # any other - argument
+				   errMsg "--- UNKNOWN OPTION ---"
+				   ;;
+			*)     # end of arguments
+				   break
+				   ;;
+		esac
+		shift   # next option
+	done
+	# get infile and outfile
+	infile="$1"
+	outfile="$2"
+fi
+
+# test that infile provided
+[ "$infile" = "" ] && errMsg "NO INPUT FILE SPECIFIED"
+
+# test that outfile provided
+[ "$outfile" = "" ] && errMsg "NO OUTPUT FILE SPECIFIED"
+
+
+# set up temp file
+tmpA1="$dir/unrotate2_1_$$.mpc"
+tmpB1="$dir/unrotate2_1_$$.cache"
+
+trap "rm -f $tmpA1 $tmpB1 canny.png;" 0
+trap "rm -f $tmpA1 $tmpB1 canny.png; exit 1" 1 2 3 15
+#trap "rm -f $tmpA1 $tmpB1 $tmpA2 $tmpB2 $tmpA3; exit 1" ERR
+
+
+# test input image
+convert -quiet "$infile" +repage "$tmpA1" ||
+	errMsg "--- FILE $infile DOES NOT EXIST OR IS NOT AN ORDINARY FILE, NOT READABLE OR HAS ZERO SIZE ---"
+
+# get im_version
+im_version=`convert -list configure | \
+	sed '/^LIB_VERSION_NUMBER */!d; s//,/;  s/,/,0/g;  s/,0*\([0-9][0-9]\)/\1/g' | head -n 1`
+
+# test if both bcolor and coords specified at the same time
+if [ "$bcolor" != "" -a "$coords" != "" ]; then
+  echo "--- BACKGROUND COLOR AND COODINATES CAN NOT BE USED TOGETHER ---"
+elif [ "$bcolor" = "" -a "$coords" = "" ]; then
+	coords="0,0"
+fi
+
+# get image width and height
+declare `convert -ping $tmpA1 -format "width=%w\nheight=%h\n" info:`
+
+# set default mode if not defined already
+declare `convert $tmpA1 -fuzz $fuzzflood% -trim +repage -format "wd=%w\nht=%h\n" info:`
+test=`convert xc: -format "%[fx:$wd>=$ht?1:0]" info:`
+[ "$mode" = "" -a $test -eq 1 ] && mode="landscape"
+[ "$mode" = "" -a $test -eq 0 ] && mode="portrait"
+
+# set fuzztrim if not already defined
+[ "$fuzztrim" = "" ] && fuzztrim=$fuzzflood
+
+# test if coords provided as x,y
+# coords="" if test fails and have other characters such as northwest
+coords1=`expr "$coords" : '\([0-9]*,[0-9]*\)'`
+
+# get color at user specified location
+if [ "$bcolor" != "" ]; then
+	coords="0,0"
+elif [ "$coords1" != "" ]; then
+	x=`echo "$coords1" | cut -d, -f1`
+	y=`echo "$coords1" | cut -d, -f2`
+	# account for pad of 1
+	x=$((x+1))	
+	y=$((y+1))	
+	coords="$x,$y"
+	bcolor=`convert "$infile" -format "%[pixel:u.p{$coords}]" info:`
+elif [ "$coords1" = "" ]; then
+	widthm1=`convert xc: -format "%[fx:$width-1]" info:`
+	heightm1=`convert xc: -format "%[fx:$height-1]" info:`
+	midwidth=`convert xc: -format "%[fx:round(($width-1))/2]" info:`
+	midheight=`convert xc: -format "%[fx:round(($height-1))/2]" info:`
+	coords=`echo "$coords" | tr "[:upper:]" "[:lower:]"`
+	case "$coords" in
+		''|nw|northwest) coords="0,0" ;;
+		n|north)         coords="$midwidth,0" ;;
+		ne|northeast)    coords="$widthm1,0" ;;
+		e|east)          coords="$widthm1,$midheight" ;;
+		se|southeast)    coords="$widthm1,$heightm1" ;;
+		s|south)         coords="$midwidth,$heightm1" ;;
+		sw|southwest)    coords="0,$heightm1" ;;
+		w|west)          coords="0,$midheight" ;;
+		*)  errMsg "--- INVALID COORDS ---" ;;
+	esac
+	bcolor=`convert $tmpA1 -format "%[pixel:u.p{$coords}]" info:`
+fi
+#echo "bcolor=$bcolor;"
+
+# set up floodfill
+if [ "$im_version" -ge "07000000" ]; then
+	matte_alpha="alpha"
+else
+	matte_alpha="matte"
+fi
+
+# set up for 180 rotation
+if [ "r180" = "yes" ]; then
+	rproc="-rotate 180"
+else
+	rproc=""
+fi
+
+# convert to binary mask using CCL after floodfill, morphology close, and trimming and pad by 1 black
+convert $tmpA1 \
+	-bordercolor $bcolor -border 1x1 \
+	-fuzz ${fuzzflood}% -fill none \
+	-draw "$matte_alpha $coords floodfill" \
+	-shave 1x1 -fill white +opaque none \
+	-background black -alpha background -alpha off \
+	-morphology close disk:$kernel \
+	-trim +repage -border 1x1 $rproc -type bilevel \
+	-define connected-components:mean-color=true \
+	-define connected-components:area-threshold=$discard \
+	-connected-components 8 mask.png
+
+# get dimensions of mask and set the hough length threshold
+WxH=`convert mask.png -format "%wx%h" info:`
+ww=`echo $WxH | cut -dx -f1`
+hh=`echo $WxH | cut -dx -f2`
+lthresh=`convert xc: -format "%[fx:min($ww,$hh)*$lthresh/100]" info:`
+
+# get canny edges and longest hough lines from mask.gif 
+OLDIFS=$IFS
+IFS=$'\n'
+houghArr=(`convert mask.png \
+	-canny 0x1+10%+30% +write canny.png \
+	-background none -fill red \
+	-hough-lines 9x9+$lthresh MVG:- | tail -n +4 | sed 's/[ ][ *]/ /g'`)
+num_lines=${#houghArr[*]}
+#echo "num_lines=$num_lines;"
+#echo "${houghArr[*]}"
+IFS=$OLDIFS
+
+# compute needed dilation of lines as dilate = 0.5*max(w,h)*sin(0.5)
+dilation=`convert xc: -format "%[fx:round(0.5*max($ww,$hh)*sin(0.5*pi/180))]" info:`
+#echo "dilation=$dilation"
+
+# for testing, overlay dilated hough lines onto canny edge image to see if dilated lines cover canny lines for masking
+# need to add +write lines.png to houghArr computation above, if use next line of code
+#convert canny.png  \( lines.png -channel a -morphology dilate disk:$dilation +channel \) -compose over -composite canny_lines_comp.png
+
+# for each lines, get count and rotation angle
+# note resolve if hough angles are measured differently
+# 10 deg rotation -> hough angle 110
+# -10 deg rotation -> hough angle 80
+# 80 deg rotation -> 170
+# -80 deg rotation -> 10
+# so normal angle from x axis clockwise = hough_angle - 90
+#
+# hough lines are sorted by distance from top left corner
+# top-left and bottom-right have the same angle and the top-right and bottom-left angles are different by 90 deg
+# so first hough line will be closest and its rot_hough angle will determine which of two angles it should be
+# this assumes that fuzz value not so large that line that should be closest to origin is missing
+
+# get angle from first hough line with smallest distance from origin
+ang0=`echo "${houghArr[0]}" | cut -d\  -f6`
+if [ "$mode" = "landscape" ]; then
+	rot0=`convert xc: -format "%[fx:($ang0>90)?$ang0-180:$ang0]" info:`
+elif [ "$mode" = "portrait" ]; then
+	rot0=`convert xc: -format "%[fx:$ang0-90]" info:`
+fi
+#echo "ang0=$ang0; rot0=$rot0;"
+
+# function to do linear regression to find best fit line, rotation angle, and residuals 
+# using a set of points from the top left coordinates of the labels found in the input image.
+linearRegression() 
+	{
+	Arr="$1"
+	regression_Arr=(`echo "${Arr[*]}" | AWK \
+	'BEGIN { FS = ","; RS = " "; pi = atan2(0, -1); }
+	NF == 2 { x_sum += $1
+			  y_sum += $2
+			  xy_sum += $1*$2
+			  x2_sum += $1*$1
+			  num += 1
+			  x[NR] = $1
+			  y[NR] = $2
+			}
+	END { mean_x = x_sum / num
+		  mean_y = y_sum / num
+		  mean_xy = xy_sum / num
+		  mean_x2 = x2_sum / num
+		  slope = (mean_xy - (mean_x*mean_y)) / (mean_x2 - (mean_x*mean_x))
+		  inter = mean_y - slope * mean_x
+		  for (i = 1; i <= num; i++) {
+			  res = (y[i] - (slope * x[i] + inter))
+			  res_sq = res*res
+			  sumsq_res += res_sq
+			  sumsq_total += (y[i] - mean_y)**2
+			  sum_res += res
+			  abs_res = sqrt(res_sq)
+			  sum_abs_res += abs_res
+			  print "Residual"i":"res
+		  }
+		  r2 = 1 - (sumsq_res / sumsq_total)
+		  angle = (180/pi)*atan2(slope,1)
+		  ave_abs_res = sum_abs_res/num
+		  res_std = sqrt((sumsq_res/num)-(sum_res/num)**2)
+		  abs_res_std = sqrt((sumsq_res/num)-(sum_abs_res/num)**2)
+		  print "Slope:"slope
+		  print "Intercept:"inter
+		  print "R-Squared:"r2
+		  print "Angle:"angle
+		  print "Ave-Abs-Residual:"ave_abs_res
+		  print "Residual-Std:"res_std
+		  print "Abs-Residual-Std:"abs_res_std
+		}'`)
+
+	#' -- used to turn text coloring from red back to black
+	
+	rnum=${#regression_Arr[*]}
+
+	# list regression data
+#	echo ""
+#	for ((ii=0; ii<rnum; ii++)); do
+#	echo "${regression_Arr[$ii]}" | grep -v "Residual"
+#	done
+
+	aa_res=`echo ${regression_Arr[$rnum-3]} | cut -d: -f2`
+	#echo "aa_res=$aa_res;"
+	
+	ang=`echo ${regression_Arr[$rnum-4]} | cut -d: -f2`
+	#echo "ang=$ang;"
+
+	}
+
+
+# for each line draw line on black image as mask, dilate it, then use it to get all points from canny.png that are not black and fit straight line to it.
+for ((i=0; i<num_lines; i++)); do
+	# get hough endpoints
+	pt1=`echo "${houghArr[$i]}" | cut -d\  -f2`
+	pt2=`echo "${houghArr[$i]}" | cut -d\  -f3`
+	#echo "$pt1; $pt2"
+
+	# draw line, dilate, create mask, filter canny for overlap of mask to get x,y points along one line
+	pointArr=(`convert canny.png \
+	\( +clone -fill black -colorize 100 -fill white -draw "line $pt1 $pt2" -alpha off -morphology dilate disk:$dilation \) \
+	-compose multiply -composite -threshold 0 -type bilevel txt:- | grep "gray(255)" | awk '{print $1}' | sed 's/[:]//g'`)
+
+	# call linearRegression to get angle and filter and repeat until stable
+	# do linear regression to find best fit line, rotation angle, and residuals
+	linearRegression "${pointArr[*]}"
+	num_points=${#pointArr[*]}
+
+	if [ "$refine" = "yes" ]; then
+		# keep points if abs residual <= filtfact*(ave abs residual)
+		# first concatenate arrays
+		# note that regression_Arr contains Residual#:res, 
+		# so pair array will have form of x,y:Residual#:res, 
+		# where point is x,y and need res, so awk uses $1 and $3
+		pairArr=()
+		for ((j=0; j<num_points; j++)); do
+			pairArr[$j]="${pointArr[$j]}:${regression_Arr[$j]}"
+		done
+
+		new_pointArr=()
+		new_pointArr=(`echo ${pairArr[*]} |\
+			awk -v filtfact=$filtfact -v aa_res=$aa_res ' 
+			BEGIN { FS = ":"; RS = " "; }
+			{ pt=$1; res=$3; if (sqrt(res*res) <= filtfact*aa_res) print pt }'`)
+
+		#' -- used to turn text coloring from red back to black
+		
+		num_points_new=${#new_pointArr[*]}
+		#echo "num_points_new=$num_points_new; num_points=$num_points"
+
+		# do a second linear regression on filtered points
+		if [ $num_points_new -ge 2 ]; then 
+			linearRegression "${new_pointArr[*]}"
+		else
+			echo "--- WARNING: NO REGRESSION REFINEMENT, SINCE TOO FEW POINTS ---"
+		fi
+	fi
+
+	# put angles into array
+	angArr[$i]=$ang
+
+done
+
+#echo "angles=${angArr[*]}"
+num_angles=${#angArr[*]}
+#echo ""
+
+# in general two angle will be correct and two off by 90 deg - so test for close to rot0 and if not correct by 90
+for ((i=0; i<num_angles; i++)); do
+	ang1=${angArr[$i]}
+	test=`convert xc: -format "%[fx:( abs($rot0-$ang1)<=$athresh )?1:0]" info:`
+	if [ $test -eq 0 ]; then
+		anglesArr[$i]=`convert xc: -format "%[fx:($rot0>=0)?$ang1+90:$ang1-90]" info:`
+	else
+		anglesArr[$i]=$ang1
+	fi
+done
+#echo "angles=${anglesArr[*]}"
+#echo ""
+
+
+# average all angles that are close to rot0
+tot_angle=0
+count=0
+for ((i=0; i<num_angles; i++)); do
+	ang2=${anglesArr[$i]}
+	test=`convert xc: -format "%[fx:( abs($rot0-$ang2)<=$athresh )?1:0]" info:`
+	if [ $test -eq 1 ]; then
+		tot_angle=`convert xc: -format "%[fx:$tot_angle + $ang2]" info:`
+		count=$((count+1))
+	fi
+done
+if [ $count -eq 0 ]; then
+	ave_angle=0
+else
+	ave_angle=`convert xc: -format "%[fx:$tot_angle/$count]" info:`
+fi
+rotation=`convert xc: -format "%[fx:-$ave_angle]" info:`
+echo "derotation=$rotation;"
+
+# set up for trim
+if [ "$trimtype" = "outer" ]; then
+	trimming="-fuzz $fuzztrim% -trim +repage"
+elif [ "$trimtype" = "inner" ]; then
+	trimming="-define trim:percent-background=0% -fuzz $fuzztrim% -trim +repage"
+elif [ "$trimtype" = "none" ]; then
+	trimming=""
+fi
+
+# do unrotate and trim
+convert $tmpA1 -background "$bcolor" -rotate $rotation $trimming "$outfile"
+
+# remove mask, view or save
+if [ "$graphic" = "" ]; then
+	rm -f mask.png
+elif [ "$graphic" = "view" ]; then
+	convert mask.png show:
+fi
+
+exit 0
+
