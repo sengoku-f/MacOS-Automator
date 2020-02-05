@@ -59,7 +59,8 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>version="解散文件夹 v1.2 by Sengoku"
+					<string>version="解散文件夹 v1.2.1 by Sengoku"
+# 修复父文件夹空格错误
 # 更新"递归删除空文件夹"在循环中
 # 更新同名文件夹模式
 # -------------------------------------------
@@ -75,8 +76,8 @@ do
 
 	# 子文件夹
 	# subfile="$(find "$f" -maxdepth 1 -mindepth 1 -name "$name")"
-	subdir="$(dirname $(find "$f" -maxdepth 1 -mindepth 1 -name "$name"))"
-	subname="$(basename $(find "$f" -maxdepth 1 -mindepth 1 -name "$name"))"
+	subdir="$(dirname "$(find "$f" -maxdepth 1 -mindepth 1 -name "$name")")"
+	subname="$(basename "$(find "$f" -maxdepth 1 -mindepth 1 -name "$name")")"
 	# 判断文件名
 	if [ "$subname" = "$name" ]; then
 			# 定位到子目录
@@ -220,7 +221,7 @@ osascript -e 'display notification "'"$version"'" with title "所有文件已移
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>374.500000:641.000000</string>
+				<string>374.500000:610.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
