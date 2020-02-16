@@ -75,9 +75,9 @@ ooutput="${ARG%/*}/concact-$ddate.jpg"
 CONFIG="$(osascript -e 'display dialog "选择拼图方向" buttons {"水平拼图", "垂直拼图"} default button "垂直拼图" with title "'"$version"'"')"
 # 条件判断
 	if [ "$CONFIG" = "button returned:垂直拼图" ]; then
-			adjoin -m H -g center -b white "$@" "$ooutput"
-		elif [ "$CONFIG" = "button returned:水平拼图" ]; then
 			adjoin -m V -g center -b white "$@" "$ooutput"
+		elif [ "$CONFIG" = "button returned:水平拼图" ]; then
+			adjoin -m H -g center -b white "$@" "$ooutput"
 		fi
 # 通知
 osascript -e 'display notification "Imagemagick converter" with title "拼接完成🎉" sound name "Glass"'</string>
@@ -193,7 +193,7 @@ osascript -e 'display notification "Imagemagick converter" with title "拼接完
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>374.500000:738.000000</string>
+				<string>374.500000:645.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
