@@ -1,0 +1,22 @@
+# 同步字体文件夹
+# 2020-06-12
+
+#!/bin/bash
+# 若命令失败让脚本退出 
+set -o errexit
+# 设置环境变量
+# PATH=$PATH:/usr/local/bin/
+# 先同步一次
+# 同步 "/Users/Sengoku/Library/Fonts" 文件夹内容到 "/Users/Sengoku/Pictures/写真",排除 'DS_Store'
+rsync -cavu --delete --delete-excluded --exclude '.DS_Store' "/Users/Sengoku/Library/Fonts/" "/Volumes/Kotoli/OneDrive/储藏库/Mac OS 字体"
+# 通知
+osascript -e 'display notification "字体 🔜 OneDrive 服务已启动!" with title "fonts-rsync" sound name "Glass"'
+# 监视文件夹并同步,排除 ".DS_Store"
+/usr/local/bin/fswatch -0 -l 5 --event "Created" --event "Updated" --event "Removed" --event "Renamed" --event "OwnerModified" --event "MovedFrom" --event "MovedTo" -e ".DS_Store" "/Users/Sengoku/Library/Fonts" | while read -d "" event; do 
+	# 同步"Services"文件夹内容到"服务",排除 '_gsdata_' 'QuickLook' '*/Users/Sengoku.workflow'
+	rsync -cavu --delete --delete-excluded --exclude '.DS_Store' "/Users/Sengoku/Library/Fonts/" "/Volumes/Kotoli/OneDrive/储藏库/Mac OS 字体"
+	# 通知
+	osascript -e 'display notification "🔄'"${event##*/}"'" with title "fswatch-rsync" sound name "Glass"'
+	# 写入日志
+	echo "\"${event}\" 已同步!" >> "/Volumes/Kotoli/OneDrive/储藏库/Mac OS 字体.log" 2>&1
+done
