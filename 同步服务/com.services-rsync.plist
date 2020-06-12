@@ -10,18 +10,18 @@
 <!-- 	<key>KeepAlive</key>
 	<true/> -->
 	<key>Label</key>
-	<string>com.fswatch-rsync</string>
+	<string>com.services-rsync</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/Users/Sengoku/.user_shell_scripts/fswatch-rsync</string>
+		<string>/Users/Sengoku/.user_shell_scripts/services-rsync</string>
 		<string>bash</string>
 		<string>-c</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
 	<key>StandardErrorPath</key>
-	<string>/Users/Sengoku/Library/Logs/fswatch-rsync-login.log</string>
+	<string>/Users/Sengoku/Library/Logs/services-rsync-login.log</string>
 	<key>StandardOutPath</key>
-	<string>/Users/Sengoku/Library/Logs/fswatch-rsync-login.log</string>
+	<string>/Users/Sengoku/Library/Logs/services-rsync-login.log</string>
 </dict>
 </plist>

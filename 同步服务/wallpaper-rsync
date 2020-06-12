@@ -1,4 +1,6 @@
 # 同步壁纸文件夹
+# 2020-06-12
+# 更新: 添加事件过滤
 # 2020-06-06
 
 #!/bin/bash
@@ -7,14 +9,16 @@ set -o errexit
 # 设置环境变量
 # PATH=$PATH:/usr/local/bin/
 # 先同步一次
-# 同步 "/Volumes/Kotoli/OneDrive/图片库/壁纸/写真壁纸" 文件夹内容到 "/Users/Sengoku/Pictures/写真",排除 'DS_Store'
+# 同步 "/Users/Sengoku/Pictures/写真" 文件夹内容到 "/Volumes/Kotoli/OneDrive/图片库/壁纸/写真壁纸",排除 'DS_Store'
 rsync -cavu --delete --delete-excluded --exclude '.DS_Store' "/Volumes/Kotoli/OneDrive/图片库/壁纸/写真壁纸/" "/Users/Sengoku/Pictures/写真"
 # 通知
-osascript -e 'display notification "服务已启动!" with title "wallpaper-rsync" sound name "Glass"'
+osascript -e 'display notification "OneDrive 🔜 壁纸 服务已启动!" with title "wallpaper-rsync" sound name "Glass"'
 # 监视文件夹并同步,排除 ".DS_Store"
-/usr/local/bin/fswatch -l 5 -e ".DS_Store" -0 "/Volumes/Kotoli/OneDrive/图片库/壁纸/写真壁纸" | while read -d "" event; do 
+/usr/local/bin/fswatch -0 -l 5 --event "Created" --event "Updated" --event "Removed" --event "Renamed" --event "OwnerModified" --event "MovedFrom" --event "MovedTo" -e ".DS_Store" "/Volumes/Kotoli/OneDrive/图片库/壁纸/写真壁纸" | while read -d "" event; do 
 	# 同步"Services"文件夹内容到"服务",排除 '_gsdata_' 'QuickLook' '*~.workflow'
 	rsync -cavu --delete --delete-excluded --exclude '.DS_Store' "/Volumes/Kotoli/OneDrive/图片库/壁纸/写真壁纸/" "/Users/Sengoku/Pictures/写真"
-	osascript -e 'display notification "🔄'"${event}"'" with title "fswatch-rsync" sound name "Glass"'
-	echo "${event} was rsynced" >> /Volumes/Kotoli/OneDrive/图片库/壁纸/写真壁纸.log 2>&1
+	# 通知
+	osascript -e 'display notification "🔄'"${event##*/}"'" with title "fswatch-rsync" sound name "Glass"'
+	# 写入日志
+	echo "\"${event}\" 已同步!" >> /Volumes/Kotoli/OneDrive/图片库/壁纸/写真壁纸.log 2>&1
 done
