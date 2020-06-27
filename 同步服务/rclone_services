@@ -1,0 +1,25 @@
+#!/bin/bash
+# 若命令失败让脚本退出 
+set -o errexit
+
+# 设置环境变量
+PATH=$PATH:/usr/local/bin/
+# 设置代理
+export https_proxy=http://127.0.0.1:1080 http_proxy=http://127.0.0.1:1080 all_proxy=socks5://127.0.0.1:1080
+# 设置源路径
+sourcepath=~/Library/Services
+# 设置目标路径
+destpath="自动化/MacOS 服务"
+# 设置日志路径
+logspath="/Users/$USER/Library/Logs/Rclone/rclone_MacOS服务.log"
+
+# 通知
+osascript -e 'display notification "rclone converter" with title "🌥 Services 🔜 Onedrive 开始同步" sound name "Glass"'
+
+# 同步"Services"文件夹内容到"onedrive",排除 'DS_Store' 'QuickLook' '*~.workflow'
+rclone sync "$sourcepath" "onedrive:$destpath" -P --log-file "$logspath" --log-level INFO --exclude ".DS_Store" --exclude "*~.workflow" --exclude "QuickLook/**"
+
+# 通知
+osascript -e 'display notification "Rclone converter" with title "🌥 Services 同步完成" sound name "Glass"'
+
+exit 0

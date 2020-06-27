@@ -1,0 +1,20 @@
+#!/bin/bash
+# 若命令失败让脚本退出 
+set -o errexit
+
+# 设置环境变量
+PATH=$PATH:/Users/Sengoku/.user_shell_scripts
+
+# 通知
+osascript -e 'display notification "rclone converter" with title "🌥 Rclone 🔜 Onedrive 开始同步" sound name "Glass"'
+
+
+rclone_fonts
+rclone_services
+rclone_wallpaper
+rclone_cellar
+
+# 通知
+osascript -e 'display notification "Rclone converter" with title "🌥 Rclone 同步完成" sound name "Glass"'
+
+exit 0
