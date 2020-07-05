@@ -13,6 +13,7 @@ rclone_fonts
 rclone_services
 rclone_wallpaper
 rclone_cellar
+rclone_results
 
 # 通知
 osascript -e 'display notification "Rclone converter" with title "🌥 Rclone 同步完成" sound name "Glass"'
