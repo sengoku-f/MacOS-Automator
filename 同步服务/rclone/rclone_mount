@@ -1,0 +1,49 @@
+#!/bin/bash
+# 若命令失败让脚本退出 
+set -o errexit
+
+# 设置环境变量
+PATH=$PATH:/usr/local/bin/
+# 设置代理
+export https_proxy=http://127.0.0.1:1080 http_proxy=http://127.0.0.1:1080 all_proxy=socks5://127.0.0.1:1080
+
+name_bin="rclone"
+# 设置源路径
+remote="onedrive"
+remotepath=''  #远程文件夹，网盘里的挂载的一个文件夹，留空为整个网盘
+# 设置目标路径
+local="$HOME/Microsoft Onedrive"
+# 设置日志路径
+logspath="$HOME/Library/Logs/Rclone/rclone_mount.log"
+
+# check_running(){
+#   # PID=$(pgrep "$name_bin")
+#   PID=$(ps -ceo pid=,comm= | awk '/'$name_bin'/ { print $1; exit }')
+#   if [ ! -z "$PID" ]; then
+#     return 0
+#   else
+#     return 1
+#   fi
+# }
+
+# check_running
+# if [[ $? -eq 0 ]]; then
+#       osascript -e 'display notification "Rclone converter" with title "☁️ '$name_bin:$PID' 正在运行" sound name "Glass"' && exit 0
+#   else
+      # umount $local >/dev/null 2>&1
+      # mkdir -p $local
+      # 挂载 onedrive
+      rclone mount "$remote:$remotepath" "$local" --daemon --allow-other --log-level INFO --log-file "$logspath" --vfs-cache-mode writes --vfs-read-chunk-size 1M --dir-cache-time 5m --copy-links --no-gzip-encoding --no-check-certificate --allow-non-empty
+      sleep 2s
+      # check_running
+      if [[ $? -eq 0 ]]; then
+        # 通知
+        osascript -e 'display notification "Rclone converter" with title "☁️ '$remote:$remotepath' '$name_bin:$PID' 挂载成功" sound name "Glass"'
+      else
+        # 通知
+        osascript -e 'display notification "Rclone converter" with title "☁️ '$remote:$remotepath' '$name_bin:$PID' 挂载失败" sound name "Glass"'
+      fi
+# fi
+
+
+exit 0

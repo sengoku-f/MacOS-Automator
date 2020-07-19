@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <!-- Label唯一的标识 -->
+  <key>Label</key>
+  <string>com.rclone-mount.plist</string>
+  <!-- 指定要运行的脚本 -->
+  <key>ProgramArguments</key>
+  <array>
+		<string>bash</string>
+		<string>-c</string>
+		<string>/Users/Sengoku/.user_shell_scripts/rclone_mount</string>
+  </array>
+  <!-- 指定要运行的时间 -->
+  <!-- <key>StartCalendarInterval</key> -->
+  <!-- <dict> -->
+        <!-- 将运行此作业的分钟 -->
+        <!-- <key>Minute</key> -->
+        <!-- <integer>0</integer> -->
+        <!-- 将运行该作业的小时数 -->
+        <!-- <key>Hour</key> -->
+        <!-- <integer>22</integer> -->
+        <!-- 将运行该作业的日期 -->
+        <!-- <key>Day</key> -->
+        <!-- <integer>1</integer> -->
+        <!-- 将在其上运行此作业的工作日（0和7是星期日） -->
+        <!-- <key>Weekday</key> -->
+        <!-- <integer>1</integer> -->
+        <!-- 将运行该作业的月份 -->
+        <!-- <key>Month</key> -->
+        <!-- <integer>1</integer> -->
+  <!-- </dict> -->
+  <key>RunAtLoad</key>
+  <true/>
+<!-- 标准输出文件 -->
+<key>StandardOutPath</key>
+<string>/Users/Sengoku/Library/Logs/Rclone/rclone.log</string>
+<!-- 标准错误输出文件，错误日志 -->
+<key>StandardErrorPath</key>
+<string>/Users/Sengoku/Library/Logs/Rclone/rclone.err</string>
+</dict>
+</plist>
