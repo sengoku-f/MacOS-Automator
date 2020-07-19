@@ -10,7 +10,7 @@
   <array>
 		<string>bash</string>
 		<string>-c</string>
-		<string>/Users/Sengoku/.user_shell_scripts/rclone_fonts;/Users/Sengoku/.user_shell_scripts/rclone_services;/Users/Sengoku/.user_shell_scripts/rclone_wallpaper;/Users/Sengoku/.user_shell_scripts/rclone_results;/Users/Sengoku/.user_shell_scripts/rclone_cellar</string>
+		<string>/Users/Sengoku/.user_shell_scripts/rclone_ssr;/Users/Sengoku/.user_shell_scripts/rclone_fonts;/Users/Sengoku/.user_shell_scripts/rclone_services;/Users/Sengoku/.user_shell_scripts/rclone_wallpaper;/Users/Sengoku/.user_shell_scripts/rclone_results;/Users/Sengoku/.user_shell_scripts/rclone_cellar</string>
   </array>
   <!-- 指定要运行的时间 -->
   <key>StartCalendarInterval</key>
