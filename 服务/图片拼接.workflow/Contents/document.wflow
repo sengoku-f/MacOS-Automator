@@ -59,7 +59,8 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>version="图片拼图 v1.3 by Sengoku"
+					<string>version="图片拼图 v1.4 by Sengoku"
+# 更新为 png 格式
 # 更新为ADJOIN拼接:http://www.fmwconcepts.com/imagemagick/adjoin/index.php
 # 更新版本变量
 # ——————————————
@@ -70,7 +71,7 @@ ARG="$1"
 # 获取日期
 ddate=`date +%Y-%m-%d-%H%M%S`
 # 设置输出路径
-ooutput="${ARG%/*}/concact-$ddate.jpg"
+ooutput="${ARG%/*}/concact-$ddate.png"
 # 用户选择
 CONFIG="$(osascript -e 'display dialog "选择拼图方向" buttons {"水平拼图", "垂直拼图"} default button "垂直拼图" with title "'"$version"'"')"
 # 条件判断
@@ -193,7 +194,7 @@ osascript -e 'display notification "Imagemagick converter" with title "拼接完
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>374.500000:645.000000</string>
+				<string>374.500000:667.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
