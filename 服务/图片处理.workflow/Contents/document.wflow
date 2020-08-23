@@ -562,7 +562,8 @@ echo "$1" &gt; $config
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>version="图片处理 v1.1 by Sengoku"
+					<string>version="图片处理 v1.2 by Sengoku"
+# aspect裁剪添加重力模式
 # 添加 color2alpha 自动,提取左上角颜色自动抠图
 # 修复使用"位图转矢量"时多图层文件错误
 # -----------------------------
@@ -676,8 +677,31 @@ if [ "$IMAGE_SET" = "aspect裁剪图片" ]; then
           elif [ -z "$imageRESIZE" ]; then
         imageRESIZE="$imageSIZE"
           fi
+      imageGRAVITY="$(osascript -e 'tell app "System Events" to return choose from list {"上", "下", "左", "右", "中心"} with prompt "选择裁剪区域的开始边界:\n上,下,左,右,和中心;默认为中心" default items {"中心"} with title "'"$version"'" OK button name {"确定"} cancel button name {"取消"}' 2&gt;/dev/null)"
+      # 若取消则退出，若留空则使用默认值
+      if [ $? -ne 0 ]; then
+            osascript -e 'display notification "已取消输入，若想转换图片请重新运行。" with title "用户取消🙁" sound name "Basso"'
+              exit 0
+          elif [ -z "$imageGRAVITY" ]; then
+        imageGRAVITY=Center
+          fi
+      if [ "$imageGRAVITY" = "上" ]; then
+        imageGRAVITY=North
+        fi
+      if [ "$imageGRAVITY" = "下" ]; then
+        imageGRAVITY=South
+        fi
+      if [ "$imageGRAVITY" = "左" ]; then
+        imageGRAVITY=West
+        fi
+      if [ "$imageGRAVITY" = "右" ]; then
+        imageGRAVITY=East
+        fi
+      if [ "$imageGRAVITY" = "中心" ]; then
+        imageGRAVITY=Center
+        fi
       # 开始转换
-      find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus aspect "$imageRESIZE" -m crop {/} "{/.}_crop_$imageRESIZE.{+.}"
+      find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus aspect "$imageRESIZE" -m crop -g $imageGRAVITY {/} "{/.}_crop_$imageRESIZE.{+.}"
 fi
 
 if [ "$IMAGE_SET" = "aspect裁剪图片填充" ]; then
@@ -892,7 +916,7 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>374.500000:1508.000000</string>
+				<string>374.500000:1522.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -902,33 +926,33 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>30235346-E540-4D95-9645-E6A1180AFB9D</key>
+		<key>454DE741-E90A-45F8-83AE-C28516289349</key>
 		<dict>
 			<key>from</key>
 			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
 			<key>to</key>
 			<string>70AE5623-B12F-4B24-934F-4B2EEC99DA91 - 70AE5623-B12F-4B24-934F-4B2EEC99DA91</string>
 		</dict>
-		<key>34A2EFDF-1F90-4C3E-92FD-2422CABDE43B</key>
+		<key>5F36E61F-E54D-45C7-9D36-C7F430D0463A</key>
 		<dict>
 			<key>from</key>
-			<string>FD4028FE-A123-4593-AA98-94F10EAE37A3 - FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
-			<key>to</key>
 			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
+			<key>to</key>
+			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
 		</dict>
-		<key>3FF31556-64CA-4D00-B2E6-1B967D81724E</key>
+		<key>9B9D13E1-8FF4-4DB3-86E4-3510A1ED1D3B</key>
 		<dict>
 			<key>from</key>
 			<string>0C322224-079C-40B2-827A-697595EFD823 - 0C322224-079C-40B2-827A-697595EFD823</string>
 			<key>to</key>
 			<string>FD4028FE-A123-4593-AA98-94F10EAE37A3 - FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
 		</dict>
-		<key>8E6BD154-7AEB-47FC-A978-668444EA6969</key>
+		<key>CCD5E165-503C-4552-9643-B866EDC797C4</key>
 		<dict>
 			<key>from</key>
-			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
+			<string>FD4028FE-A123-4593-AA98-94F10EAE37A3 - FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
 			<key>to</key>
-			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
+			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
 		</dict>
 	</dict>
 	<key>variables</key>
