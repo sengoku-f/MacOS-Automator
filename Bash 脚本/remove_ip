@@ -1,0 +1,23 @@
+#!/bin/bash
+# 更新为 networkservice 自动获取活动链接
+
+# 若命令失败让脚本退出 
+set -o errexit
+# 若未设置的变量被使用让脚本退出 
+set -o nounset
+
+# 设置环境变量
+PATH=$PATH:/usr/local/bin/:~/.user_shell_scripts
+
+# 获取活动连接
+networkservice | cut -d',' -f1 | while read -r i; do 
+  # 设置网络服务 DHCP 自动获取
+  networksetup -setdhcp "$i" ;
+  # 设置 dns 为空
+  networksetup -setdnsservers "$i" empty ;
+done
+
+# 通知
+osascript -e 'display notification "networksetup" with title "🗼网络服务 IP 已还原!" sound name "Glass"'
+
+exit
