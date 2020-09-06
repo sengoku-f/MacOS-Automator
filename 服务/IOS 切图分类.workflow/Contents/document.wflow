@@ -81,7 +81,9 @@ do
 	find "." -type f -name "*@2x*" -maxdepth 1 -mindepth 1 -print0 | xargs -0 -P 8 -J {} mv -f "{}" "./@2x"
 	find "." -type f -name "*@3x*" -maxdepth 1 -mindepth 1 -print0 | xargs -0 -P 8 -J {} mv -f "{}" "./@3x"
 	find "." -type f -name "*.png" -maxdepth 1 -mindepth 1 -print0 | xargs -0 -P 8 -J {} mv -f "{}" "./@1x" &amp;&amp; find "." -type f -name "*.jpg" -maxdepth 1 -mindepth 1 -print0 | xargs -0 -P 8 -J {} mv -f "{}" "./@1x"
-	
+    
+	# 删除空文件夹
+    find "." -depth -type d -empty -exec rmdir {} \;
 done
 
 # 播放提示音
@@ -204,7 +206,7 @@ osascript -e 'display notification "切图分类 by Sengoku v1.0" with title "�
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>348.500000:640.000000</string>
+				<string>374.500000:621.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
