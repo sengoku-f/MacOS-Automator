@@ -9,7 +9,7 @@ set -o errexit
 # export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
 
 # 设置订阅文件路径
-nodepath="/tmp/.node"
+nodepath="/mnt/sda3/.node"
 
 # 获取订阅连接
 sslink="$(grep 'ss=' "$nodepath" | cut -d'=' -f2-)"
@@ -21,7 +21,7 @@ ssrpath="/tmp/ssrcloud_ssr"
 # 设置目标路径
 destpath=
 # 设置日志路径
-logspath="/tmp/rclone_ssrcloud.log"
+logspath="/mnt/sda3/rclone_ssrcloud.log"
 
 # 通知
 # osascript -e 'display notification "rclone converter" with title "🍟 ssrcloud 开始下载" sound name "Glass"'
@@ -29,14 +29,14 @@ logspath="/tmp/rclone_ssrcloud.log"
 # 开始下载
 curl "$sslink" -o "$sspath"
 curl "$ssrlink" -o "$ssrpath"
-#  上传到 Dropbox 根目录
-rclone copy "$sspath" dropbox: -P --log-file "$logspath" --log-level INFO
-rclone copy "$ssrpath" dropbox: -P --log-file "$logspath" --log-level INFO
+#  上传到 Onedrive
+rclone copy "$sspath" onedrive:科学上网/订阅 -P --log-file "$logspath" --log-level INFO
+rclone copy "$ssrpath" onedrive:科学上网/订阅 -P --log-file "$logspath" --log-level INFO
 
 # 清除
 rm -f "$sspath" "$ssrpath"
 
 # 通知
-# osascript -e 'display notification "Rclone converter" with title "🍟 ssrcloud 上传 Dropbox 完成" sound name "Glass"'
+# osascript -e 'display notification "Rclone converter" with title "🍟 ssrcloud 上传 Onedrive 完成" sound name "Glass"'
 
 exit 0
