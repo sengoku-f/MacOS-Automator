@@ -562,7 +562,8 @@ echo "$1" &gt; $config
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>version="图片处理 v1.2 by Sengoku"
+					<string>version="图片处理 v1.2.1 by Sengoku"
+# 高模糊添加输入参数
 # aspect裁剪添加重力模式
 # 添加 color2alpha 自动,提取左上角颜色自动抠图
 # 修复使用"位图转矢量"时多图层文件错误
@@ -782,7 +783,15 @@ fi
 
 if [ "$IMAGE_SET" = "高斯模糊" ]; then
   # 开始转换格式
-  find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus magick {} -blur 0x8 "{.}_blur.{+.}"
+    BLUR_SET="$(osascript -e 'display dialog "输入模糊参数:" default answer "0x8" with title "高斯模糊"' -e 'text returned of result' 2&gt;/dev/null)"
+  # 若取消则退出，若留空则使用默认值        
+    if [ $? -ne 0 ]; then
+          osascript -e 'display alert "已取消输入，若想转换请重新运行。" as warning'
+            exit 0
+        elif [ -z "$BLUR_SET" ]; then
+      BLUR_SET="0x8"
+        fi
+  find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus magick {} -blur "$BLUR_SET" "{.}_blur.{+.}"
 fi
 
 if [ "$IMAGE_SET" = "水彩效果" ]; then
@@ -916,7 +925,7 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>374.500000:1522.000000</string>
+				<string>374.500000:1286.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -926,33 +935,33 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>454DE741-E90A-45F8-83AE-C28516289349</key>
-		<dict>
-			<key>from</key>
-			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
-			<key>to</key>
-			<string>70AE5623-B12F-4B24-934F-4B2EEC99DA91 - 70AE5623-B12F-4B24-934F-4B2EEC99DA91</string>
-		</dict>
-		<key>5F36E61F-E54D-45C7-9D36-C7F430D0463A</key>
+		<key>1B89A71C-525A-44C6-A4D7-DE30874CF59E</key>
 		<dict>
 			<key>from</key>
 			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
 			<key>to</key>
 			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
 		</dict>
-		<key>9B9D13E1-8FF4-4DB3-86E4-3510A1ED1D3B</key>
+		<key>475C5120-4D22-4E93-B315-C81E14BE6750</key>
 		<dict>
 			<key>from</key>
 			<string>0C322224-079C-40B2-827A-697595EFD823 - 0C322224-079C-40B2-827A-697595EFD823</string>
 			<key>to</key>
 			<string>FD4028FE-A123-4593-AA98-94F10EAE37A3 - FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
 		</dict>
-		<key>CCD5E165-503C-4552-9643-B866EDC797C4</key>
+		<key>82A91EEB-49F8-4F53-B8AC-0EFAC37BAB88</key>
 		<dict>
 			<key>from</key>
 			<string>FD4028FE-A123-4593-AA98-94F10EAE37A3 - FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
 			<key>to</key>
 			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
+		</dict>
+		<key>E2A27E7A-42AE-45C2-B661-01331AF8EE90</key>
+		<dict>
+			<key>from</key>
+			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
+			<key>to</key>
+			<string>70AE5623-B12F-4B24-934F-4B2EEC99DA91 - 70AE5623-B12F-4B24-934F-4B2EEC99DA91</string>
 		</dict>
 	</dict>
 	<key>variables</key>
