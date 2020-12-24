@@ -13,10 +13,12 @@ nodepath="$HOME/.node"
 # 获取订阅连接
 sslink="$(grep 'ss=' "$nodepath" | cut -d'=' -f2-)"
 ssrlink="$(grep 'ssr=' "$nodepath" | cut -d'=' -f2-)"
+mosulink="$(grep 'mosu=' "$nodepath" | cut -d'=' -f2-)"
 
 # 设置源路径
 sspath="$HOME/ssrcloud_ss"
 ssrpath="$HOME/ssrcloud_ssr"
+mosupath="$HOME/mosu"
 # 设置目标路径
 destpath=
 # 设置日志路径
@@ -28,12 +30,14 @@ osascript -e 'display notification "rclone converter" with title "🍟 ssrcloud 
 # 开始下载
 curl "$sslink" -o "$sspath"
 curl "$ssrlink" -o "$ssrpath"
+curl "$mosulink" -o "$mosupath"
 #  上传到 Onedrive
 rclone copy "$sspath" onedrive:科学上网/订阅 -P --log-file "$logspath" --log-level INFO
 rclone copy "$ssrpath" onedrive:科学上网/订阅 -P --log-file "$logspath" --log-level INFO
+rclone copy "$mosupath" onedrive:科学上网/订阅 -P --log-file "$logspath" --log-level INFO
 
 # 清除
-rm -f "$sspath" "$ssrpath"
+rm -f "$sspath" "$ssrpath" "$mosupath"
 
 # 通知
 osascript -e 'display notification "Rclone converter" with title "🍟 ssrcloud 上传 Onedrive 完成" sound name "Glass"'
