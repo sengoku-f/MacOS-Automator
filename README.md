@@ -66,4 +66,4 @@ source ~/.bash_profile
 不定期更新，有问题或者有想法可以联系我。
 
 ## 作者
-* SENGOKU donxj@live.com
+* SENGOKU i.donxj@gmail.com
