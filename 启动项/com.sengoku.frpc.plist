@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+    <string>com.sengoku.frpc</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/Sengoku/Desktop/frp/frpc</string>
+		<string>-c</string>
+		<string>/Users/Sengoku/Desktop/frp/frpc.ini</string>
+	</array>
+  <key>KeepAlive</key>
+	<true/>
+	<key>RunAtLoad</key>
+	<true/>
+    <!-- 标准输出文件 -->
+    <key>StandardOutPath</key>
+    <string>/Users/Sengoku/Library/Logs/frpc/frpc.log</string>
+    <!-- 标准错误输出文件，错误日志 -->
+    <key>StandardErrorPath</key>
+    <string>/Users/Sengoku/Library/Logs/frpc/frpc.err</string>
+</dict>
+</plist>
