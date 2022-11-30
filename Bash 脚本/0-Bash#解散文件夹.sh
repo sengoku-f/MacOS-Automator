@@ -2,7 +2,7 @@ version="解散文件夹 v1.1 by Sengoku"
 # 更新同名文件夹模式
 # -------------------------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 for f in "$@"
 do
 	# 父文件夹

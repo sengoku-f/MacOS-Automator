@@ -7,7 +7,7 @@ set -o errexit
 set -o nounset
 
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/:~/.user_shell_scripts
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin:~/.user_shell_scripts
 
 # 设置 IP， 子网， 下一跳路由
 net_ip="192.168.0.3 255.255.225.0 192.168.0.2"

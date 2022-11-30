@@ -62,7 +62,7 @@
 					<string>for f in "$@"
 do
 	fbname=$(basename “$f”)
-	PATH=$PATH:/usr/local/bin/;ffmpeg -i "$f" -y -c:v libx265 -preset slow -crf 28 -pix_fmt yuv420p10le -c:a copy -tag:v hvc1 "${f%.*}_HEVC_10Bit.mp4"
+	PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin;ffmpeg -i "$f" -y -c:v libx265 -preset slow -crf 28 -pix_fmt yuv420p10le -c:a copy -tag:v hvc1 "${f%.*}_HEVC_10Bit.mp4"
 done
 osascript -e 'display notification "转换完成👍🏻" with title "FFmpeg 转换器" subtitle "HEVC=hvc1;PIX=10bit" sound name "Glass"'</string>
 					<key>CheckedForUserDefaultShell</key>

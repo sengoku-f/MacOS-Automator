@@ -2,7 +2,7 @@
 # 更新修复奇偶像素&半透明像素
 #-----------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 
 for f in "$@"
 do

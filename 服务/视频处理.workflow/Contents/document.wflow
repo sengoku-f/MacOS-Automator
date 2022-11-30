@@ -578,7 +578,7 @@ echo "$1" &gt; $config
 # 添加文件种类过滤 "find -type f"
 # -----------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 设置路径变量
 var="$1"
 # 缓存地址

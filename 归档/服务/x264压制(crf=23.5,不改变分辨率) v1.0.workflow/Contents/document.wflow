@@ -62,7 +62,7 @@
 					<string>for f in "$@"
 do	
 	fbname=$(basename “$f”)
-	PATH=$PATH:/usr/local/bin/;ffmpeg -i "$f" -y -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -r 25 -vf scale=iw:-1:flags=lanczos -c:a aac -b:a 128k -ar 44100 "${f%.*}_x264.mp4"
+	PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin;ffmpeg -i "$f" -y -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -r 25 -vf scale=iw:-1:flags=lanczos -c:a aac -b:a 128k -ar 44100 "${f%.*}_x264.mp4"
 done
 osascript -e 'display notification "转换完成👍🏻" with title "FFmpeg 转换器" subtitle "CRF=23.5；FPS=25；SCALE=原始尺寸" sound name "Glass"'</string>
 					<key>CheckedForUserDefaultShell</key>

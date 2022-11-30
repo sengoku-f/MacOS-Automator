@@ -5,7 +5,7 @@
 # 若命令失败让脚本退出 
 set -o errexit
 # 设置环境变量
-# PATH=$PATH:/usr/local/bin/
+# PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 先同步一次
 # 同步 "/Users/Sengoku/Library/Fonts" 文件夹内容到 "/Users/Sengoku/Pictures/写真",排除 'DS_Store'
 rsync -cavu --delete --delete-excluded --exclude '.DS_Store' "/Users/Sengoku/Library/Fonts/" "/Volumes/Kotoli/OneDrive/储藏库/Mac OS 字体"

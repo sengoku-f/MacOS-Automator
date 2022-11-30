@@ -66,7 +66,7 @@ do
 
 	cd "$dir"
 
-	PATH=$PATH:/usr/local/bin/;convert "$f" -trim "${f%.*}_trim.jpg"
+	PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin;convert "$f" -trim "${f%.*}_trim.jpg"
 done
 
 osascript -e 'display notification "转换完成👍🏻" with title "Imagemagick 转换器" sound name "Glass"'</string>

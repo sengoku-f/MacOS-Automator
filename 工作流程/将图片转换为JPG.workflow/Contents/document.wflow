@@ -62,7 +62,7 @@
 					<string>for f in "$@"
 do
 	fbname=$(basename “$f”)
-	PATH=$PATH:/usr/local/bin/;convert "$f" "${f%.*}.jpg"
+	PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin;convert "$f" "${f%.*}.jpg"
 done</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>

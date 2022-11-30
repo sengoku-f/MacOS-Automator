@@ -1,7 +1,7 @@
 #  视频转为 GIF 自定义 v1.3
 # -----------------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 设置变量
 	gifV="GIF压制工具_by_Sengoku_v1.3"
 	gifFPS="$(osascript -e 'display dialog "GIF帧数（数字越低越卡顿，GIF体积越小）:" default answer "25" with title "'$gifV'"' -e 'text returned of result' 2>/dev/null | awk '{printf "%.5f", 1/$1 * 100}')"

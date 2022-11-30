@@ -296,7 +296,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>PATH=$PATH:/usr/local/bin/
+					<string>PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 url=$1
 
 osascript -e 'tell application "Terminal" to do script "youtube-dl '$url'; exit"'
@@ -464,7 +464,16 @@ osascript -e 'tell application "Terminal" to do script "youtube-dl '$url'; exit"
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>if application "Terminal" is running then	tell application "Terminal"		do script "youtube-dl -hlep"		activate	end tellelse	tell application "Terminal"		activate	end tellend if</string>
+					<string>if application "Terminal" is running then
+	tell application "Terminal"
+		do script "youtube-dl -hlep"
+		activate
+	end tell
+else
+	tell application "Terminal"
+		activate
+	end tell
+end if</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>

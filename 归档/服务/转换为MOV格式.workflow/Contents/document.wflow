@@ -62,7 +62,7 @@
 					<string>for f in "$@"
 do
 	fbname=$(basename “$f”)
-	PATH=$PATH:/usr/local/bin/;ffmpeg -i "$f" -c:v copy -c:a copy "${f%.*}.mov"
+	PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin;ffmpeg -i "$f" -c:v copy -c:a copy "${f%.*}.mov"
 done</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>

@@ -63,7 +63,7 @@
 # 处理含有空格的文件名改为并行操作
 # 添加版本变量,添加取消操作
 # --------------------------------------------------
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 
 # 获得设置的文件数量
 dir_size="$(osascript -e 'display dialog "设定每个文件夹的数量:" default answer "10" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"

@@ -2,7 +2,7 @@
 # 图片拼图 v1.2
 # ——————————————
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 设置变量
 ARG="$1"
 # 获取日期

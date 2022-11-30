@@ -164,7 +164,7 @@
 					<string>for f in "$@"
 do	
 	fbname=$(basename “$f”)
-	PATH=$PATH:/usr/local/bin/;ffmpeg -i "$f" -vf "split[a][b];[a]scale=iw*1.5:ih*1.5,boxblur=10:5[1];[b]scale=iw:ih[2];[1][2]overlay=x=(W-w)/2:y=(H-h)/2" -y "${f%.*}_blur.mp4"
+	PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin;ffmpeg -i "$f" -vf "split[a][b];[a]scale=iw*1.5:ih*1.5,boxblur=10:5[1];[b]scale=iw:ih[2];[1][2]overlay=x=(W-w)/2:y=(H-h)/2" -y "${f%.*}_blur.mp4"
 done</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>

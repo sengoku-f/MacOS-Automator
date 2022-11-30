@@ -167,7 +167,7 @@ do
 	cd "$dir"
 	##mkdir back
 	##cp -r "$f" -r back
-	PATH=$PATH:/usr/local/bin/;magick "$f" -blur 0x8 "${f%.*}.png"
+	PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin;magick "$f" -blur 0x8 "${f%.*}.png"
 done</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>

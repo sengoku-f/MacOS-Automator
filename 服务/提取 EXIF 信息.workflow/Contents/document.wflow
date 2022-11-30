@@ -66,7 +66,7 @@ do
 
 	cd "$dir"
 	
-	PATH=$PATH:/usr/local/bin/;exiftool -s "$f" &gt; "${f%.*}.txt"
+	PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin;exiftool -s "$f" &gt; "${f%.*}.txt"
 done</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>

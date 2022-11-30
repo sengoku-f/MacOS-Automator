@@ -68,7 +68,7 @@ do
 
 	cd "$dir"
 
-	PATH=$PATH:/usr/local/bin/;magick "$f" -resize 50% "${f%.*}.${f##*.}"
+	PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin;magick "$f" -resize 50% "${f%.*}.${f##*.}"
 done
 
 osascript -e 'display notification "转换完成👍🏻" with title "Imagemagick 转换器" sound name "Glass"'</string>

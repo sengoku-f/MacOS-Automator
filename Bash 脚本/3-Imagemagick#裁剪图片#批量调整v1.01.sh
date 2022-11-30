@@ -2,7 +2,7 @@
 #修改为批量调整
 #--------------------------------------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 获取原始图片尺寸
 imageSIZE="$(magick identify -ping -format "%wx%h\n" "$1" | tail -1)"
 # 输入修改尺寸

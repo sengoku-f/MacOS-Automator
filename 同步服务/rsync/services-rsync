@@ -2,7 +2,7 @@
 # 若命令失败让脚本退出 
 set -o errexit
 # 设置环境变量
-# PATH=$PATH:/usr/local/bin/
+# PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 先同步一次
 # 同步"Services"文件夹内容到"服务",排除 '_gsdata_' 'QuickLook' '*~.workflow'
 rsync -cavu --delete --delete-excluded --exclude '_gsdata_' --exclude 'QuickLook' --exclude '*~.workflow' --exclude '归档' "/Users/Sengoku/Library/Services/" "/Users/Sengoku/Git/MacOS-Automator/服务"

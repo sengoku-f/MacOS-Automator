@@ -2,7 +2,7 @@
 # 批量图片去黑 v1.0 by sengoku
 #--------------------------------------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 开始循环
 for f in $(ls *.jpg)
 do

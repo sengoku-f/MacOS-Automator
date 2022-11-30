@@ -165,7 +165,7 @@
 # 添加批量操作,添加修改图片尺寸
 #--------------------------------------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 询问操作
 CONFIG="$(osascript -e 'display dialog "图片裁剪" buttons {"批量裁剪", "单独裁剪","批量调整大小"} default button "批量调整大小" with title "裁剪图片 by Sengoku v1.2"')"
 # 批量裁剪

@@ -682,7 +682,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>PATH=$PATH:/usr/local/bin/
+					<string>PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 
 # 设置文件路径
 

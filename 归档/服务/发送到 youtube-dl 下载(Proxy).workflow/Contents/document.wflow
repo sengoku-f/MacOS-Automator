@@ -169,7 +169,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>PATH=$PATH:/usr/local/bin/
+					<string>PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 url=$1
 youtube-dl --proxy socks5://127.0.0.1:1086 "$url" &amp;&amp; afplay "/System/Library/Sounds/Glass.aiff"</string>
 					<key>CheckedForUserDefaultShell</key>

@@ -64,7 +64,7 @@
 # 更新保存上一次密码,版本号变量
 # -----------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 
 # 缓存地址
 configPassword=~/Library/Caches/7z_password

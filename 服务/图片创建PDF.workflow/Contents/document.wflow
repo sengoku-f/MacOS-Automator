@@ -63,7 +63,7 @@
 # 修复 png 转换错误
 # ------------------------------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 
 # 设置变量
 ARG="$1"

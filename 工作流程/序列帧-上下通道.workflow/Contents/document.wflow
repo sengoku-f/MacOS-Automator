@@ -163,7 +163,7 @@
 #-----------------------------
 
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 
 for f in "$@"
 do

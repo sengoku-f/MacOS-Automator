@@ -63,7 +63,7 @@
 # 更新选择模式
 # -------------------------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 用户选择
 CONFIG="$(osascript -e 'display dialog "选择处理模式" buttons {"照片(photo)", "漫画(Anime)", "取消"} default button "漫画(Anime)" with title "'"$version"'"')"
 # 条件判断

@@ -167,7 +167,7 @@ do
 	cd "$dir"
 	##mkdir back
 	##cp -r "$f" -r back
-	PATH=$PATH:/usr/local/bin/;waifu2x -t p -s 2 -n 1 -i "$f" -o "${f%.*}_@2x.png"
+	PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin;waifu2x -t p -s 2 -n 1 -i "$f" -o "${f%.*}_@2x.png"
 done
 
 osascript -e 'display notification "所有文件转换完成" with title "waifu2x converter" sound name "Glass"'</string>

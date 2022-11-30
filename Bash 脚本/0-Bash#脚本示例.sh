@@ -18,4 +18,4 @@ do
 done exit 0
 
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin

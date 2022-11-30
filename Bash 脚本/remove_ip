@@ -7,7 +7,7 @@ set -o errexit
 set -o nounset
 
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/:~/.user_shell_scripts
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin:~/.user_shell_scripts
 
 # 获取活动连接
 networkservice | cut -d',' -f1 | while read -r i; do 

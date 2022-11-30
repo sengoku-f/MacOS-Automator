@@ -169,7 +169,7 @@ do
 	cd "$dir"
 	##mkdir back
 	##cp -r "$f" -r back
-	PATH=$PATH:/usr/local/bin/;magick "$f" -set dispose Background -coalesce "${f%.*}.png"
+	PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin;magick "$f" -set dispose Background -coalesce "${f%.*}.png"
 done</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>

@@ -2,7 +2,7 @@
 # 测试脚本
 #--------------------------------------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 开始循环
 for f in *.jpg *.png;
 do

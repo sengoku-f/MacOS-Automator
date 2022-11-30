@@ -70,7 +70,7 @@ do
 
 	cd "$dir"
 	# 开始转换格式
-	PATH=$PATH:/usr/local/bin/;magick "$f" "${f%.*}.$EXT_NAME"
+	PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin;magick "$f" "${f%.*}.$EXT_NAME"
 done
 
 # 显示通知

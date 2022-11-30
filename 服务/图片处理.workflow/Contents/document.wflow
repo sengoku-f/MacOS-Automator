@@ -161,7 +161,15 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>set theDeviceList to {"转换为PNG", "转换为PNG保留布局", "位图转矢量", "修改尺寸", "修改尺寸并更改格式", "修改画布大小", "修剪图片", "修剪图片从中心", "aspect裁剪图片", "aspect裁剪图片填充", "自动去背", "去除白色", "color2alpha自动", "color2alpha去除白色", "color2alpha去除黑色", "color2alpha自定义", "绿幕抠像", "缩小文件大小", "裁剪为矩形", "裁剪并拉直", "高斯模糊", "水彩效果", "刺绣效果"}set theDevice to (choose from list theDeviceList with prompt "选择操作:" default items {"转换为PNG"} with title "图片处理 by Sengoku")if theDevice is false then	display notification "已取消，若想转换图片请重新运行。" with title "用户取消🙁" sound name "Basso"	error number -128else	item 1 of theDeviceend if</string>
+					<string>set theDeviceList to {"转换为PNG", "转换为PNG保留布局", "位图转矢量", "修改尺寸", "修改尺寸并更改格式", "修改画布大小", "修剪图片", "修剪图片从中心", "aspect裁剪图片", "aspect裁剪图片填充", "自动去背", "去除白色", "color2alpha自动", "color2alpha去除白色", "color2alpha去除黑色", "color2alpha自定义", "绿幕抠像", "缩小文件大小", "裁剪为矩形", "裁剪并拉直", "高斯模糊", "水彩效果", "刺绣效果"}
+set theDevice to (choose from list theDeviceList with prompt "选择操作:" default items {"转换为PNG"} with title "图片处理 by Sengoku")
+
+if theDevice is false then
+	display notification "已取消，若想转换图片请重新运行。" with title "用户取消🙁" sound name "Basso"
+	error number -128
+else
+	item 1 of theDevice
+end if</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>
@@ -561,7 +569,7 @@ echo "$1" &gt; $config
 				<string>运行 Shell 脚本</string>
 				<key>ActionParameters</key>
 				<dict>
-					<key>COMMAND_STRING</key>
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/binkey>
 					<string>version="图片处理 v1.2.1 by Sengoku"
 # 高模糊添加输入参数
 # aspect裁剪添加重力模式

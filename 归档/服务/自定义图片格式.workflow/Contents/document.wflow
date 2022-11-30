@@ -817,7 +817,7 @@ echo "$EXTENSION_NAME"
 
 cd "$1"
 
-PATH=$PATH:/usr/local/bin/;mogrify -format "$EXTENSION_NAME" *
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin;mogrify -format "$EXTENSION_NAME" *
 
 mv -n * ../
 

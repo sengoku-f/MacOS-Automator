@@ -3,7 +3,7 @@ versions="YouTube-dl 下载 v1.4 by Sengoku"
 # 添加下载时间显示
 # ——————————————
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 设置变量
 url=$1
 # 询问是否用代理

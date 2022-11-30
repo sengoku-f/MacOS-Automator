@@ -63,7 +63,7 @@
 # 添加版本变量,添加取消操作
 # -----------------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 设置变量
 	gifFPS="$(osascript -e 'display dialog "GIF帧数（数字越低越卡顿，GIF体积越小）:" default answer "25" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null | awk '{printf "%.5f", 1/$1 * 100}')"
 	# 若取消则退出，若留空则使用默认值
