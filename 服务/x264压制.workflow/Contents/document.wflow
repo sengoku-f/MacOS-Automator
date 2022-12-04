@@ -59,7 +59,8 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string># H264压制 CRF23.5 不修改分辨率 v1.2.1
+					<string># H264压制 CRF23.5 不修改分辨率 v1.2.2
+# 使用默认设置
 # 添加-pix_fmt yuv420p 修复视频预览
 # 更新为 parallel 并行处理
 # -----------------------------
@@ -75,11 +76,13 @@ cd "$dir"
 
 #echo "$PWD"
 # 开始转换
-find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -r 25 -pix_fmt yuv420p -c:a aac -b:a 128k -ar 44100 -y "{.}_x264.mp4"
+find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -preset slow -crf 23.5 -r 25 -pix_fmt yuv420p -c:a aac -b:a 128k -ar 44100 -y "{.}_x264.mp4"
 
 # 分辨率修改,"-1"自适应,"-2"可以被2整除
 #-vf scale=iw:-2:flags=lanczos
 
+# 旧版属性压缩率更高,但是快进会有些问题
+#-preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8
 
 osascript -e 'display notification "CRF=23.5;FPS=25;SCALE=原始尺寸" with title "转换完成🎉" subtitle "FFmpeg converter" sound name "Glass"'</string>
 					<key>CheckedForUserDefaultShell</key>
@@ -194,7 +197,7 @@ osascript -e 'display notification "CRF=23.5;FPS=25;SCALE=原始尺寸" with tit
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>348.500000:692.000000</string>
+				<string>367.000000:631.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>

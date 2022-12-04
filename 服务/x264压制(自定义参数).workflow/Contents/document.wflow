@@ -59,7 +59,8 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>version="H.264压制 自定义参数 v1.3.1"
+					<string>version="H.264压制 自定义参数 v1.3.2"
+# 使用默认设置
 # 更新版本号为变量,添加取消退出,添加-pix_fmt yuv420p,删除":level=4.1"
 # 更新自定义
 # 更新为 parallel 并行处理
@@ -103,8 +104,10 @@ elif [ -z "$SIZE" ]; then
 fi
 
 # 开始转换
-find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -preset 8 -x264opts crf=$CRF:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8 -r $FPS -vf \"scale="'-2'":"'min($SIZE,ih)'":flags=lanczos\" -pix_fmt yuv420p -c:a aac -b:a 128k -ar 44100 -y "{.}_x264_CRF'$CRF'_'$SIZE'p.mp4"
+find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -preset slow -crf $CRF -r $FPS -vf \"scale="'-2'":"'min($SIZE,ih)'":flags=lanczos\" -pix_fmt yuv420p -c:a aac -b:a 128k -ar 44100 -y "{.}_x264_CRF'$CRF'_'$SIZE'p.mp4"
 
+# 旧版属性压缩率更高,但是快进会有些问题
+# -preset 8 -x264opts crf=$CRF:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8
 
 osascript -e 'display notification "CRF='$CRF';FPS='$FPS';SCALE='$SIZE'P;YUV420" with title "转换完成🎉" subtitle "FFmpeg converter" sound name "Glass"'</string>
 					<key>CheckedForUserDefaultShell</key>
@@ -221,7 +224,7 @@ osascript -e 'display notification "CRF='$CRF';FPS='$FPS';SCALE='$SIZE'P;YUV420"
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>348.500000:738.000000</string>
+				<string>367.000000:612.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>

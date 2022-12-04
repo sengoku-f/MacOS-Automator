@@ -1,7 +1,7 @@
 # 裁剪图片 v1.0
 #--------------------------------------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin:/opt/homebrew/bin
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 开始循环
 for f
 do
