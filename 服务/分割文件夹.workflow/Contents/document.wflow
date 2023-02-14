@@ -59,14 +59,15 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>version="分割文件夹 v1.3 by Sengoku"
+					<string>version="分割文件夹 v1.4 by Sengoku"
+# 修复文件名有单双引号,新增使用文件名命名父文件夹
 # 处理含有空格的文件名改为并行操作
 # 添加版本变量,添加取消操作
 # --------------------------------------------------
 PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 
 # 获得设置的文件数量
-dir_size="$(osascript -e 'display dialog "设定每个文件夹的数量:" default answer "10" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
+dir_size="$(osascript -e 'display dialog "设定每个文件夹的数量:\n\n输入 f 使用文件名命名文件夹, 例如: 1f" default answer "10" with title "'"$version"'"' -e 'text returned of result' 2&gt;/dev/null)"
 # 若取消则退出，若留空则使用默认值
 if [ $? -ne 0 ]; then
 		osascript -e 'display notification "已取消输入，若想分割文件夹请重新运行。" with title "用户取消🙁" sound name "Basso"'
@@ -82,22 +83,30 @@ dir_name="$(basename "$f")"
 # 定位目录
 cd "$f"
 
-# 删除".DS_Store"文件
-find "$f" -name ".DS_Store" -delete
 # 处理含有空格的文件名
 #find "$f" -maxdepth 1 -name "* *" -execdir rename 's/ //g' "{}" \;
-find "$f" -maxdepth 1 -name "* *" -print0 | xargs -0 -P 6 -J {} rename 's/ //g' "{}"
+find -E "$f" -type f -maxdepth 1 -iregex ".*(\'|\"| ).*" -not -path '*/\.*' -print0 | xargs -0 -P 6 -J {} rename "s/( |\'|\")//g" "{}"
 
-# 循环次数
-n=$((`find "$f" -maxdepth 1 -type f | wc -l`/$dir_size+1))
-
-for i in `seq 1 $n`;
-do
-	# 创建子文件夹
-    mkdir -p "$dir_name$i";
-	# 开始移动文件
-    find "." -maxdepth 1 -type f | head -n $dir_size | xargs -P 6 -J {} mv {} "$dir_name$i"
-done
+if [[ $dir_size == *"f"* ]]; then
+  dir_size="${dir_size//f}"
+  # 循环次数
+  n=$((`find "$f" -maxdepth 1 -type f -not -path '*/\.*' | wc -l`/$dir_size+1))
+  for i in `seq 1 $n`;
+  do
+    # 开始创建子文件夹并移动
+      find "." -maxdepth 1 -type f -not -path '*/\.*' | head -n $dir_size | parallel 'mkdir -p {.}; mv {} {.}'
+  done
+else
+  # 循环次数
+  n=$((`find "$f" -maxdepth 1 -type f -not -path '*/\.*' | wc -l`/$dir_size+1))
+  for i in `seq 1 $n`;
+  do
+    # 创建子文件夹
+      mkdir -p "$dir_name$i";
+    # 开始移动文件
+      find "." -maxdepth 1 -type f -not -path '*/\.*' | head -n $dir_size | xargs -P 6 -J {} mv {} "$dir_name$i"
+  done
+fi
 
 # 删除空文件夹
 find "$f" -maxdepth 1 -type d -empty -exec rmdir {} \;
@@ -218,7 +227,7 @@ osascript -e 'display notification "'"$version"'" with title "所有文件已分
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>374.500000:730.000000</string>
+				<string>374.500000:305.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
