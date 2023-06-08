@@ -113,7 +113,7 @@
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>374.500000:228.000000</string>
+				<string>367.000000:228.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Set Value of Variable.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -161,15 +161,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>set theDeviceList to {"转换为PNG", "转换为PNG保留布局", "位图转矢量", "修改尺寸", "修改尺寸并更改格式", "修改画布大小", "修剪图片", "修剪图片从中心", "aspect裁剪图片", "aspect裁剪图片填充", "自动去背", "去除白色", "color2alpha自动", "color2alpha去除白色", "color2alpha去除黑色", "color2alpha自定义", "绿幕抠像", "缩小文件大小", "裁剪为矩形", "裁剪并拉直", "高斯模糊", "水彩效果", "刺绣效果"}
-set theDevice to (choose from list theDeviceList with prompt "选择操作:" default items {"转换为PNG"} with title "图片处理 by Sengoku")
-
-if theDevice is false then
-	display notification "已取消，若想转换图片请重新运行。" with title "用户取消🙁" sound name "Basso"
-	error number -128
-else
-	item 1 of theDevice
-end if</string>
+					<string>set theDeviceList to {"转换为PNG", "转换为PNG保留布局", "位图转矢量", "修改尺寸", "修改尺寸并更改格式", "修改画布大小", "修剪图片", "修剪图片从中心", "aspect裁剪图片", "aspect裁剪图片填充", "自动去背", "去除白色", "color2alpha自动", "color2alpha去除白色", "color2alpha去除黑色", "color2alpha自定义", "绿幕抠像", "缩小文件大小", "裁剪为矩形", "裁剪并拉直", "高斯模糊", "水彩效果", "刺绣效果"}set theDevice to (choose from list theDeviceList with prompt "选择操作:" default items {"转换为PNG"} with title "图片处理 by Sengoku")if theDevice is false then	display notification "已取消，若想转换图片请重新运行。" with title "用户取消🙁" sound name "Basso"	error number -128else	item 1 of theDeviceend if</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>
@@ -225,7 +217,7 @@ end run</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>374.500000:473.000000</string>
+				<string>367.000000:473.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -400,7 +392,7 @@ echo "$1" &gt; $config
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>374.500000:655.000000</string>
+				<string>367.000000:655.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -514,7 +506,7 @@ echo "$1" &gt; $config
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>374.500000:757.000000</string>
+				<string>367.000000:757.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Get Value of Variable.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -569,7 +561,7 @@ echo "$1" &gt; $config
 				<string>运行 Shell 脚本</string>
 				<key>ActionParameters</key>
 				<dict>
-PATH=$PATH:/usr/local/bin/:/opt/homebrew/binkey>
+					<key>COMMAND_STRING</key>
 					<string>version="图片处理 v1.2.1 by Sengoku"
 # 高模糊添加输入参数
 # aspect裁剪添加重力模式
@@ -577,7 +569,7 @@ PATH=$PATH:/usr/local/bin/:/opt/homebrew/binkey>
 # 修复使用"位图转矢量"时多图层文件错误
 # -----------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/:~/.imagemagick_scripts
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin/:~/.imagemagick_scripts
 # 设置路径变量
 var="$1"
 # 缓存地址
@@ -933,7 +925,7 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>374.500000:1286.000000</string>
+				<string>367.000000:939.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -943,33 +935,33 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>1B89A71C-525A-44C6-A4D7-DE30874CF59E</key>
-		<dict>
-			<key>from</key>
-			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
-			<key>to</key>
-			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
-		</dict>
-		<key>475C5120-4D22-4E93-B315-C81E14BE6750</key>
+		<key>1423F8FC-5F12-4331-8462-A4AE863FB6F1</key>
 		<dict>
 			<key>from</key>
 			<string>0C322224-079C-40B2-827A-697595EFD823 - 0C322224-079C-40B2-827A-697595EFD823</string>
 			<key>to</key>
 			<string>FD4028FE-A123-4593-AA98-94F10EAE37A3 - FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
 		</dict>
-		<key>82A91EEB-49F8-4F53-B8AC-0EFAC37BAB88</key>
+		<key>4976173E-0BBF-4C65-BD1F-BE7794AD2962</key>
+		<dict>
+			<key>from</key>
+			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
+			<key>to</key>
+			<string>70AE5623-B12F-4B24-934F-4B2EEC99DA91 - 70AE5623-B12F-4B24-934F-4B2EEC99DA91</string>
+		</dict>
+		<key>6A9CA157-A9C7-4F6C-9B01-12839DD7F2E9</key>
 		<dict>
 			<key>from</key>
 			<string>FD4028FE-A123-4593-AA98-94F10EAE37A3 - FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
 			<key>to</key>
 			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
 		</dict>
-		<key>E2A27E7A-42AE-45C2-B661-01331AF8EE90</key>
+		<key>F53F7B48-756F-489B-AEE5-579B794D89A1</key>
 		<dict>
 			<key>from</key>
-			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
+			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
 			<key>to</key>
-			<string>70AE5623-B12F-4B24-934F-4B2EEC99DA91 - 70AE5623-B12F-4B24-934F-4B2EEC99DA91</string>
+			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
 		</dict>
 	</dict>
 	<key>variables</key>
