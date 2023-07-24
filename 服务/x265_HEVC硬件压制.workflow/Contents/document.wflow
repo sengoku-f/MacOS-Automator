@@ -59,11 +59,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string># H264压制 CRF23.5 不修改分辨率 v1.2.3
-# 不改变帧速率
-# 使用默认设置
-# 添加-pix_fmt yuv420p 修复视频预览
-# 更新为 parallel 并行处理
+					<string># x265 硬件压制 10bit v1.0
 # -----------------------------
 # 设置环境变量
 PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
@@ -77,16 +73,10 @@ cd "$dir"
 
 #echo "$PWD"
 # 开始转换
-find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -c:v libx264 -preset slow -crf 23.5 -pix_fmt yuv420p -c:a aac -b:a 128k -ar 44100 -y "{.}_x264.mp4"
+find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus ffmpeg -i {} -y -c:v hevc_videotoolbox -preset slow -q:v 65 -pix_fmt yuv420p -c:a copy -tag:v hvc1 "{.}_HEVC.mp4"
 
-# 分辨率修改,"-1"自适应,"-2"可以被2整除
-#-vf scale=iw:-2:flags=lanczos
-# 改变帧速率
-#-r 25
-# 旧版属性压缩率更高,但是快进会有些问题
-#-preset 8 -x264opts crf=23.5:keyint=infinite:min-keyint=1:scenecut=60:partitions=all:direct=auto:me=umh:merange=32:subme=10:trellis=2:rc-lookahead=60:ref=6:bframes=6:b-adapt=2:deblock=1,1:qcomp=0.5:psy-rd=0.3,0:aq-mode=2:aq-strength=0.8
 
-osascript -e 'display notification "CRF=23.5;FPS=25;SCALE=原始尺寸" with title "转换完成🎉" subtitle "FFmpeg converter" sound name "Glass"'</string>
+osascript -e 'display notification "HEVC=hvc1;10bit" with title "转换完成🎉" subtitle "FFmpeg converter" sound name "Glass"'</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>
@@ -111,7 +101,7 @@ osascript -e 'display notification "CRF=23.5;FPS=25;SCALE=原始尺寸" with tit
 				<key>Class Name</key>
 				<string>RunShellScriptAction</string>
 				<key>InputUUID</key>
-				<string>65879D02-A79B-45D3-AD41-809EB3D400C6</string>
+				<string>2FDA58C9-E82E-43DA-AA42-09A01852F33A</string>
 				<key>Keywords</key>
 				<array>
 					<string>Shell</string>
@@ -121,9 +111,9 @@ osascript -e 'display notification "CRF=23.5;FPS=25;SCALE=原始尺寸" with tit
 					<string>Unix</string>
 				</array>
 				<key>OutputUUID</key>
-				<string>E6B98ED7-29E3-43D8-90CD-162E5A3B1645</string>
+				<string>E1F7D4E9-DDA5-4D36-A7C3-FDBCE78330E1</string>
 				<key>UUID</key>
-				<string>38174202-ADD6-4943-AAB5-7BE24E02FF66</string>
+				<string>70873A0F-ED4C-427A-9298-14AD70EAA327</string>
 				<key>UnlocalizedApplications</key>
 				<array>
 					<string>Automator</string>
@@ -199,7 +189,7 @@ osascript -e 'display notification "CRF=23.5;FPS=25;SCALE=原始尺寸" with tit
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>301.500000:710.000000</string>
+				<string>301.500000:659.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
