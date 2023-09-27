@@ -3,13 +3,117 @@
 <plist version="1.0">
 <dict>
 	<key>AMApplicationBuild</key>
-	<string>444.42</string>
+	<string>521.1</string>
 	<key>AMApplicationVersion</key>
-	<string>2.9</string>
+	<string>2.10</string>
 	<key>AMDocumentVersion</key>
 	<string>2</string>
 	<key>actions</key>
 	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.path</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>1.1.2</string>
+				<key>AMApplication</key>
+				<array>
+					<string>访达</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>fileNames</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.path</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Get Specified Finder Items.action</string>
+				<key>ActionName</key>
+				<string>获得指定的访达项目</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>fileNames</key>
+					<array>
+						<string>~/Downloads/李轶轩13925038010.pdf</string>
+					</array>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.SpecifiedFiles</string>
+				<key>CFBundleVersion</key>
+				<string>1.1.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryFilesAndFolders</string>
+				</array>
+				<key>Class Name</key>
+				<string>SpecifiedFilesAction</string>
+				<key>InputUUID</key>
+				<string>3362AFC2-A913-486A-92B2-EED2DDDBC210</string>
+				<key>Keywords</key>
+				<array>
+					<string>文件</string>
+					<string>选取</string>
+					<string>查找</string>
+					<string>获得</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>6B762F12-B9F0-49E9-B24D-BE34335272CD</string>
+				<key>UUID</key>
+				<string>5834970A-9F46-4B80-8527-25B5723C1D5D</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Finder</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<array/>
+						<key>name</key>
+						<string>fileNames</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>conversionLabel</key>
+				<integer>0</integer>
+				<key>isViewVisible</key>
+				<integer>1</integer>
+				<key>location</key>
+				<string>301.500000:360.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Get Specified Finder Items.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<integer>1</integer>
+		</dict>
 		<dict>
 			<key>action</key>
 			<dict>
@@ -55,7 +159,7 @@
 				<key>ActionBundlePath</key>
 				<string>/System/Library/Automator/Run Shell Script.action</string>
 				<key>ActionName</key>
-				<string>运行 Shell 脚本</string>
+				<string>运行Shell脚本</string>
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
@@ -64,7 +168,7 @@
 # 更新为 parallel 并行处理
 # -----------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin
 # 设置路径变量
 var="$1"
 # 获取文件信息
@@ -84,11 +188,11 @@ elif [ -z "$EXT_NAME" ]; then
 fi
 
 # 开始转换格式
-find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus magick -density 1200 -units PixelsPerInch {}[0] -resize 25% -quality 85 "{.}.$EXT_NAME"
+find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus magick -density 300 -units PixelsPerInch {} -resize 25% -quality 85 "{.}.$EXT_NAME"
 # 分辨率单位 英寸 厘米
 # -density 72 -units PixelsPerInch -units PixelsPerCentimeter
-#设置色彩空间
--colorspace rgb
+# 设置色彩空间
+# -colorspace rgb
 
 # 显示通知
 osascript -e 'display notification "Imagemagick converter" with title "转换完成🎉" sound name "Glass"'
@@ -154,9 +258,9 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 					<key>1</key>
 					<dict>
 						<key>default value</key>
-						<string></string>
+						<false/>
 						<key>name</key>
-						<string>source</string>
+						<string>CheckedForUserDefaultShell</string>
 						<key>required</key>
 						<string>0</string>
 						<key>type</key>
@@ -167,9 +271,9 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 					<key>2</key>
 					<dict>
 						<key>default value</key>
-						<false/>
+						<string></string>
 						<key>name</key>
-						<string>CheckedForUserDefaultShell</string>
+						<string>source</string>
 						<key>required</key>
 						<string>0</string>
 						<key>type</key>
@@ -207,7 +311,7 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>374.500000:606.000000</string>
+				<string>301.500000:1184.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -216,7 +320,15 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 		</dict>
 	</array>
 	<key>connectors</key>
-	<dict/>
+	<dict>
+		<key>FA30F155-3090-43A6-A83A-97E273AB2DDA</key>
+		<dict>
+			<key>from</key>
+			<string>5834970A-9F46-4B80-8527-25B5723C1D5D - 5834970A-9F46-4B80-8527-25B5723C1D5D</string>
+			<key>to</key>
+			<string>70AE5623-B12F-4B24-934F-4B2EEC99DA91 - 70AE5623-B12F-4B24-934F-4B2EEC99DA91</string>
+		</dict>
+	</dict>
 	<key>variables</key>
 	<array>
 		<dict>
@@ -258,7 +370,7 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 		<key>presentationMode</key>
 		<integer>15</integer>
 		<key>processesInput</key>
-		<integer>0</integer>
+		<false/>
 		<key>serviceApplicationBundleID</key>
 		<string>com.apple.finder</string>
 		<key>serviceApplicationPath</key>
@@ -268,11 +380,11 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 		<key>serviceOutputTypeIdentifier</key>
 		<string>com.apple.Automator.nothing</string>
 		<key>serviceProcessesInput</key>
-		<integer>0</integer>
+		<false/>
 		<key>systemImageName</key>
 		<string>NSTouchBarDocuments</string>
 		<key>useAutomaticInputType</key>
-		<integer>0</integer>
+		<false/>
 		<key>workflowTypeIdentifier</key>
 		<string>com.apple.Automator.servicesMenu</string>
 	</dict>
