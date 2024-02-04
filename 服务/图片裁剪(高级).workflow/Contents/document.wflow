@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>AMApplicationBuild</key>
-	<string>444.42</string>
+	<string>521.1</string>
 	<key>AMApplicationVersion</key>
-	<string>2.9</string>
+	<string>2.10</string>
 	<key>AMDocumentVersion</key>
 	<string>2</string>
 	<key>actions</key>
@@ -55,19 +55,21 @@
 				<key>ActionBundlePath</key>
 				<string>/System/Library/Automator/Run Shell Script.action</string>
 				<key>ActionName</key>
-				<string>运行 Shell 脚本</string>
+				<string>运行Shell脚本</string>
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>version="裁剪图片(高级) v1.4 by Sengoku"
+					<string>version="裁剪图片(高级) v1.4.1 by Sengoku"
+# 相对路径:{/} {/.} 替换为完整路径: {} {.}
 # 更新为aspect脚本
 # 更新为 parallel 并行处理
 # 添加批量操作,添加修改图片尺寸
 #--------------------------------------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin:~/.imagemagick_scripts
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin:~/Applications/imagemagick_scripts
 # 设置路径变量
 var="$1"
+echo $var
 # 获取文件信息
 dir="$(dirname "$var")"
 name="$(basename "$var")"
@@ -89,7 +91,7 @@ if [ "$CONFIG" = "button returned:裁剪" ]; then
 			imageRESIZE="$imageSIZE"
 				fi
 		# 开始转换
-		find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus aspect "$imageRESIZE" -m crop {/} "{/.}_crop_$imageRESIZE.{+.}"
+		find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus aspect "$imageRESIZE" -m crop {} "{.}_crop_$imageRESIZE.{+.}"
 fi
 # 批量填充
 if [ "$CONFIG" = "button returned:填充" ]; then
@@ -105,7 +107,7 @@ if [ "$CONFIG" = "button returned:填充" ]; then
 			imageRESIZE="$imageSIZE"
 				fi
 		# 开始转换
-		find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus aspect "$imageRESIZE" -m pad {/} "{/.}_pad_$imageRESIZE.{+.}"
+		find "$@" -maxdepth 0 | parallel --max-args 1 --load 90% --plus aspect "$imageRESIZE" -m pad {} "{.}_pad_$imageRESIZE.{+.}"
 fi
 # 取消
 # if [ $? -ne 0 ]; then
@@ -174,9 +176,9 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 					<key>1</key>
 					<dict>
 						<key>default value</key>
-						<string></string>
+						<false/>
 						<key>name</key>
-						<string>source</string>
+						<string>CheckedForUserDefaultShell</string>
 						<key>required</key>
 						<string>0</string>
 						<key>type</key>
@@ -187,9 +189,9 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 					<key>2</key>
 					<dict>
 						<key>default value</key>
-						<false/>
+						<string></string>
 						<key>name</key>
-						<string>CheckedForUserDefaultShell</string>
+						<string>source</string>
 						<key>required</key>
 						<string>0</string>
 						<key>type</key>
@@ -227,7 +229,7 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>374.500000:722.000000</string>
+				<string>301.500000:953.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -259,7 +261,7 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 		<key>presentationMode</key>
 		<integer>15</integer>
 		<key>processesInput</key>
-		<integer>0</integer>
+		<false/>
 		<key>serviceApplicationBundleID</key>
 		<string>com.apple.finder</string>
 		<key>serviceApplicationPath</key>
@@ -269,11 +271,11 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 		<key>serviceOutputTypeIdentifier</key>
 		<string>com.apple.Automator.nothing</string>
 		<key>serviceProcessesInput</key>
-		<integer>0</integer>
+		<false/>
 		<key>systemImageName</key>
 		<string>NSActionTemplate</string>
 		<key>useAutomaticInputType</key>
-		<integer>0</integer>
+		<false/>
 		<key>workflowTypeIdentifier</key>
 		<string>com.apple.Automator.servicesMenu</string>
 	</dict>

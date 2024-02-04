@@ -13,14 +13,14 @@ brew install 'ffmpeg' 'ImageMagick' 'gifsicle' 'rename' 'youtube-dl' 'parallel' 
 ```
 部分工作流程使用了[Fred's ImageMagick Scripts](http://www.fmwconcepts.com/imagemagick/index.php)
 
-下载 `.imagemagick_scripts` 文件夹放入 `用户文件夹下`，进入该目录运行以下命令，并将其目录添加到你的 `PATH`
+下载 `imagemagick_scripts` 文件夹放入 `用户文件夹下`，进入该目录运行以下命令，并将其目录添加到你的 `PATH`
 
 ``` bash
 # 给脚本赋予权限
 sudo chmod 777 *
 
 # 添加环境变量
-echo 'export PATH="~/.imagemagick_scripts:$PATH"' >> ~/.bash_profile
+echo 'export PATH="~/Applications/imagemagick_scripts/:$PATH"' >> ~/.bash_profile
 source ~/.bash_profile
 ```
 

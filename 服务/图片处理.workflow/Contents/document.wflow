@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>AMApplicationBuild</key>
-	<string>444.42</string>
+	<string>521.1</string>
 	<key>AMApplicationVersion</key>
-	<string>2.9</string>
+	<string>2.10</string>
 	<key>AMDocumentVersion</key>
 	<string>2</string>
 	<key>actions</key>
@@ -113,7 +113,7 @@
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>367.000000:228.000000</string>
+				<string>301.500000:226.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Set Value of Variable.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -157,7 +157,7 @@
 				<key>ActionBundlePath</key>
 				<string>/System/Library/Automator/Run AppleScript.action</string>
 				<key>ActionName</key>
-				<string>运行 AppleScript</string>
+				<string>运行AppleScript</string>
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
@@ -217,7 +217,7 @@ end run</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>367.000000:473.000000</string>
+				<string>301.500000:471.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -269,7 +269,7 @@ end run</string>
 				<key>ActionBundlePath</key>
 				<string>/System/Library/Automator/Run Shell Script.action</string>
 				<key>ActionName</key>
-				<string>运行 Shell 脚本</string>
+				<string>运行Shell脚本</string>
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
@@ -339,9 +339,9 @@ echo "$1" &gt; $config
 					<key>1</key>
 					<dict>
 						<key>default value</key>
-						<string></string>
+						<false/>
 						<key>name</key>
-						<string>source</string>
+						<string>CheckedForUserDefaultShell</string>
 						<key>required</key>
 						<string>0</string>
 						<key>type</key>
@@ -352,9 +352,9 @@ echo "$1" &gt; $config
 					<key>2</key>
 					<dict>
 						<key>default value</key>
-						<false/>
+						<string></string>
 						<key>name</key>
-						<string>CheckedForUserDefaultShell</string>
+						<string>source</string>
 						<key>required</key>
 						<string>0</string>
 						<key>type</key>
@@ -392,7 +392,7 @@ echo "$1" &gt; $config
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>367.000000:655.000000</string>
+				<string>301.500000:653.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -506,7 +506,7 @@ echo "$1" &gt; $config
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>367.000000:757.000000</string>
+				<string>301.500000:755.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Get Value of Variable.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -558,7 +558,7 @@ echo "$1" &gt; $config
 				<key>ActionBundlePath</key>
 				<string>/System/Library/Automator/Run Shell Script.action</string>
 				<key>ActionName</key>
-				<string>运行 Shell 脚本</string>
+				<string>运行Shell脚本</string>
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
@@ -569,7 +569,7 @@ echo "$1" &gt; $config
 # 修复使用"位图转矢量"时多图层文件错误
 # -----------------------------
 # 设置环境变量
-PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin/:~/.imagemagick_scripts
+PATH=$PATH:/usr/local/bin/:/opt/homebrew/bin/:~/Applications/imagemagick_scripts
 # 设置路径变量
 var="$1"
 # 缓存地址
@@ -872,9 +872,9 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 					<key>1</key>
 					<dict>
 						<key>default value</key>
-						<string></string>
+						<false/>
 						<key>name</key>
-						<string>source</string>
+						<string>CheckedForUserDefaultShell</string>
 						<key>required</key>
 						<string>0</string>
 						<key>type</key>
@@ -885,9 +885,9 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 					<key>2</key>
 					<dict>
 						<key>default value</key>
-						<false/>
+						<string></string>
 						<key>name</key>
-						<string>CheckedForUserDefaultShell</string>
+						<string>source</string>
 						<key>required</key>
 						<string>0</string>
 						<key>type</key>
@@ -925,7 +925,7 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>367.000000:939.000000</string>
+				<string>301.500000:1316.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -935,33 +935,33 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>1423F8FC-5F12-4331-8462-A4AE863FB6F1</key>
+		<key>381E44B7-EB0E-4F04-AE46-EC4B8CFA18F8</key>
+		<dict>
+			<key>from</key>
+			<string>FD4028FE-A123-4593-AA98-94F10EAE37A3 - FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
+			<key>to</key>
+			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
+		</dict>
+		<key>73EBB92A-D95F-451B-8E86-7D84B1D8FDD8</key>
 		<dict>
 			<key>from</key>
 			<string>0C322224-079C-40B2-827A-697595EFD823 - 0C322224-079C-40B2-827A-697595EFD823</string>
 			<key>to</key>
 			<string>FD4028FE-A123-4593-AA98-94F10EAE37A3 - FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
 		</dict>
-		<key>4976173E-0BBF-4C65-BD1F-BE7794AD2962</key>
+		<key>E0EB19E2-E21E-44A9-A969-5317E1E8E895</key>
+		<dict>
+			<key>from</key>
+			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
+			<key>to</key>
+			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
+		</dict>
+		<key>F669DB4E-9A58-436B-9FAD-C6A5401F2795</key>
 		<dict>
 			<key>from</key>
 			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
 			<key>to</key>
 			<string>70AE5623-B12F-4B24-934F-4B2EEC99DA91 - 70AE5623-B12F-4B24-934F-4B2EEC99DA91</string>
-		</dict>
-		<key>6A9CA157-A9C7-4F6C-9B01-12839DD7F2E9</key>
-		<dict>
-			<key>from</key>
-			<string>FD4028FE-A123-4593-AA98-94F10EAE37A3 - FD4028FE-A123-4593-AA98-94F10EAE37A3</string>
-			<key>to</key>
-			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
-		</dict>
-		<key>F53F7B48-756F-489B-AEE5-579B794D89A1</key>
-		<dict>
-			<key>from</key>
-			<string>98C08AC0-5661-43FB-A783-4EDEEA4DEFE8 - 98C08AC0-5661-43FB-A783-4EDEEA4DEFE8</string>
-			<key>to</key>
-			<string>1B28246C-46B3-4668-80AB-C709673915C7 - 1B28246C-46B3-4668-80AB-C709673915C7</string>
 		</dict>
 	</dict>
 	<key>variables</key>
@@ -1005,7 +1005,7 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 		<key>presentationMode</key>
 		<integer>15</integer>
 		<key>processesInput</key>
-		<integer>0</integer>
+		<false/>
 		<key>serviceApplicationBundleID</key>
 		<string>com.apple.finder</string>
 		<key>serviceApplicationPath</key>
@@ -1015,11 +1015,11 @@ osascript -e 'display notification "Imagemagick converter" with title "转换完
 		<key>serviceOutputTypeIdentifier</key>
 		<string>com.apple.Automator.nothing</string>
 		<key>serviceProcessesInput</key>
-		<integer>0</integer>
+		<false/>
 		<key>systemImageName</key>
 		<string>NSActionTemplate</string>
 		<key>useAutomaticInputType</key>
-		<integer>0</integer>
+		<false/>
 		<key>workflowTypeIdentifier</key>
 		<string>com.apple.Automator.servicesMenu</string>
 	</dict>
